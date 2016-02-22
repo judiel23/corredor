@@ -1,0 +1,39 @@
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'car.png' %>" alt="carrito">  Placa del Vehículo</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => placa_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'plaque.png' %>" alt="placa.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputs">
+              <input id="corredor_placa" name="corredor[placa]" type="text" class="k-textbox" pattern="\w{6,7}"       placeholder="Ejemplo: AOD636" required validationMessage="Deben ser 6 dígitos" autofocus onblur="checkTextField(this);"/>
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

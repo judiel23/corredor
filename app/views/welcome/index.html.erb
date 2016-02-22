@@ -1,0 +1,12 @@
+<div class="jumbotron">
+	<div class="container" id="welcome">
+		<h1>Bienvenido</h1>
+		<h3>COTIZA AHORA</h3>
+	</div>	
+	<div id="cotizaenlinea" class="container">
+		<%= button_to "COTIZAR EN LINEA", new_corredor_path, :method => "get", class: "btn btn-primary"%>
+		
+		<%= button_to "CONSULTAR ANTERIORES", corredors_path, :method => "get", class: "btn btn-primary"%>
+		
+	</div>
+</div>

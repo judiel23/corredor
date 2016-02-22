@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Insurance Brokers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Users</th>
+      <th>Insurance</th>
+      <th>Intermediary code</th>
+      <th>Plan code</th>
+      <th>Plan review</th>
+      <th>Discount rate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @insurance_brokers.each do |insurance_broker| %>
+      <tr>
+        <td><%= insurance_broker.users %></td>
+        <td><%= insurance_broker.insurance %></td>
+        <td><%= insurance_broker.intermediary_code %></td>
+        <td><%= insurance_broker.plan_code %></td>
+        <td><%= insurance_broker.plan_review %></td>
+        <td><%= insurance_broker.discount_rate %></td>
+        <td><%= link_to 'Show', insurance_broker %></td>
+        <td><%= link_to 'Edit', edit_insurance_broker_path(insurance_broker) %></td>
+        <td><%= link_to 'Destroy', insurance_broker, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Insurance broker', new_insurance_broker_path %>

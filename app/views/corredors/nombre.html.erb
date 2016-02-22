@@ -1,0 +1,47 @@
+<!-- Definicion de las variables a utilizar. -->
+<script type="text/javascript">
+  var dia = "";  // Valor actual del dia seleccionado.
+  var mes = "";  // Valor actual del mes seleccionado.
+  var ahno = ""; // Valor actual del ahno seleccionado.
+</script>
+
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'profile.png' %>" alt="profile">  Nombre del Asegurado</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => nombre_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'horizontal-badge.png' %>" alt="identificacion.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputs">
+              <input id="corredor_nombre" name="corredor[nombre]" class="k-textbox" placeholder="Nombres" required validationMessage="Escribe tu {0}" autofocus pattern = "^[-a-zA-Z]+$"/>
+              <input id="corredor_apellido" name="corredor[apellido]" class="k-textbox" placeholder="Apellidos" required validationMessage="Escribe tu {0}" patterb = "^[-a-zA-Z]+$"/>
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

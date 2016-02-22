@@ -1,0 +1,61 @@
+en:
+  simple_form:
+    "yes": 'Yes'
+    "no": 'No'
+    required:
+      text: 'required'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Please review the problems below:"
+    # Examples
+    # labels:
+    #   defaults:
+    #     password: 'Password'
+    #   user:
+    #     new:
+    #       email: 'E-mail to sign in.'
+    #     edit:
+    #       email: 'E-mail.'
+    # hints:
+    #   defaults:
+    #     username: 'User name to sign in.'
+    #     password: 'No special characters, please.'
+    # include_blanks:
+    #   defaults:
+    #     age: 'Rather not say'
+    # prompts:
+    #   defaults:
+    #     age: 'Select your age'
+    labels:
+     cotiz_app:
+      name: "Nombre"
+      lastname: "Apellido"
+      dni_type: "Nacionalidad"
+      dni_number: "Cédula"
+      local_code_area: "Codigo de Area Tlf. Fijo"
+      local_phone: "Tlf. Fijo"
+      movil_code_area: "Codigo de Area Tlf. Movil"
+      movil_phone: "Tlf. Movil"
+      birthday: "F/Nacimiento"
+      marital_status: "Estado Civil"
+      sex: "Sexo"
+      email: "Correo Electronico"
+      vehicle_year: "Año del Vehiculo"
+      vehicle_brand: "Marca Vehiculo"
+      vehicle_model: "Modelo Vehiculo"
+      vehicle_version: "Version Vehiculo"
+      plaque: "Placa"
+      intermediate_code: "Codigo Intermeidario"
+      state: "Estado"
+      plan_code: "Codigo Plan"
+      plan_review: "Revision Plan"
+      discount_rate: "Tasa de Descuento"
+      vehicle_use: "Uso Vehiculo"
+      kilometer_zero: "Cero Km?"
+      vehicle_type: "Tipo Vehiculo"
+     user:
+      email: "Correo Electrónico"
+      

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  users_id: 
+  insurance: MyString
+  intermediary_code: MyString
+  plan_code: MyString
+  plan_review: MyString
+  discount_rate: MyString
+
+two:
+  users_id: 
+  insurance: MyString
+  intermediary_code: MyString
+  plan_code: MyString
+  plan_review: MyString
+  discount_rate: MyString

@@ -1,0 +1,39 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'mail.png' %>" alt="correo">  Correo Electronico</h2>
+</div>
+
+
+<%= form_for @corredor, :url => email_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separatoremail">
+            <img src="<%= image_url 'email.png' %>" alt="email.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputsemail">
+              <input id="corredor_email" name="corredor[email]" type="text" class="k-textbox" placeholder="Ejemplo: usuario@cotizafacil.com" autofocus required validationMessage="Escribe tu correo." pattern = "^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"/>
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

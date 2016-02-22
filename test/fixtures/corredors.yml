@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  marca: MyText
+  modelo: MyText
+  year: MyText
+  version: MyText
+  zona: MyText
+  poliza: MyText
+  cedula: MyText
+  nombre: MyText
+  apellido: MyText
+  sexo: MyText
+  estado: MyText
+  fnacimiento: MyText
+  tfijo: MyText
+  tcelular: MyText
+  informacion: MyText
+  email: MyText
+  nacion: MyText
+  dia: MyText
+  mes: MyText
+  anio: MyText
+  cod1: MyText
+  cod2: MyText
+  ced: MyText
+  telefono: MyText
+  celular: MyText
+
+two:
+  marca: MyText
+  modelo: MyText
+  year: MyText
+  version: MyText
+  zona: MyText
+  poliza: MyText
+  cedula: MyText
+  nombre: MyText
+  apellido: MyText
+  sexo: MyText
+  estado: MyText
+  fnacimiento: MyText
+  tfijo: MyText
+  tcelular: MyText
+  informacion: MyText
+  email: MyText
+  nacion: MyText
+  dia: MyText
+  mes: MyText
+  anio: MyText
+  cod1: MyText
+  cod2: MyText
+  ced: MyText
+  telefono: MyText
+  celular: MyText

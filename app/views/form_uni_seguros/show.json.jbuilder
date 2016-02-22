@@ -1,0 +1,1 @@
+json.extract! @form_uni_seguro, :id, :desnombre, :desapellido, :rif, :codarealocal, :numtelefonolocal, :codareacel, :numtelefcel, :fecnac, :codedocivil, :codsexo, :email, :codmarca, :codmodelo, :codversion, :anoveh, :codinter, :codestado, :codplan, :revplan, :porcdcto, :created_at, :updated_at

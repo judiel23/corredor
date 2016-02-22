@@ -1,0 +1,316 @@
+
+# Variables que se utilizaran.
+@marca   = Make.find_by(:code => @corredor.marca).make
+@modelo  = Vehicle.find_by(:make => @corredor.marca, :code => @corredor.modelo).model
+@version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version
+@universitas = Report.where(:corredor_id => @corredor.id, :insurance => "universitas").last
+@vivir = Report.where(:corredor_id => @corredor.id, :insurance => "vivir").last
+@oriental = Report.where(:corredor_id => @corredor.id, :insurance => "oriental").last
+@ibero = Report.where(:corredor_id => @corredor.id, :insurance => "ibero").last
+@estar = Report.where(:corredor_id => @corredor.id, :insurance => "estar").last
+
+@nombre = "#{@corredor.nombre}".capitalize
+@apellido = "#{@corredor.apellido}".capitalize
+
+if @corredor.sexo == "F"
+    @sexo = "Femenino"
+else
+    @sexo = "Masculino"
+end
+
+ @estados = ["","Amazonas","Anzoategui", "Apure", "Aragua","Barinas","Bolivar","Carabobo",
+               "Cojedes","Delta Amacuro", "Distrito Capital", "Falcon", "Guarico", "Lara", 
+               "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", 
+               "Tachira", " Trujillo", "Vargas", "Yaaracuy", "Zulia"]
+
+
+
+
+# Funciones a utilizar.
+def comma_numbers(number, delimiter = '.')
+  number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
+end
+
+
+
+# Definicion del XLSX.
+wb = xlsx_package.workbook
+
+wrap_text = wb.styles.add_style :fg_color=> "FFFFFF",
+                                :b => true,
+                                :bg_color => "004586",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+universitas = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "22A7F0",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+vivir = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "E87E04",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+estar = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "AEA8D3",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+oriental = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "F7CA18",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+ibero = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "2ECC71",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+cobertura = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "999999",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+grua = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "ADAD85",
+                                :sz => 8,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+negrita = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"},
+                                 :sz => 8
+
+amarillo = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "FFFF00",
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+
+estiloBorde = wb.styles.add_style :border=> {:style => :thin, :color => "0000000"},
+                                  :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                   :sz => 8
+
+estiloBorde2 = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :b => true
+
+cotizacionS = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :fg_color => "30559D",
+                                  :sz => 18,
+                                  :b => true
+
+telefono = wb.styles.add_style :sz => 10
+
+validacion = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :fg_color => "30559D",
+                                  :b => true
+
+
+#universitas = wb.styles.add_style :bg_color => ['999999','22A7F0','E87E04','AEA8D3','F7CA18', '2ECC71']
+
+# Se agregan las filas.
+wb.add_worksheet(name: "Quotes") do |sheet|
+    sheet.merge_cells "A1:C1"
+    img = "#{Rails.root}/app/assets/images/logojohan.jpg" 
+    sheet.add_image(:image_src => img, :start_at => "A1") do |image|
+        image.width = 300
+        image.height = 130
+    end
+
+
+  
+    sheet.merge_cells "D1:F1"
+    sheet.add_row ["", "", "","Cotización Seguro de Auto "], style: cotizacionS
+    
+    sheet.add_row ["", "", "", "" ,"",""]
+    sheet.add_row ["", "", "", "" ,"Fecha: #{Time.now.strftime("%d/%m/%Y")}","Valido por 7 dias"], :style => [nil, nil, nil, nil, estiloBorde2, validacion], :height => 25
+
+    sheet.add_row ["", "", "", "", "Nombre:",@nombre + " " + @apellido], :style => [nil, nil, nil, nil, estiloBorde,estiloBorde], :height => 15
+    sheet.add_row ["", "", "", "","Cédula:",comma_numbers("#{@corredor.nacion} #{@corredor.cedula}",".")], :style => [nil, nil, nil, nil, estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["", "", "","", "Sexo:", @sexo], :style => [nil, nil, nil, nil, estiloBorde,estiloBorde], :height => 15
+    sheet.merge_cells "B7:C7"
+    sheet.add_row ["gerencia@corredorleal.com", "(0212) 716-5154 / (0212) 424-1266", "", "","Edad:","#{Integrator::age(@corredor.fnacimiento.to_date)} Años"], :style => [telefono,telefono, nil, nil, estiloBorde,estiloBorde], :height => 15
+    sheet.merge_cells "B8:C8"
+    sheet.add_row ["presidencia@corredorleal.com", "(0414)249-6264 / (0424) 177-3968", "","", "Circulación:",@estados[@corredor.zona.to_i]], :style => [telefono, telefono, nil, nil, estiloBorde,estiloBorde], :height => 15
+    sheet.add_row ["", "", "", "" ,"",""]
+    sheet.merge_cells "A10:B10"
+    sheet.add_row ["www.corredorleal.com", "", "", "",""], style: cotizacionS
+
+    sheet.add_row ["", "", "","Marca", "Modelo","Año"], :b => true, :style => [nil, nil, nil, estiloBorde, estiloBorde,estiloBorde]
+    sheet.add_row ["", "", "", @marca, "#{@modelo} #{@version}", @corredor.year], :style => [nil, nil, nil, estiloBorde, estiloBorde,estiloBorde], :height => 22
+    sheet.add_row ["", "", "", "" ,"",""]
+
+
+    sheet.add_row ["Coberturas", "Universitas","Vivir", "EstarSeguros", "La Oriental","Ibero"], :style => [cobertura,universitas,vivir,estar,oriental,ibero]
+    sheet.add_row ["Nro. Cotización", 
+                        (@universitas.num_cotiza == "N/A" or @universitas.num_cotiza == nil ? "NA" : @universitas.num_cotiza),
+                        (@vivir.num_cotiza == "N/A" or @vivir.num_cotiza == nil ? "NA": @vivir.num_cotiza),
+                        (@estar.num_cotiza == "N/A" or @estar.num_cotiza == nil ? "NA" : @estar.num_cotiza),
+                        (@oriental.num_cotiza == "N/A" or @oriental.num_cotiza == nil ? "NA" : @oriental.num_cotiza),
+                        (@ibero.num_cotiza == "N/A" or @ibero.num_cotiza == nil ? "NA" : @ibero.num_cotiza)], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+    
+    sheet.add_row ["Cobertura Amplia", 
+                        (@universitas.cobertura == "N/A" or @universitas.cobertura == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.cobertura).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.cobertura == "N/A" or @vivir.cobertura == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.cobertura).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.cobertura == "N/A" or @estar.cobertura == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.cobertura).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.cobertura == "N/A" or @oriental.cobertura == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.cobertura).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.cobertura == "N/A" or @ibero.cobertura == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.cobertura).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Eventos Catastróficos", 
+                        (@universitas.eventos == "N/A" or @universitas.eventos == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.eventos).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.eventos == "N/A" or @vivir.eventos == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.eventos).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.eventos == "N/A" or @estar.eventos == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.eventos).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.eventos == "N/A" or @oriental.eventos == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.eventos).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.eventos == "N/A" or @ibero.eventos == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.eventos).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Aire Acondicionado", 
+                        (@universitas.aire == "N/A" or @universitas.aire == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.aire).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.aire == "N/A" or @vivir.aire == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.aire).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.aire == "N/A" or @estar.aire == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.aire).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.aire == "N/A" or @oriental.aire == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.aire).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.aire == "N/A" or @ibero.aire == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.aire).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Radio, CD, MP3, DVD (con Pantalla)", 
+                        (@universitas.radio == "N/A" or @universitas.radio == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.radio).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.radio == "N/A" or @vivir.radio == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.radio).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.radio == "N/A" or @estar.radio == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.radio).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.radio == "N/A" or @oriental.radio == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.radio).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.radio == "N/A" or @ibero.radio == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.radio).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Servicio de Grua", "CONTRATADO", "CONTRATADO", "CONTRATADO", "CONTRATADO", "CONTRATADO"], style: grua, :height => 15
+    sheet.add_row ["Responsabilidad Civil/APOV", "", "", "","", ""], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Muerte Conductor/Pasajeros", 
+                        (@universitas.muerte == "N/A" or @universitas.muerte == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.muerte).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.muerte == "N/A" or @vivir.muerte == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.muerte).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.muerte == "N/A" or @estar.muerte == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.muerte).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.muerte == "N/A" or @oriental.muerte == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.muerte).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.muerte == "N/A" or @ibero.muerte == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.muerte).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Invalidez Conductor/Pasajeros", 
+                        (@universitas.invalidez == "N/A" or @universitas.invalidez == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.invalidez).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.invalidez == "N/A" or @vivir.invalidez == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.invalidez).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.invalidez == "N/A" or @estar.invalidez == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.invalidez).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.invalidez == "N/A" or @oriental.invalidez == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.invalidez).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.invalidez == "N/A" or @ibero.invalidez == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.invalidez).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Gastos de Curación", 
+                        (@universitas.curacion == "N/A" or @universitas.curacion == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.curacion).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.curacion == "N/A" or @vivir.curacion == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.curacion).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.curacion == "N/A" or @estar.curacion == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.curacion).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.curacion == "N/A" or @oriental.curacion == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.curacion).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.curacion == "N/A" or @ibero.curacion == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.curacion).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Gastos de Entierro", 
+                        (@universitas.entierro == "N/A" or @universitas.entierro == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.entierro).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.entierro == "N/A" or @vivir.entierro == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.entierro).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.entierro == "N/A" or @estar.entierro == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.entierro).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.entierro == "N/A" or @oriental.entierro == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.entierro).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.entierro == "N/A" or @ibero.entierro == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.entierro).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Daños a Cosas", 
+                        (@universitas.cosa_dan == "N/A" or @universitas.cosa_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.cosa_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.cosa_dan == "N/A" or @vivir.cosa_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.cosa_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.cosa_dan == "N/A" or @estar.cosa_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.cosa_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.cosa_dan == "N/A" or @oriental.cosa_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.cosa_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.cosa_dan == "N/A" or @ibero.cosa_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.cosa_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Daños a Personas", 
+                        (@universitas.personas_dan == "N/A" or @universitas.personas_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.personas_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.personas_dan == "N/A" or @vivir.personas_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.personas_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.personas_dan == "N/A" or @estar.personas_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.personas_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.personas_dan == "N/A" or @oriental.personas_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.personas_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.personas_dan == "N/A" or @ibero.personas_dan == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.personas_dan).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Exceso de Límite a Cosas", 
+                        (@universitas.exceso_cosa == "N/A" or @universitas.exceso_cosa == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.exceso_cosa).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.exceso_cosa == "N/A" or @vivir.exceso_cosa == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.exceso_cosa).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.exceso_cosa == "N/A" or @estar.exceso_cosa == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.exceso_cosa).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.exceso_cosa == "N/A" or @oriental.exceso_cosa == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.exceso_cosa).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.exceso_cosa == "N/A" or @ibero.exceso_cosa == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.exceso_cosa).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+    
+    sheet.add_row ["Exceso de Límite a Personas",
+                        (@universitas.exceso_persona == "N/A" or @universitas.exceso_persona == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.exceso_persona).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@vivir.exceso_persona == "N/A" or @vivir.exceso_persona == nil ? "NA" : comma_numbers(sprintf('%.2f', @vivir.exceso_persona).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.exceso_persona == "N/A" or @estar.exceso_persona == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.exceso_persona).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.exceso_persona == "N/A" or @oriental.exceso_persona == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.exceso_persona).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.exceso_persona == "N/A" or @ibero.exceso_persona == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.exceso_persona).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["Asistencia Lega y Defensa Penal", 
+                        (@universitas.asistencia == "N/A" or @universitas.asistencia == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.asistencia).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.asistencia == "N/A" or @estar.asistencia == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.asistencia).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.asistencia == "N/A" or @estar.asistencia == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.asistencia).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.asistencia == "N/A" or @oriental.asistencia == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.asistencia).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.asistencia == "N/A" or @ibero.asistencia == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.asistencia).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], style: [negrita,estiloBorde,estiloBorde,estiloBorde,estiloBorde,estiloBorde], :height => 15
+
+    sheet.add_row ["TOTAL PRIMA", 
+                        (@universitas.prima == "N/A" or @universitas.prima == nil ? "NA" : comma_numbers(sprintf('%.2f', @universitas.prima).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.prima == "N/A" or @estar.prima == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.prima).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@estar.prima == "N/A" or @estar.prima == nil ? "NA" : comma_numbers(sprintf('%.2f', @estar.prima).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@oriental.prima == "N/A" or @oriental.prima == nil ? "NA" : comma_numbers(sprintf('%.2f', @oriental.prima).gsub(/[,.]/, '.' => ',', ',' => '.'),".")),
+                        (@ibero.prima == "N/A" or @ibero.prima == nil ? "NA" : comma_numbers(sprintf('%.2f', @ibero.prima).gsub(/[,.]/, '.' => ',', ',' => '.'),"."))], :style => [cobertura,universitas,vivir,estar,oriental,ibero]
+
+    sheet.merge_cells "A32:F32"
+    sheet.add_row ["NOTA: Esta cotizacion no aplica en el caso de que el vehiculo ya se encuentre  asegurado en alguna de las compañias aseguradoras" , "", "", "", "", ""],:style => amarillo, :height => 25
+    sheet.column_widths 24.71, 13.71, 13.71, 13.71,13.71,13.71
+
+end

@@ -1,0 +1,105 @@
+wb = xlsx_package.workbook
+wrap_text = wb.styles.add_style :fg_color=> "FFFFFF",
+                                :b => true,
+                                :bg_color => "004586",
+                                :sz => 12,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true }
+wb.add_worksheet(name: "Quotes") do |sheet|
+    sheet.add_row ["Cotización Seguro de Auto", "", "", "",""], :style=>wrap_text, :sz => 16
+    sheet.merge_cells("A1:E1")
+    sheet.add_row ["Johan Leal", "", "", "Fecha:","#{Time.now.strftime("%d/%m/%Y")}"], :b => true
+    sheet.add_row ["Corredor de Seguros", "", "", "",""]
+    sheet.add_row ["gerencia@corredorleal.com", "(0212) 716-5154 / (0212) 424-1266", "", "Nombre:","#{@cotiz_app.name} #{@cotiz_app.lastname}"]
+    sheet.add_row ["presidencia@corredorleal.com", "(0414)249-6264 / (0424) 177-3968", "", "Cédula:","#{@cotiz_app.dni_type} #{@cotiz_app.dni_number}"]
+    sheet.add_row ["", "", "", "Sexo:", @cotiz_app.sex]
+    sheet.add_row ["", "", "", "Edad:","#{Integrator::age(@cotiz_app.birthday)} Años"]
+    sheet.add_row ["www.corredorleal.com", "", "", "Circulación:","Caracas"]
+    sheet.add_row ["", "", "", "",""]
+
+    sheet.add_row ["", "", "Marca", "Modelo","Año"], :b => true
+    sheet.add_row ["", "", @marca, "#{@modelo} #{@version}", @cotiz_app.vehicle_year]
+    sheet.add_row ["", "", "", "",""]
+
+    sheet.add_row ["Coberturas", "Universitas","Vivir Seguros","Oriental",""], :style=>wrap_text
+    sheet.add_row ["Nro. Cotización", @universitas["numcotizacion"],@vivir["numero"],@oriental["plan"][0]["nrocoti"],""]
+    
+    sheet.add_row ["Cobertura Amplia", 
+                        @universitas["pcursor"][0][0]["mtosumaaseg"],
+                        @vivir["cotizacion"][0]["suma"],
+                        @oriental["plan"][0]["coberturas"][0]["suma"],
+                        ""]
+
+    sheet.add_row ["Eventos Catastróficos", 
+                        @universitas["pcursor"][0][1]["mtosumaaseg"],
+                        @vivir["cotizacion"][2]["suma"],
+                        @oriental["plan"][0]["coberturas"][1]["suma"],
+                        ""]
+
+    sheet.add_row ["Aire Acondicionado", 
+                        "",
+                        "",
+                        "",
+                        ""]
+
+    sheet.add_row ["Radio, CD, MP3, DVD (con Pantalla)", 
+                        @universitas["pcursor"][0][2]["mtosumaaseg"],
+                        "",
+                        "",
+                        ""]
+
+    sheet.add_row ["Servicio de Grua", "", "", @oriental["plan"][0]["coberturas"][11]["suma"], ""]
+    sheet.add_row ["Responsabilidad Civil/APOV", "", "", "",""]
+
+    sheet.add_row ["Muerte Conductor/Pasajeros", 
+                        @universitas["pcursor"][0][12]["mtosumaaseg"], 
+                        @vivir["cotizacion"][9]["suma"], 
+                        @oriental["plan"][0]["coberturas"][4]["suma"],
+                        ""]
+
+    sheet.add_row ["Invalidez Conductor/Pasajeros", 
+                        @universitas["pcursor"][0][15]["mtosumaaseg"], 
+                        @vivir["cotizacion"][10]["suma"], 
+                        @oriental["plan"][0]["coberturas"][5]["suma"],
+                        ""]
+
+    sheet.add_row ["Gastos de Curación Conductor/Pasajeros", 
+                        @universitas["pcursor"][0][13]["mtosumaaseg"], 
+                        @vivir["cotizacion"][11]["suma"], 
+                        @oriental["plan"][0]["coberturas"][6]["suma"],
+                        ""]
+
+    sheet.add_row ["Gastos de Entierro Conductor/Pasajeros", 
+                        @universitas["pcursor"][0][17]["mtosumaaseg"], 
+                        @vivir["cotizacion"][14]["suma"], 
+                        "",
+                        ""]
+
+    sheet.add_row ["Daños a Cosas", 
+                        @universitas["pcursor"][0][4]["mtosumaaseg"], 
+                        @vivir["cotizacion"][5]["suma"], 
+                        @oriental["plan"][0]["coberturas"][8]["suma"],
+                        ""]
+
+    sheet.add_row ["Daños a Personas", 
+                        @universitas["pcursor"][0][5]["mtosumaaseg"], 
+                        @vivir["cotizacion"][4]["suma"], 
+                        @oriental["plan"][0]["coberturas"][7]["suma"],
+                        ""]
+
+    sheet.add_row ["Exceso de Límite a Cosas", 
+                        @universitas["pcursor"][0][8]["mtosumaaseg"], 
+                        @vivir["cotizacion"][6]["suma"], 
+                        @oriental["plan"][0]["coberturas"][9]["suma"],
+                        ""]
+
+    sheet.add_row ["Exceso de Límite a Personas", "", "", "",""]
+
+    sheet.add_row ["Asistencia Lega y Defensa Penal", 
+                        @universitas["pcursor"][0][9]["mtosumaaseg"], 
+                        @vivir["cotizacion"][8]["suma"], 
+                        @oriental["plan"][0]["coberturas"][10]["suma"],
+                        ""]
+end

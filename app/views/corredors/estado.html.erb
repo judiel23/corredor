@@ -1,0 +1,67 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'ring.png' %>" alt="estadocivil">  Estado Civil</h2>
+</div>
+
+
+<%= form_for @corredor, :url => estado_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+<div class="container">
+  <div class="row" id='estado'>
+    <div class="col-sm-3 col-xs-6">
+      <h2 class="estadocivil">Divorciado</h2>
+      <fieldset class="corredor[estado]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[estado]" class="radio_marca" value="D" id="Divorciado" onClick = "this.form.submit()">
+          <label for="Divorciado"><%=image_tag("divorciado.png", alt: "Divorciado") %></label>
+        </div>
+      </fieldset>
+    </div> 
+    
+    <div class="col-sm-3 col-xs-6">
+      <h2 class="estadocivil">Soltero</h2>
+      <fieldset class="corredor[estado]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[estado]" class="radio_marca" value="S" id="Soltero" onClick = "this.form.submit()">
+          <label for="Soltero"><%=image_tag("soltero.png", alt: "Soltero") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <h2 class="estadocivil">Casado</h2>
+      <fieldset class="corredor[estado]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[estado]" class="radio_marca" value="C" id="Casado" onClick = "this.form.submit()">
+          <label for="Casado"><%=image_tag("casado.png", alt: "Casado") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-3 col-xs-6">
+      <h2 class="estadocivil">Viudo</h2>
+      <fieldset class="corredor[estado]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[estado]" class="radio_marca" value="V" id="Viudo" onClick = "this.form.submit()">
+          <label for="Viudo"><%=image_tag("viudo.png", alt: "Viudo") %></label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+
+
+<%= hidden_field_tag :id, @corredor.id %>
+<% end %>

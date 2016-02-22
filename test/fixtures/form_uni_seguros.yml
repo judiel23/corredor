@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  desnombre: MyString
+  desapellido: MyString
+  rif: MyString
+  codarealocal: MyString
+  numtelefonolocal: MyString
+  codareacel: MyString
+  numtelefcel: MyString
+  fecnac: 2015-09-03 03:04:35
+  codedocivil: MyString
+  codsexo: MyString
+  email: MyString
+  codmarca: MyString
+  codmodelo: MyString
+  codversion: MyString
+  anoveh: 1
+  codinter: MyString
+  codestado: MyString
+  codplan: MyString
+  revplan: MyString
+  porcdcto: 1
+
+two:
+  desnombre: MyString
+  desapellido: MyString
+  rif: MyString
+  codarealocal: MyString
+  numtelefonolocal: MyString
+  codareacel: MyString
+  numtelefcel: MyString
+  fecnac: 2015-09-03 03:04:35
+  codedocivil: MyString
+  codsexo: MyString
+  email: MyString
+  codmarca: MyString
+  codmodelo: MyString
+  codversion: MyString
+  anoveh: 1
+  codinter: MyString
+  codestado: MyString
+  codplan: MyString
+  revplan: MyString
+  porcdcto: 1

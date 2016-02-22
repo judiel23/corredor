@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Cotiz Apps</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Lastname</th>
+      <th>DNI</th>
+      <!--
+      <th>Birthday</th>
+      <th>Marital status</th>
+      -->
+      <th>Sex</th>
+      <th>Email</th>
+      <th>Vehicle year</th>
+      <th>Vehicle brand</th>
+      <th>Vehicle model</th>
+      <th>Vehicle version</th>
+      <th>Intermediate code</th>
+      <th>State</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cotiz_apps.each do |cotiz_app| %>
+      <tr>
+        <td><%= cotiz_app.name %></td>
+        <td><%= cotiz_app.lastname %></td>
+        <td><%= "#{cotiz_app.dni_type}-#{cotiz_app.dni_number}" %> </td>
+        <!--<td><%# cotiz_app.birthday %></td>-->
+        <!--<td><%# cotiz_app.marital_status %></td>-->
+        <td><%= cotiz_app.sex %></td>
+        <td><%= cotiz_app.email %></td>
+        <td><%= cotiz_app.vehicle_year %></td>
+        <td><%= cotiz_app.vehicle_brand %></td>
+        <td><%= cotiz_app.vehicle_model %></td>
+        <td><%= cotiz_app.vehicle_version %></td>
+        <td><%= cotiz_app.intermediate_code %></td>
+        <td><%= cotiz_app.state %></td>
+        <td><%= link_to 'Show', cotiz_app %> |</td>
+        <td><%= link_to 'Pdf',  cotiz_app_path(cotiz_app, :format => "pdf") %> |</td>
+        <td><%= link_to 'Xls',  cotiz_app_path(cotiz_app, :format => "xlsx") %> |</td>
+        <td><%= link_to 'Edit', edit_cotiz_app_path(cotiz_app) %> |</td>
+        <td><%= link_to 'Destroy', cotiz_app, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cotiz app', new_cotiz_app_path %>

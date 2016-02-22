@@ -1,0 +1,44 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'celular.png' %>" alt="tmovil">  Telefono Celular</h2>
+</div>
+
+<%= form_for @corredor, :url => tcelular_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'tmovil.png' %>" alt="tmovil.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputs">
+              <select name="corredor[cod2]">
+                <option >412</option>
+                <option >416</option>
+                <option >426</option>
+                <option >414</option>
+                <option >424</option>
+            </select>
+              <input id="corredor_tcelular" name="corredor[tcelular]" type="text" class="k-textbox" pattern="\d{7}"       placeholder="Ejemplo: 6123456" requiredvalidationMessage="Deben ser 7 dígitos" autofocus/>
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

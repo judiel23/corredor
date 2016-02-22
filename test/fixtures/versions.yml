@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  make: MyString
+  model: MyString
+  code: MyString
+  version: MyString
+  descmotor: MyString
+  desctransmision: MyString
+
+two:
+  make: MyString
+  model: MyString
+  code: MyString
+  version: MyString
+  descmotor: MyString
+  desctransmision: MyString

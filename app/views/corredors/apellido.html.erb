@@ -1,0 +1,33 @@
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'Front Desk-50.png' %>" alt="bienvenido"></h1>
+    <h2><img src="<%= image_url 'profile.png' %>" alt="profile">  Apellidos del Asegurado</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => apellido_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="container" id="identificacion">
+  <div class="thumbnail">
+    <img src="<%= image_url 'horizontal-badge.png' %>" alt="identificacion.jpg">
+      <h4 class="nombre"><%= @corredor.nombre %></h4>
+      <div class="field">
+        <%= hidden_field_tag :id, @corredor.id %>
+          <input id="corredor_apellido" name="corredor[apellido]" class="k-textbox" placeholder="Apellidos" required validationMessage="Escribe tu {0}"/>
+          <br><br>
+          <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+      </div>
+  </div>
+</div>
+<% end %>

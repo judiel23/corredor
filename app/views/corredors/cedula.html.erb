@@ -1,0 +1,43 @@
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'carnet.png' %>" alt="carrito">  Cedula del Asegurado</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => cedula_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'horizontal-badge.png' %>" alt="identificacion.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputs">
+              <select name="corredor[nacion]">
+                <option>V</option>
+                <option>E</option>
+              </select>
+              <input id="corredor_cedula" name="corredor[cedula]" type="text" class="k-textbox" pattern="\d{7,8}"       placeholder="Ejemplo: 06123456" required validationMessage="Deben ser 8 dígitos" autofocus/>
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

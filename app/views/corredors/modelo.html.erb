@@ -1,0 +1,35 @@
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1 id="responsive-header"><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'car.png' %>" alt="carrito">  Modelo</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => modelo_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="container" id="lista_modelos">
+  <ul class="list-group">
+      <% lista = Vehicle.where(make: @corredor.marca) %>
+      <% lista.order('model').each do |modelo| %>
+    <li class="list-group-item">
+      <%= hidden_field_tag :id, @corredor.id %>
+      <%= f.radio_button :modelo, modelo[:code], :onclick => "this.form.submit()"%> 
+      <%= modelo.model %>
+    </li>
+      <% end %>
+  </ul>
+</div>
+
+<% end %>
+<%# link_to 'Back', corredors_path %>

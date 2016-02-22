@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Users:</strong>
+  <%= @insurance_broker.users %>
+</p>
+
+<p>
+  <strong>Insurance:</strong>
+  <%= @insurance_broker.insurance %>
+</p>
+
+<p>
+  <strong>Intermediary code:</strong>
+  <%= @insurance_broker.intermediary_code %>
+</p>
+
+<p>
+  <strong>Plan code:</strong>
+  <%= @insurance_broker.plan_code %>
+</p>
+
+<p>
+  <strong>Plan review:</strong>
+  <%= @insurance_broker.plan_review %>
+</p>
+
+<p>
+  <strong>Discount rate:</strong>
+  <%= @insurance_broker.discount_rate %>
+</p>
+
+<%= link_to 'Edit', edit_insurance_broker_path(@insurance_broker) %> |
+<%= link_to 'Back', insurance_brokers_path %>

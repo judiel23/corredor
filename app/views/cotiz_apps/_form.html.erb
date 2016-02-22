@@ -1,0 +1,228 @@
+<%= simple_form_for(@cotiz_app, :html=> { class: "form-horizontal" }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    
+    <div class="form-group">
+      <%= f.label :name, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :name,label: false, placeholder: "Nombre", autofocus: true, input_html: { class: "form-control", value: "Javier" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :lastname, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :lastname,label: false, placeholder: "Apellido", autofocus: true, input_html: { class: "form-control", value: "Urbano" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :dni_type, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :dni_type,label: false, as: :select, collection: options_for_nacionalidad, :prompt => "Seleccione...", :selected => (@cotiz_app.dni_type.present? ? @cotiz_app.dni_type : "V"), autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :dni_number, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :dni_number,label: false, placeholder: "Cédula", autofocus: true, input_html: { class: "form-control", value: "18621606" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :local_code_area, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :local_code_area,label: false, placeholder: "Código Área Tlf. Local", autofocus: true, input_html: { class: "form-control", value: "212" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :local_phone, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :local_phone,label: false, placeholder: "Tlf. Local", autofocus: true, input_html: { class: "form-control", value: "2513436" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :movil_code_area, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :movil_code_area,label: false, placeholder: "Código Área Tlf. Móvil", autofocus: true, input_html: { class: "form-control", value: "416" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :movil_phone, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :movil_phone,label: false,  placeholder: "Tlf. Móvil", autofocus: true, input_html: { class: "form-control", value: "5833809" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :birthday, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :birthday,label: false, as: :string, placeholder: "F/Nacimiento", autofocus: true, input_html: { class: "form-control", value: "12-03-1988" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :marital_status, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :marital_status,label: false, as: :select, collection: options_for_marital_state, :prompt => "Seleccione...", :selected => (@cotiz_app.marital_status.present? ? @cotiz_app.marital_status : "C") , autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :sex, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :sex,label: false, as: :select, collection: options_for_sex, :prompt => "Seleccione...", :selected => (@cotiz_app.sex.present? ? @cotiz_app.sex : "M"), autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :email, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :email,label: false, placeholder: "Email", autofocus: true, input_html: { class: "form-control", value: "javierurbano11@gmail.com" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_year, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_year,label: false, as: :select, collection: options_for_vehicle_year, :prompt => "Seleccione...", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_brand, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_brand,label: false, as: :select, collection: [], :prompt => "Seleccione...", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_model, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_model,label: false, as: :select, collection: [], :prompt => "Seleccione...", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_version, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_version,label: false, as: :select, collection: [], :prompt => "Seleccione...", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :plaque, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :plaque,label: false, placeholder: "Placa Vehiculo", autofocus: true, input_html: { class: "form-control", value: "ABDOKD" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :intermediate_code, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :intermediate_code,label: false, placeholder: "Código Intermediario", autofocus: true, input_html: { class: "form-control", value: "026206" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :state, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :state,label: false, as: :select, collection: ESTADOS, :prompt => "Seleccione...", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :plan_code, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :plan_code,label: false, placeholder: "Código Plan", autofocus: true, input_html: { class: "form-control", value: "102" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :plan_review, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :plan_review,label: false, placeholder: "Revisión", autofocus: true, input_html: { class: "form-control", value: "001" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :discount_rate, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :discount_rate,label: false, placeholder: "Tasa descuento", autofocus: true, input_html: { class: "form-control", value: "5" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_use, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_use,label: false, as: :select, collection: USO_VEHICULO, :selected => "01", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :kilometer_zero, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :kilometer_zero,label: false, as: :select, collection: ["S","N"], :selected => "N", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :vehicle_type, nil, :class => "control-label col-sm-3 required_custom" %>
+      <div class="col-md-7">
+       <%= f.input :vehicle_type,label: false, as: :select, collection: TIPO_VEHICULO, :selected => "001", autofocus: true, input_html: { class: "form-control" }%>    
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-10">
+      <%= f.button :submit, :class => "btn btn-primary pull-right" %>
+      <%= link_to 'Back', cotiz_apps_path, :class => "btn btn-default pull-right" %>
+    </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    $("#cotiz_app_vehicle_year").change(function(){
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: selected },
+            url: "/form_uni_seguros/get_marcas_by_anio",
+            success: function(response){
+              $("#cotiz_app_vehicle_brand").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codmarca +"'>" + v.descmarca + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+    
+    $("#cotiz_app_vehicle_brand").change(function(){
+        var anio_veh = $("#cotiz_app_vehicle_year").val();
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: anio_veh, marca: selected },
+            url: "/form_uni_seguros/get_modelo_vehicle",
+            success: function(response){
+              $("#cotiz_app_vehicle_model").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codmodelo +"'>" + v.descmodelo + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+    
+    $("#cotiz_app_vehicle_model").change(function(){
+        var anio_veh = $("#cotiz_app_vehicle_year").val();
+        var mark_veh = $("#cotiz_app_vehicle_brand").val();
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: anio_veh, marca: mark_veh, modelo: selected },
+            url: "/form_uni_seguros/get_version_automv",
+            success: function(response){
+              $("#cotiz_app_vehicle_version").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codversion +"'>" + v.descversion + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+  });
+</script>

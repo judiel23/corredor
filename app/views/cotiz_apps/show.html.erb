@@ -1,0 +1,251 @@
+<!--<p id="notice"><%# notice %></p>-->
+
+<p>
+  <strong>Nombre y Apellido:</strong>
+  <%= "#{@cotiz_app.name} #{@cotiz_app.lastname}" %>
+</p>
+
+<p>
+  <strong>DNI:</strong>
+  <%= "#{@cotiz_app.dni_type} #{@cotiz_app.dni_number}" %>
+</p>
+
+<p>
+  <strong>Tlf. Fijo:</strong>
+  <%= "#{@cotiz_app.local_code_area}-#{@cotiz_app.local_phone}" %>
+</p>
+
+<p>
+  <strong>Tlf. Móvil:</strong>
+  <%= "#{@cotiz_app.movil_code_area}-#{@cotiz_app.movil_phone}" %>
+</p>
+
+<p>
+  <strong>Birthday:</strong>
+  <%= @cotiz_app.birthday %>
+</p>
+
+<p>
+  <strong>Marital status:</strong>
+  <%= @cotiz_app.marital_status %>
+</p>
+
+<p>
+  <strong>Sex:</strong>
+  <%= @cotiz_app.sex %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @cotiz_app.email %>
+</p>
+
+<p>
+  <strong>Vehicle year:</strong>
+  <%= @cotiz_app.vehicle_year %>
+</p>
+
+<p>
+  <strong>Vehicle brand:</strong>
+  <%= @cotiz_app.vehicle_brand %>
+</p>
+
+<p>
+  <strong>Vehicle model:</strong>
+  <%= @cotiz_app.vehicle_model %>
+</p>
+
+<p>
+  <strong>Vehicle version:</strong>
+  <%= @cotiz_app.vehicle_version %>
+</p>
+
+<p>
+  <strong>Vehicle plaque:</strong>
+  <%= @cotiz_app.plaque %>
+</p>
+
+<p>
+  <strong>Intermediate code:</strong>
+  <%= @cotiz_app.intermediate_code %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @cotiz_app.state %>
+</p>
+
+<p>
+  <strong>Plan code:</strong>
+  <%= @cotiz_app.plan_code %>
+</p>
+
+<p>
+  <strong>Plan review:</strong>
+  <%= @cotiz_app.plan_review %>
+</p>
+
+<p>
+  <strong>Discount rate:</strong>
+  <%= @cotiz_app.discount_rate %>
+</p>
+
+<p>
+  <strong>Vehicle use:</strong>
+  <%= @cotiz_app.vehicle_use %>
+</p>
+
+<p>
+  <strong>Kilometer zero:</strong>
+  <%= @cotiz_app.kilometer_zero %>
+</p>
+
+<p>
+  <strong>Vehicle type:</strong>
+  <%= @cotiz_app.vehicle_type %>
+</p>
+
+<%= link_to "Cotizar", 'javascript:;',  :onclick=>"cotiza();", :remote => false, :class => "btn btn-success", :title => "Cotizar" %>
+<%= link_to 'Edit', edit_cotiz_app_path(@cotiz_app) %> |
+<%= link_to 'Back', cotiz_apps_path %>
+
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_universitas"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_vivir"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_oriental"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<script type="text/javascript">
+  
+  
+    
+   function cotiza() {
+    
+    parametros = {
+      object_id: <%= @cotiz_app.id %>,
+      name: "<%= @cotiz_app.name %>",
+      lastname: "<%= @cotiz_app.lastname %>",
+      dni_type: "<%= @cotiz_app.dni_type %>", 
+      dni_number: "<%= @cotiz_app.dni_number %>",
+      local_code_area: "<%= @cotiz_app.local_code_area %>",
+      local_phone: "<%= @cotiz_app.local_phone %>",
+      movil_code_area: "<%= @cotiz_app.movil_code_area %>",
+      movil_phone: "<%= @cotiz_app.movil_phone %>",
+      birthday: "<%= Date.parse(@cotiz_app.birthday.to_s).strftime("%d-%m-%Y") %>",
+      marital_status: "<%= @cotiz_app.marital_status %>",
+      sex: "<%= @cotiz_app.sex %>",
+      email: "<%= @cotiz_app.email %>",
+      vehicle_year: "<%= @cotiz_app.vehicle_year %>",
+      vehicle_brand: "<%= @cotiz_app.vehicle_brand %>",
+      vehicle_model: "<%= @cotiz_app.vehicle_model %>",
+      vehicle_version: "<%= @cotiz_app.vehicle_version %>",
+      plaque: "<%= @cotiz_app.plaque %>",
+      intermediate_code: "<%= @cotiz_app.intermediate_code %>",
+      state: "<%= @cotiz_app.state %>",
+      plan_code: "<%= @cotiz_app.plan_code %>",
+      plan_review: "<%= @cotiz_app.plan_review %>",
+      discount_rate: "<%= @cotiz_app.discount_rate %>",
+      vehicle_use: "<%= @cotiz_app.vehicle_use %>",
+      kilometer_zero: "<%= @cotiz_app.kilometer_zero %>",
+      vehicle_type: "<%= @cotiz_app.vehicle_type %>"
+    };
+    
+    cotiza_universitas(parametros);
+    cotiza_vivir(parametros);
+    cotiza_oriental(parametros);
+  };
+  
+  function cotiza_universitas(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "universitas"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              var str_show = "";
+              str_show += "<h2>Seguros Universitas:</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].numcotizacion + "<br>";
+              $.each(response[0].pcursor[0], function(i, item){
+                str_show += "<b>Descripción: </b> " + item.descripcion + "<br>";
+                str_show += "<b>Prima: </b> "       + item.mtoprima    + "<br>";
+                str_show += "<b>Suma Aseg: </b> "   + item.mtosumaaseg + "<br>";
+                str_show += "<b>Tasa: </b> "        + item.mtotasa     + "<br>";
+                str_show += "<br><br>";
+              });
+              $("#resulset_universitas").html(str_show);
+            }
+    });
+  };
+  
+  function cotiza_vivir(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "vivir"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              console.log(response);
+              var str_show = "";
+              str_show += "<h2>Vivir Seguros</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].numero + "<br>";
+              str_show += "<a href='"+response[0].archivo+"'>Descargar</a><br>";
+              $.each(response[0].cotizacion, function(i, item){
+                str_show += "<b>Cobertura: </b> " + item.cobertura + "<br>";
+                str_show += "<b>Prima: </b> "     + item.prima     + "<br>";
+                str_show += "<b>Suma: </b> "      + item.suma      + "<br>";
+                str_show += "<b>Tasa: </b> "      + item.tasa      + "<br>";
+                str_show += "<br><br>";
+              });
+              $("#resulset_vivir").html(str_show);
+            }
+    });
+  };
+  
+  function cotiza_oriental(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "oriental"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              console.log(response);
+              
+              var str_show = "";
+              str_show += "<h2>Oriental de Seguros:</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "<br>";
+              
+              $.each(response[0].plan, function(i, item){
+                str_show += "<b>Tipo: </b> " + item.tipo + "<br>";
+                str_show += "<b>Prima Total: </b> "       + item.primatotal    + "<br>";
+                str_show += "<h4>Coberturas:</h4>";
+                $.each(item.coberturas, function(j, element){
+                  str_show += "<b>Cobertura: </b> "   + element.nombre + "<br>";
+                  str_show += "<b>Suma Aseg: </b> "   + element.suma   + "<br>";
+                  str_show += "<b>Tasa: </b> "        + element.tasa   + "<br>";
+                  str_show += "<b>Prima: </b> "       + element.prima  + "<br>";
+                  str_show += "<br>";
+                });
+                
+                str_show += "<br><br>";
+              });
+              
+              $("#resulset_oriental").html(str_show);
+              
+            }
+    });
+  };
+  
+</script>

@@ -1,0 +1,65 @@
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'calendar.png' %>" alt="carrito">  Año de Fabricación</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => year_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+        <ul>
+          <% @corredor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        </ul>
+  <% end %>
+  </div>
+<% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container" id="lista_modelos">
+  
+  <ul class="list-group">
+
+    <li class="list-group-item"><%= f.radio_button :year, '2004', :onclick => "this.form.submit()"%>2004</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2005', :onclick => "this.form.submit()"%>2005</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2006', :onclick => "this.form.submit()"%>2006</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2007', :onclick => "this.form.submit()"%>2007</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2008', :onclick => "this.form.submit()"%>2008</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2009', :onclick => "this.form.submit()"%>2009</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2010', :onclick => "this.form.submit()"%>2010</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2011', :onclick => "this.form.submit()"%>2011</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2012', :onclick => "this.form.submit()"%>2012</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2013', :onclick => "this.form.submit()"%>2013</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2014', :onclick => "this.form.submit()"%>2014</li>
+
+    <li class="list-group-item"><%= f.radio_button :year, '2015', :onclick => "this.form.submit()"%>2015</li>
+  </ul>
+</div>
+<!--
+<div class="container" id="lista_modelos">
+    <ul class="list-inline">
+      <% lista = Vehicle.where(make: @corredor.marca, model:@corredor.modelo) %>
+      <% lista.each do |year| %>
+        <li class="list-group-item ">
+            <%= hidden_field_tag :id, @corredor.id %>
+            <%= f.radio_button :year, year[:year], :onclick => "this.form.submit()" %> 
+            <%= year.year %>
+        </li>
+      <% end %>
+    </ul>
+</div> 
+-->
+
+<% end %>

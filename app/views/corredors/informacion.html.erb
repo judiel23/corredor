@@ -1,0 +1,30 @@
+
+<h1>Introduzca Informacion</h1>
+
+<%= form_for @corredor, :url => informacion_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :informacion %><br>
+    <select name="corredor[informacion]">
+		<option >Propetario</option>
+		<option >Conductor Habitual</option>
+		<option >Ninguno</option>
+	</select>
+  </div>
+ 
+  <div class="actions">
+    <%= hidden_field_tag :id, @corredor.id %>
+    <%= f.submit %>
+  </div>
+<% end %>

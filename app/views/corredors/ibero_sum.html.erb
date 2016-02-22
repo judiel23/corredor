@@ -1,0 +1,204 @@
+<!-- ########################################################################### -->
+<!-- Inicializacion de variables -->
+
+<!-- JavaScript -->
+<script type="text/javascript">
+  var base = 0;
+  var minSumCoti = 0;
+  var maxSumCoti = 0;
+</script>
+
+<!-- ########################################################################### -->
+<!-- HTML -->
+
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'car.png' %>" alt="carrito">  Suma Asegurada </h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => ibero_sum_corredors_path, :method => :post  do |f| %>
+    <% if @corredor.errors.any? %>
+      <div id="error_explanation">
+          <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+          <ul>
+            <% @corredor.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+      </div>
+    <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+  <div class="container-fluid" id="user_data">
+      <div class="col-sm-12">
+        <div class="thumbnail">
+            <div class="row">
+
+              <!-- DIV correspondiente a la imagen del carro. -->
+              <div class="col-sm-6" id="separator">
+                <img src="<%= image_url 'plaque.png' %>" alt="placa.jpg">
+              </div>
+
+              <!-- DIV correspondiente a la informacion a mostrar            -->
+              <div class="col-sm-6" >
+                  <div id = "content">
+                    <div id = "invisibleBox" style="visibility:hidden;"> 
+                      <h3>Elija la suma asegurada</h3>
+
+                      <div class="rangebar">
+                      <p class="pull-left" id="bandainf">bandainferior</p>
+                      <p class="pull-right" id="bandasup">bandasuperior</p>
+                      <input type="range" id="ibero_sum" name="corredor[sumaAsegurada]" value="0" style="visibility:hidden;" step = "100000">
+                      <h3 id = "resulset_ibero"></h3>
+                      </div>
+                      <p><%= f.submit 'Siguiente', class: "btn btn-primary", id: 'btnsep' %></p>
+                    </div>
+                  </div>
+              </div>
+            
+            <div id="carga" class="col-sm-6">
+              <img src="<%= image_url 'preloader.gif' %>" style="width: 25%;">
+              <br>Consultando suma asegurada. Espere un momento.
+            </div>
+          </div> 
+              </div>
+            </div>
+      </div>
+  </div>
+<% end %>
+<!-- ########################################################################### -->
+<!-- Scripts -->
+
+<script type="text/javascript">
+  $('input[id=ibero_sum]').on('change', getValue);
+    // .-----------------------------------------------------------------------------.
+    /*
+    .- Descripcion:
+        Permite obtener el valor seleccionado en el slider cuyo nombre sea
+      "ibero_sum".
+    
+    .- Parametros:
+        No requiere parametros.
+    .- Retorno:
+        Entero con el ibero_sum seleccionado. 
+    */
+  function getValue() {
+      var value = $('input[id = ibero_sum]').val();
+      var value_shw = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      $("#resulset_ibero").text(value_shw);
+  };
+  // .-----------------------------------------------------------------------------.
+  /* 
+    .- Descripcion: 
+        Permite generar los parametros requeridos para realizar el request
+      correspondiente a la suma asegurada a Ibero Seguros y ejecutar la funcion
+      que realizara dicha accion.
+    .- Parametros:
+        No requiere parametros.
+    .- Retorno:
+        No se espero algun valor de salida.
+  */
+    function obtenerSum() {
+      
+      // Diccionario con los valores requeridos para realizar la solicitud deseada.
+      parametros = {
+        object_id: <%= @corredor.id %>,
+        vehicle_year: "<%= @corredor.year %>",
+        vehicle_brand: "<%= @corredor.marca %>",
+        vehicle_model: "<%= @corredor.modelo %>",
+        vehicle_version: "<%= @corredor.version %>",
+      };
+    
+      sumaAsegurada_ibero(parametros);
+  };
+  // .-----------------------------------------------------------------------------.
+  /*
+    .- Descripcion: 
+        Funcion que obtiene los valores de la solicitud solicitada
+        (suma asegurada de Ibero Seguros) y los renderiza en la presente 
+        vista.
+    
+    .- Parametros:
+        @param params: diccionario que contiene el id de la cotizacion 
+                 (object_id), anio del vehiculo (vehicle_year),
+                 marca del vehiculo (vehicle_brand), modelo del 
+                 vehiculo (vehicle_model) y version del mismo
+                 (vehicle_version).
+    .- Retorno:
+        Se retornara un objeto de tipo JSON con la salida correspondiente
+      a la solicitud realizada. (La estructura JSON se encuentra en la 
+      documentacion de Ibero Seguros.)
+  */
+    function sumaAsegurada_ibero(params){
+        $.ajax({
+          
+          // Se realiza el request.
+          type: "POST",
+          data: $.extend({aseguradora: "sumaAseguradaIbero"}, params),
+          url:  "/integrators/generic_quotation",
+            
+        // Respuesta del request.
+          success: function(response){
+              // Si la solicitud fue exitosa se espera que el error sea null.
+            if (response[0].error == null){
+                  $(document).ready(function(){
+                    var str_show = "";
+                    // Se proporcionan los valores min y max para el slider.
+                    minSumCoti = response[0].BandaInf;
+                    maxSumCoti = response[0].BandaSup;
+                    
+                    // Se inicializa el valor base de la suma asegurada.
+                    base = response[0].SumAseg;
+                    var exp = parseInt(base.toString().length)
+                    base = base / (Math.pow(10,exp-1));
+                    base = Math.round(base*2)/2;
+                    base = base * Math.pow(10,exp-1)
+                    
+                    str_show = base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    $("#resulset_ibero").html(str_show);
+                    
+                  });
+              }else{
+                var str_show = "";
+                str_show += "<b> Error calculando la suma asegurada</b>";
+                $("#resulset_ibero").html(str_show);
+              }
+          }
+      });
+  };
+   // .-----------------------------------------------------------------------------.
+    /*
+    .- Descripcion: 
+        Permite que aparezca tanto la informacion y el slider correspondiente 
+      a la suma asegurada cuando se termine de ejecutar el ajax.
+    
+    .- Parametros: 
+        No requiere parametros.
+    
+    .- Retorno:
+        No se espera algun valor de salida.
+    */
+    $(document).ajaxStop(function () {
+      console.log(base);
+      $("#carga").css("display", "none");
+      var box = document.getElementById("invisibleBox");
+      box.style.visibility = 'visible';
+        var exp = maxSumCoti.toString().length;
+        var container = document.getElementById("ibero_sum");
+        container.style.visibility = 'visible';
+        container.min = base * (1 + minSumCoti / 100);
+        containerminstr =  container.min.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    container.max  = (base * (1 + maxSumCoti / 100));
+    containermaxstr =  container.max.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    container.step = "50000";
+    console.log(base * (1 + minSumCoti / 100))
+                        $("#bandainf").html(containerminstr);
+                    $("#bandasup").html(containermaxstr);
+    });
+  // .-----------------------------------------------------------------------------.
+  // Bloque de ejecucion.
+    obtenerSum();
+</script>

@@ -1,0 +1,418 @@
+<!-- 
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+  NO TOCAR.
+-->
+<%= stylesheet_link_tag    'progressbar', media: 'all', 'data-turbolinks-track' => true %>
+<script type="text/javascript">
+  var numCotis = 0;              // Cantidad de versiones disponibles para realizar
+                                 // la nueva cotización.
+  var contador = 0;
+  var versionList = {} ;         // Diccionario que almacenará las versiones co-
+                                 // tizables con sus códigos correspondientes.      
+  bool = false;
+  var i = 1;
+ 
+</script>
+
+
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <img src="<%= image_url 'preloader.gif' %>" id="preloader2" width="3%">
+    <img src="<%= image_url 'check.png' %>" id="check2" >
+    <img src="<%= image_url 'x.png' %>" id="x2" >
+     <h2>Oriental de Seguros</h2>
+    <div id="resulset_oriental"></div>
+    <div class="progress" id="barra"> <span class="blue" style="width:0%;"><span>0%</span></span> </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+
+<!-- vivir seguros-->
+
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <img src="<%= image_url 'preloader.gif' %>" id="preloader2" width="3%">
+    <img src="<%= image_url 'check.png' %>" id="check2" >
+    <img src="<%= image_url 'x.png' %>" id="x2" >
+     <h2>Vivir Seguros</h2>
+    <div id="resulset_universitas"></div>
+    <div class="progress" id="barra"> <span class="blue" style="width:0%;"><span>0%</span></span> </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<script type='text/javascript'>
+  function loading(percent){
+    $('.progress span').animate({width:percent},1000,function(){
+      $(this).children().html(percent);
+            if(percent=='100%'){
+                //$(this).children().html('Loading Complete, Redirect to Home Page...&nbsp;&nbsp;&nbsp;&nbsp;');
+                setTimeout(function(){
+                    $('.container').fadeOut();
+          //location.href="http://www.jqueryscript.net";
+                },1000);
+            }
+    })
+  }
+</script>
+
+<script type="text/javascript">
+  var cotizaOriental;
+  cotizaOriental = false;
+  var count = 0;
+  arrayversions = [];
+
+  function cotiza() {
+
+    parametros = {
+      object_id: <%= @corredor.id %>,
+      name: "<%= @corredor.nombre %>",
+      lastname: "<%= @corredor.apellido %>",
+      dni_type: "<%= @corredor.ced[0] %>",
+      dni_number: "<%= @corredor.ced[1..20] %>",
+      local_code_area: "<%= @corredor.cod1 %>",
+      local_phone: "<%= @corredor.tfijo %>",
+      movil_code_area: "<%= @corredor.cod2 %>",
+      movil_phone: "<%= @corredor.tcelular %>",
+      birthday: "<%= Date.parse(@corredor.fnacimiento.to_s).strftime("%d-%m-%Y") %>",
+      marital_status: "<%= @corredor.estado %>",
+      sex: "<%= @corredor.sexo %>",
+      email: "<%= @corredor.email %>",
+      vehicle_year: "<%= @corredor.year %>",
+      vehicle_brand: "<%= @corredor.marca %>",
+      vehicle_model: "<%= @corredor.modelo %>",
+      vehicle_version: "<%= @corredor.version %>",
+      plaque: "<%= @corredor.placa %>",
+      intermediate_code: "026206",
+      state: "<%= @corredor.zona %>",
+      plan_code: "102",
+      plan_review: "001",
+      discount_rate: "5",
+      vehicle_use: "<%= @corredor.vehicle_use %>",
+      kilometer_zero: "<%= @corredor.cerokm %>",
+      vehicle_type: "<%= @corredor.vehicle_type %>",
+      sumaAsegurada: "<%= @corredor.sumaAsegurada %>"
+    };
+
+    //cotiza_oriental(parametros);
+
+    //cotiza_universitas(parametros);
+    cotiza_vivir(parametros);
+    //cotiza_ibero(parametros);
+    //cotiza_estar(parametros);
+
+
+  };
+//--------------------------------------------------------------
+
+  function cotiza_vivir2(params,version,tam){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "vivir"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+                  
+                  
+                  if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
+                      cotizoO = true;
+                      
+                      var str_show = "";
+                      str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "&nbsp" +" <b>Version</b> "+ version + "<br>";
+                      //$("#resulset_oriental").append(str_show);
+                     
+
+                      versionList[numCotis] = $.extend({version: version},response[0]);
+                      numCotis += 1;
+                      contador += 1;
+                      var percent;
+                      percent = String(parseInt((contador/tam)*100)) + '%';
+                      //console.log(numCotis);
+                      loading(percent);
+                      //console.log(versionList);
+                  }else{
+                    contador += 1;
+                    percent = String(parseInt((contador/tam)*100)) + '%';
+                    loading(percent);
+                  }
+            },
+            
+           
+    })
+  };
+
+  function cotiza_vivir(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "vivir"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+                  console.log(response[0]);
+                  if (response[0]["idError"] == null && response[0]["numero"]!= null){
+                      var str_show = "";
+                      cotizaOriental = true;
+                      str_show += "<b>Nro. Cotización: </b> " + response[0]["numero"]+ "<br>";
+                      $("#resulset_oriental").html(str_show);
+                      $(document).ready(function(){
+                           $("#preloader2").css("display", "none");
+                          $("#check2").css("display", "inline");
+                          <% version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
+                          var version = "<%= @version %>"
+                      versionList[0] = $.extend({version: version},response[0]);    
+                      });
+
+                  }else{
+                    var str_show = "";
+                    str_show += "<b>Lo sentimos. El vehículo no es asegurable. <br> Consultando otras versiones. Espere un momento</b><br><br> ";
+                    $("#resulset_oriental").html(str_show);
+                    $("#preloader2").css("display", "none");
+                    $("#barra").css("display", "inline");
+                    
+                    $("#x2").css("display", "inline");
+                    var tam;
+                    
+                      <% lista = Version.where(make: @corredor.marca, model: @corredor.modelo ) %>
+                      tam= "<%= lista.length %>"
+                      <% lista.each do |version| %>
+                          parametros2 = {
+                                      object_id: <%= @corredor.id %>,
+                                      name: "<%= @corredor.nombre %>",
+                                      lastname: "<%= @corredor.apellido %>",
+                                      dni_type: "<%= @corredor.ced[0] %>", 
+                                      dni_number: "<%= @corredor.ced[1..20] %>",
+                                      local_code_area: "<%= @corredor.cod1 %>",
+                                      local_phone: "<%= @corredor.tfijo %>",
+                                      movil_code_area: "<%= @corredor.cod2 %>",
+                                      movil_phone: "<%= @corredor.tcelular %>",
+                                      birthday: "<%= Date.parse(@corredor.fnacimiento.to_s).strftime("%d-%m-%Y") %>",
+                                      marital_status: "<%= @corredor.estado %>",
+                                      sex: "<%= @corredor.sexo %>",
+                                      email: "<%= @corredor.email %>",
+                                      vehicle_year: "<%= @corredor.year %>",
+                                      vehicle_brand: "<%= @corredor.marca %>",
+                                      vehicle_model: "<%= @corredor.modelo %>",
+                                      vehicle_version: '<%="#{version.code}"%>',
+                                      plaque: "<%= @corredor.placa %>",
+                                      intermediate_code: "026206",
+                                      state: "<%= @corredor.zona %>",
+                                      plan_code: "102",
+                                      plan_review: "001",
+                                      discount_rate: "5",
+                                      vehicle_use: "<%= @corredor.vehicle_use %>",
+                                      kilometer_zero: "<%= @corredor.cerokm %>",
+                                      vehicle_type: "<%= @corredor.vehicle_type %>"
+                                      
+                          };
+                          version = '<%="#{version.version}"%>'
+                          //console.log("version "+version)
+                          //console.log(parametros2);
+                          cotiza_vivir2(parametros2,version,tam);
+                         <% end %>              
+
+                  }
+            },
+    }).done(function(result) {
+      //console.log("oriental:" + JSON.stringify(result));
+    }).fail( function( xhr, status ) {
+            console.log("status: " + status)
+            if( status == "timeout" || status == "error" ) {
+                $("#preloader2").css("display", "none");
+                $("#x2").css("display", "inline");
+                var erroraux = "<b>Error en la solicitud </b>" + "<br>";
+                $("#resulset_oriental").html(erroraux);
+                console.log("error 2");
+               
+            }
+      });
+  };
+//-------------------------------------------------------------
+  function cotiza_oriental2(params,version,tam){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "oriental"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+                  
+                  
+                  if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
+                      cotizoO = true;
+                      
+                      var str_show = "";
+                      str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "&nbsp" +" <b>Version</b> "+ version + "<br>";
+                      //$("#resulset_oriental").append(str_show);
+                     
+
+                      versionList[numCotis] = $.extend({version: version},response[0]);
+                      numCotis += 1;
+                      contador += 1;
+                      var percent;
+                      percent = String(parseInt((contador/tam)*100)) + '%';
+                      //console.log(numCotis);
+                      loading(percent);
+                      //console.log(versionList);
+                  }else{
+                    contador += 1;
+                    percent = String(parseInt((contador/tam)*100)) + '%';
+                    loading(percent);
+                  }
+            },
+            
+           
+    })
+  };
+
+  function cotiza_oriental(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "oriental"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+                  console.log(response[0]);
+                  if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
+                      var str_show = "";
+                      cotizaOriental = true;
+                      str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "<br>";
+                      $("#resulset_oriental").html(str_show);
+                      $(document).ready(function(){
+                           $("#preloader2").css("display", "none");
+                          $("#check2").css("display", "inline");
+                          <% version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
+                          var version = "<%= @version %>"
+                      versionList[0] = $.extend({version: version},response[0]);    
+                      });
+
+                  }else{
+                    var str_show = "";
+                    str_show += "<b>Lo sentimos. El vehículo no es asegurable. <br> Consultando otras versiones. Espere un momento</b><br><br> ";
+                    $("#resulset_oriental").html(str_show);
+                    $("#preloader2").css("display", "none");
+                    $("#barra").css("display", "inline");
+                    
+                    $("#x2").css("display", "inline");
+                    var tam;
+                    
+                      <% lista = Version.where(make: @corredor.marca, model: @corredor.modelo ) %>
+                      tam= "<%= lista.length %>"
+                      <% lista.each do |version| %>
+                          parametros2 = {
+                                      object_id: <%= @corredor.id %>,
+                                      name: "<%= @corredor.nombre %>",
+                                      lastname: "<%= @corredor.apellido %>",
+                                      dni_type: "<%= @corredor.ced[0] %>", 
+                                      dni_number: "<%= @corredor.ced[1..20] %>",
+                                      local_code_area: "<%= @corredor.cod1 %>",
+                                      local_phone: "<%= @corredor.tfijo %>",
+                                      movil_code_area: "<%= @corredor.cod2 %>",
+                                      movil_phone: "<%= @corredor.tcelular %>",
+                                      birthday: "<%= Date.parse(@corredor.fnacimiento.to_s).strftime("%d-%m-%Y") %>",
+                                      marital_status: "<%= @corredor.estado %>",
+                                      sex: "<%= @corredor.sexo %>",
+                                      email: "<%= @corredor.email %>",
+                                      vehicle_year: "<%= @corredor.year %>",
+                                      vehicle_brand: "<%= @corredor.marca %>",
+                                      vehicle_model: "<%= @corredor.modelo %>",
+                                      vehicle_version: '<%="#{version.code}"%>',
+                                      plaque: "<%= @corredor.placa %>",
+                                      intermediate_code: "026206",
+                                      state: "<%= @corredor.zona %>",
+                                      plan_code: "102",
+                                      plan_review: "001",
+                                      discount_rate: "5",
+                                      vehicle_use: "<%= @corredor.vehicle_use %>",
+                                      kilometer_zero: "<%= @corredor.cerokm %>",
+                                      vehicle_type: "<%= @corredor.vehicle_type %>"
+                                      
+                          };
+                          version = '<%="#{version.version}"%>'
+                          //console.log("version "+version)
+                          //console.log(parametros2);
+                          cotiza_oriental2(parametros2,version,tam);
+                         <% end %>              
+
+                  }
+            },
+    }).done(function(result) {
+      //console.log("oriental:" + JSON.stringify(result));
+    }).fail( function( xhr, status ) {
+            console.log("status: " + status)
+            if( status == "timeout" || status == "error" ) {
+                $("#preloader2").css("display", "none");
+                $("#x2").css("display", "inline");
+                var erroraux = "<b>Error en la solicitud </b>" + "<br>";
+                $("#resulset_oriental").html(erroraux);
+                console.log("error 2");
+               
+            }
+      });
+  };
+
+  function prueba(){
+    //console.log("versiones")
+    //console.log(versionList)
+    // Create a variable in JSON format
+    var user = {
+        user: JSON.stringify(versionList),
+        id: <%= @corredor.id %> 
+    }
+
+    // Post data via ajax to a rails controller
+    $.post('/corredors/add_versionList', user);
+
+    if (cotizaOriental){
+      window.setTimeout( nextPage, 15000 );
+        
+    }else{
+      window.setTimeout( nextPage, 25000 );
+    }
+      
+
+  }
+
+  function nextPage(){
+     var page_id = <%= @corredor.id %>;
+     var location = window.location.pathname + "/"+ page_id;
+     window.location = location;
+  }
+
+
+
+
+  $(document).ajaxStop(function(){
+
+    // if (!cotizoU){
+    //       var erroraux = "<b>Vehiculo no asegurable para ninguna versión </b>" + "<br>";
+    //       $("#resulset_universitas").html(erroraux);
+    // }
+    //  if (!cotizoV){
+    //       var erroraux = "<b>Vehiculo no asegurable para ninguna versión </b>" + "<br>";
+    //       $("#resulset_vivir").html(erroraux);
+    // }
+
+    //  if (!cotizoO){
+    //       var erroraux = "<b>Vehiculo no asegurable para ninguna versión </b>" + "<br>";
+    //       $("#resulset_oriental").html(erroraux);
+    // }
+
+      if (!bool){
+        ///console.log(":)")
+        //console.log(versionList.to_json)
+         bool = true;
+          // Create a variable in JSON format
+        prueba();
+        
+        
+      }
+
+     
+      
+      
+  });
+  
+
+  // Inicia las Cotizaciones Automaticamente
+  cotiza();
+
+
+</script>

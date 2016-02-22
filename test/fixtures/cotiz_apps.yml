@@ -1,0 +1,28 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Edward
+  lastname: Fernández
+  dni_type: MyString
+  dni_number: MyString
+  local_code_area: MyString
+  local_phone: MyString
+  movil_code_area: MyString
+  movil_phone: MyString
+  birthday: 2015-09-24 14:17:57
+  marital_status: M
+  sex: M
+  email: MyString
+  vehicle_year: MySt
+  vehicle_brand: MyString
+  vehicle_model: MyString
+  vehicle_version: MyString
+  intermediate_code: MyStri
+  state: MyString
+  plan_code: MyString
+  plan_review: MyString
+  discount_rate: MyString
+  vehicle_use: MyString
+  kilometer_zero: M
+  vehicle_type: MyString
+

@@ -1,0 +1,696 @@
+<!-- Definicion de las variables a utilizar. -->
+<script type="text/javascript">
+  var dia = "";   // Valor seleccionado para el dia.
+  var mes = "";   // Valor seleccionado para el mes.
+  var anio = "";  // Valor seleccionado para el anio.
+</script>
+
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'regalo.png' %>" alt="regalo">  Fecha de Nacimiento</h2>
+</div>
+
+<%= form_for @corredor, :url => fnacimiento_corredors_path, :method => :post, :html => { :onclick => "return validateform();" } do |f|%>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+
+<div class="container" id="fnacimiento">
+    <div class="col-md-12">
+        <div class="day-picker">
+            <h2>Día</h2>
+            <div id="calendario">
+                <fieldset class="corredor[dia]">
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="01" id="01">
+                        <label for="01" class="day-picker-label">01   </label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="02" id="02">
+                        <label for="02" class="day-picker-label">02</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="03" id="03">
+                        <label for="03" class="day-picker-label">03</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="04" id="04">
+                        <label for="04" class="day-picker-label">04</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="05" id="05">
+                        <label for="05" class="day-picker-label">05</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="06" id="06">
+                        <label for="06" class="day-picker-label">06</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="07" id="07">
+                        <label for="07" class="day-picker-label">07</label>  
+                    </div>                   
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="08" id="08">
+                        <label for="08" class="day-picker-label">08</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="09" id="09">
+                        <label for="09" class="day-picker-label">09</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="10" id="10">
+                        <label for="10" class="day-picker-label">10</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="11" id="11">
+                        <label for="11" class="day-picker-label">11</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="12" id="12">
+                        <label for="12" class="day-picker-label">12</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="13" id="13">
+                        <label for="13" class="day-picker-label">13</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="14" id="14">
+                        <label for="14" class="day-picker-label">14</label>
+                    </div>                    
+
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="15" id="15">
+                        <label for="15" class="day-picker-label">15</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="16" id="16">
+                        <label for="16" class="day-picker-label">16</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="17" id="17">
+                        <label for="17" class="day-picker-label">17</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="18" id="18">
+                        <label for="18" class="day-picker-label">18</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="19" id="19">
+                        <label for="19" class="day-picker-label">19</label>  
+                    </div>   
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="20" id="20">
+                        <label for="20" class="day-picker-label">20</label>  
+                    </div> 
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="21" id="21">
+                        <label for="21" class="day-picker-label">21</label>  
+                    </div>                                                                              
+
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="22" id="22">
+                        <label for="22" class="day-picker-label">22</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="23" id="23">
+                        <label for="23" class="day-picker-label">23</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="24" id="24">
+                        <label for="24" class="day-picker-label">24</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="25" id="25">
+                        <label for="25" class="day-picker-label">25</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="26" id="26">
+                        <label for="26" class="day-picker-label">26</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="27" id="27">
+                        <label for="27" class="day-picker-label">27</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="28" id="28">
+                        <label for="28" class="day-picker-label">28</label>  
+                    </div>                                        
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="29" id="29">
+                        <label for="29" class="day-picker-label">29</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="30" id="30">
+                        <label for="30" class="day-picker-label">30</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[dia]" class="radio dia" value="31" id="31">
+                        <label for="31" class="day-picker-label">31</label>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="month-picker">
+            <h2>Mes</h2>
+                <fieldset class="corredor[anio]">
+                <div class="container-fluid" id="meses">
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="01" id="jan">
+                        <label for="jan" class="month-picker-label">Ene</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="02" id="feb">
+                        <label for="feb" class="month-picker-label">Feb</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="03" id="mar">
+                        <label for="mar" class="month-picker-label">Mar</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="04" id="apr">
+                        <label for="apr" class="month-picker-label">Abr</label>  
+                    </div>
+
+                    <div> 
+                        <input type="radio" name="corredor[mes]" class="radio" value="05" id="may">
+                        <label for="may" class="month-picker-label">May</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="06" id="jun">
+                        <label for="jun" class="month-picker-label">Jun</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="07" id="jul">
+                        <label for="jul" class="month-picker-label">Jul</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="08" id="aug">
+                        <label for="aug" class="month-picker-label">Ago</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="09" id="sep">
+                        <label for="sep" class="month-picker-label">Sep</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="10" id="oct">
+                        <label for="oct" class="month-picker-label">Oct</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="11" id="nov">
+                        <label for="nov" class="month-picker-label">Nov</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[mes]" class="radio" value="12" id="dec">
+                        <label for="dec" class="month-picker-label">Dic</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="year-picker">
+            <h2>Año</h2>
+            <div class="container-fluid" id="vistanio">
+                <fieldset class="corredor[anio]">
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1917" id="1917">
+                        <label for="1917" class="year-picker-label" >1917</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1918" id="1918">
+                        <label for="1918" class="year-picker-label" >1918</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1919" id="1919">
+                        <label for="1919" class="year-picker-label" >1919</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1920" id="1920">
+                        <label for="1920" class="year-picker-label" >1920</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1921" id="1921">
+                        <label for="1921" class="year-picker-label" >1921</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1922" id="1922">
+                        <label for="1922" class="year-picker-label" >1922</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1923" id="1923">
+                        <label for="1923" class="year-picker-label" >1923</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1924" id="1924">
+                        <label for="1924" class="year-picker-label" >1924</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1925" id="1925">
+                        <label for="1925" class="year-picker-label" >1925</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1926" id="1926">
+                        <label for="1926" class="year-picker-label" >1926</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1927" id="1927">
+                        <label for="1927" class="year-picker-label" >1927</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1928" id="1928">
+                        <label for="1928" class="year-picker-label" >1928</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1929" id="1929">
+                        <label for="1929" class="year-picker-label" >1929</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1930" id="1930">
+                        <label for="1930" class="year-picker-label" >1930</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1931" id="1931">
+                        <label for="1931" class="year-picker-label" >1931</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1932" id="1932">
+                        <label for="1932" class="year-picker-label" >1932</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1933" id="1933">
+                        <label for="1933" class="year-picker-label" >1933</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1934" id="1934">
+                        <label for="1934" class="year-picker-label" >1934</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1935" id="1935">
+                        <label for="1935" class="year-picker-label" >1935</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1936" id="1936">
+                        <label for="1936" class="year-picker-label" >1936</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1937" id="1937">
+                        <label for="1937" class="year-picker-label" >1937</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1938" id="1938">
+                        <label for="1938" class="year-picker-label" >1938</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1939" id="1939">
+                        <label for="1939" class="year-picker-label" >1939</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1940" id="1940">
+                        <label for="1940" class="year-picker-label" >1940</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1941" id="1941">
+                        <label for="1941" class="year-picker-label" >1941</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1942" id="1942">
+                        <label for="1942" class="year-picker-label" >1942</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1943" id="1943">
+                        <label for="1943" class="year-picker-label" >1943</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1944" id="1944">
+                        <label for="1944" class="year-picker-label" >1944</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1945" id="1945">
+                        <label for="1945" class="year-picker-label" >1945</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1946" id="1946">
+                        <label for="1946" class="year-picker-label" >1946</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1947" id="1947">
+                        <label for="1947" class="year-picker-label" >1947</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1948" id="1948">
+                        <label for="1948" class="year-picker-label" >1948</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1949" id="1949">
+                        <label for="1949" class="year-picker-label" >1949</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1950" id="1950">
+                        <label for="1950" class="year-picker-label" >1950</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1951" id="1951">
+                        <label for="1951" class="year-picker-label" >1951</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1952" id="1952">
+                        <label for="1952" class="year-picker-label" >1952</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1953" id="1953">
+                        <label for="1953" class="year-picker-label" >1953</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1954" id="1954">
+                        <label for="1954" class="year-picker-label" >1954</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1955" id="1955">
+                        <label for="1955" class="year-picker-label" >1955</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1956" id="1956">
+                        <label for="1956" class="year-picker-label" >1956</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1957" id="1957">
+                        <label for="1957" class="year-picker-label" >1957</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1958" id="1958">
+                        <label for="1958" class="year-picker-label" >1958</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1959" id="1959">
+                        <label for="1959" class="year-picker-label" >1959</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1960" id="1960">
+                        <label for="1960" class="year-picker-label" >1960</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1961" id="1961">
+                        <label for="1961" class="year-picker-label" >1961</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1962" id="1962">
+                        <label for="1962" class="year-picker-label" >1962</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1963" id="1963">
+                        <label for="1963" class="year-picker-label" >1963</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1964" id="1964">
+                        <label for="1964" class="year-picker-label" >1964</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1965" id="1965">
+                        <label for="1965" class="year-picker-label" >1965</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1966" id="1966">
+                        <label for="1966" class="year-picker-label" >1966</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1967" id="1967">
+                        <label for="1967" class="year-picker-label" >1967</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1968" id="1968">
+                        <label for="1968" class="year-picker-label" >1968</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1969" id="1969">
+                        <label for="1969" class="year-picker-label" >1969</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1970" id="1970">
+                        <label for="1970" class="year-picker-label" >1970</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1971" id="1971">
+                        <label for="1971" class="year-picker-label" >1971</label>
+                    </div>  
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1972" id="1972">
+                        <label for="1972" class="year-picker-label" >1972</label>
+                    </div>                    
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1973" id="1973">
+                        <label for="1973" class="year-picker-label" >1973</label>
+                    </div>                    
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1974" id="1974">
+                        <label for="1974" class="year-picker-label" >1974</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1975" id="1975">
+                        <label for="1975" class="year-picker-label" >1975</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1976" id="1976">
+                        <label for="1976" class="year-picker-label" >1976</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1977" id="1977">
+                        <label for="1977" class="year-picker-label" >1977</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1978" id="1978">
+                        <label for="1978" class="year-picker-label" >1978</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1979" id="1979">
+                        <label for="1979" class="year-picker-label" >1979</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1980" id="1980">
+                        <label for="1980" class="year-picker-label" >1980</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1981" id="1981">
+                        <label for="1981" class="year-picker-label" >1981</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1982" id="1982">
+                        <label for="1982" class="year-picker-label" >1982</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1983" id="1983">
+                        <label for="1983" class="year-picker-label" >1983</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1984" id="1984">
+                        <label for="1984" class="year-picker-label" >1984</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1985" id="1985">
+                        <label for="1985" class="year-picker-label" >1985</label>  
+                    </div>                   
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1986" id="1986">
+                        <label for="1986" class="year-picker-label" >1986</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1987" id="1987">
+                        <label for="1987" class="year-picker-label" >1987</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1988" id="1988">
+                        <label for="1988" class="year-picker-label" >1988</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1989" id="1989">
+                        <label for="1989" class="year-picker-label" >1989</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1990" id="1990">
+                        <label for="1990" class="year-picker-label" >1990</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1991" id="1991">
+                        <label for="1991" class="year-picker-label" >1991</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1992" id="1992">
+                        <label for="1992" class="year-picker-label" >1992</label>
+                    </div>                    
+
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1993" id="1993">
+                        <label for="1993" class="year-picker-label" >1993</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1994" id="1994">
+                        <label for="1994" class="year-picker-label" >1994</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1995" id="1995">
+                        <label for="1995" class="year-picker-label" >1995</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1996" id="1996">
+                        <label for="1996" class="year-picker-label" >1996</label>  
+                    </div>
+
+                    <div>
+                        <input type="radio" name="corredor[anio]" class="radio" value="1997" id="1997">
+                        <label for="1997" class="year-picker-label" >1997</label>  
+                    </div>                                      
+                </fieldset>
+            </div>
+        </div>
+    </div>
+<div id = "btnSiguiente" style="display:none;">
+<%= f.submit 'Siguiente', class: "btn btn-primary" %>
+</div>
+<% end %>
+</div>
+
+<script type="text/javascript">
+function validateform(){
+    dia = $('input[name="corredor[dia]"]:checked').val();
+    mes = $('input[name="corredor[mes]"]:checked').val();
+    anio = $('input[name="corredor[anio]"]:checked').val();
+
+    if (dia != undefined && mes != undefined && anio != undefined){
+        $("#btnSiguiente").css("display", "inline")
+    }
+};
+</script>

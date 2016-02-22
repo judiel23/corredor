@@ -1,0 +1,62 @@
+
+<p id="notice"><%= notice %></p>
+
+<div class="pageoptions container">
+  <div class="option pull-left"><%= button_to "Inicio", root_path, :method => "get", class: "btn btn-primary"%></div> 
+  <div class="option pull-right"><%= button_to 'Nueva Cotizacion',new_corredor_path, :method => "get", class: "btn btn-primary"%></div> 
+</div>
+
+   
+
+<h1 id="prueba" style="text-align:center">Cotizaciones</h1>
+
+<table  cellpadding="15" class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th style="text-align:center">Nombre</th>
+      <th style="text-align:center">Apellido</th>
+      <th style="text-align:center">Marca</th>
+      <th style="text-align:center">Modelo</th>
+      <th style="text-align:center">Año</th>
+      <th style="text-align:center">Version</th>
+      <th style="text-align:center">Fecha Cotizacion</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% if @corredors == nil %>
+      <% @corredors = Corredor.all %>
+    <% end %>
+    
+    
+    <% @corredors.order(updated_at: :desc).each do |corredor| %>
+      <tr>
+
+        <!-- Se verifica que el ultimo valor que se solicita es proporcionado. -->  
+        <% if corredor.tcelular != nil %>
+          <%@marca   = Make.find_by(:code => corredor.marca).make %>
+          <%@modelo  = Vehicle.find_by(:make => corredor.marca, :code => corredor.modelo).model %>
+          <% @version = Version.find_by(:make => corredor.marca, :model => corredor.modelo, :code => corredor.version) %>
+
+          <% if @version != nil %>
+            <td style="text-align:center"><%="#{corredor.nombre}".capitalize %></td>
+            <td style="text-align:center"><%="#{corredor.apellido}".capitalize %></td>
+            <td style="text-align:center"><%= @marca %></td>
+            <td style="text-align:center"><%= @modelo%></td>
+            <td style="text-align:center"><%= corredor.year %></td>
+            <td style="text-align:center"><%= @version.version %></td>
+            <td style="text-align:center"><%= corredor.created_at %></td>
+            <td>
+              <%= link_to 'Ver', consulta_corredors_path(corredor, :id=>corredor.id) %>|
+              <%= link_to 'Destroy', corredor, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

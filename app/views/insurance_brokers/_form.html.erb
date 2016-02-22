@@ -1,0 +1,16 @@
+<%= simple_form_for(@insurance_broker) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :users %>
+    <%= f.input :insurance %>
+    <%= f.input :intermediary_code %>
+    <%= f.input :plan_code %>
+    <%= f.input :plan_review %>
+    <%= f.input :discount_rate %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

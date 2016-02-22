@@ -1,0 +1,846 @@
+<!-- 
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+  NO TOCAR.
+    
+  En responsabilidad civil y grua se cambió el colspan de 5 a 1.
+-->
+
+<head>
+        <meta charset="utf-8">
+        <%= csrf_meta_tag %> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+ </head>
+
+    <% @marca   = Make.find_by(:code => @corredor.marca).make %>
+    <% @modelo  = Vehicle.find_by(:make => @corredor.marca, :code => @corredor.modelo).model %>
+    <% @version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
+    <!-- Estatus de la primera cotización realizada con oriental. -->
+    <% @cotizOrientalStatus = Report.where(:corredor_id => @corredor.id, :insurance => "oriental").first.status%>
+    
+
+
+    <script>
+        var planElegido = 1 // Almacenará el identificador del plan de cotización.
+        var planElegidoName = "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)"
+        var value = 0       // Almacenará el identificador de la versión actual.
+        var valueName = "<%= @modelo + " " + @version %>"
+        var addedActualCoti = false
+    </script>
+   
+    <!-- Se establece el estado civil del cliente -->
+   <% 
+    case @corredor.estado
+      when "D"
+        if "#{@corredor.sexo}" == "M"
+            estadoCivil = "DIVORCIADO"
+        else
+            estadoCivil = "DIVORCIADA"
+        end
+      when "S"
+        if "#{@corredor.sexo}" == "M"
+            estadoCivil = "SOLTERO"
+        else
+            estadoCivil = "SOLTERA"
+        end
+      when "C"
+        if "#{@corredor.sexo}" == "M"
+            estadoCivil = "CASADO"
+        else
+            estadoCivil = "CASADA"
+        end
+      else
+        if "#{@corredor.sexo}" == "M"
+            estadoCivil = "VIUDO"
+        else
+            estadoCivil = "VIUDA"
+        end
+    end
+   %>
+
+    <!-- Se almacena el sexo del cliente. -->
+    <% if "#{@corredor.sexo}" == "M"
+       sexoCliente = "MASCULINO"
+      else
+       sexoCliente = "FEMENINO"
+      end
+    %>
+
+    <!-- Se define la fecha en la que se realizó la solicitud de la cotización -->
+    <%
+        time = Time.new
+        fechaActual = time.day.to_s + "/" + time.month.to_s + "/" + time.year.to_s
+    %>
+
+    <%
+        apellidoCliente = "#{@corredor.apellido}".capitalize
+        nombreCliente = "#{@corredor.nombre}".capitalize + " " + apellidoCliente
+    %>
+
+    <!-- Se calcula la edad del cliente -->
+    <%
+        fechaNac = "#{@corredor.fnacimiento}"
+        diaNac = fechaNac[0..1].to_i
+        mesNac = fechaNac[3..4].to_i
+        anioNac = fechaNac[6..fechaActual.length].to_i
+        now = Time.now.utc.to_date
+        edadCliente = now.year - anioNac - ((now.month > mesNac || (now.month == mesNac && now.day >= diaNac)) ? 0 : 1)
+    %>
+
+    <!-- Se definen los estados que pueden ser elegidos. -->
+    <%
+        estados = ["","Amazonas","Anzoategui", "Apure", "Aragua","Barinas","Bolivar","Carabobo","Cojedes","Delta Amacuro", "Distrito Capital", "Falcon", "Guarico", "Lara", "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", "Tachira", " Trujillo", "Vargas", "Yaracuy", "Zulia"]
+    %>
+
+        <% def comma_numbers(number, delimiter = ',')
+              number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
+          end
+        %>
+
+
+    <!-- Se filtrarán la solicitud según los planes disponibles y las versiones del vehículo que se puedan elegir. -->
+    <%
+        @param = {}
+        
+        @planList = {} # Variable donde se almacenarán las diversas cotizaciones 
+                       # según los planes disponibles.
+        
+        # Nombres de los planes disponibles
+        @planName = { 
+                     "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)" => 1,
+                     "Perdida Total Únicamente (Incluye Responsabilidad Civil)"=> 2,
+                     "Responsabilidad Civil" => 3 , 
+                     "Responsabilidad Civil Premium"=> 4
+                    }
+
+         @planNameAux = { 
+                            1 => "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)",
+                            2 => "Perdida Total Únicamente (Incluye Responsabilidad Civil)",
+                            3 => "Responsabilidad Civil" , 
+                            4 => "Responsabilidad Civil Premium"
+                        }
+
+        @versionList = {}
+        @cotizaciones = {} # Almacenará las cotizaciones de "Cobertura Amplia".
+        @perdidas = {}     # Almacenará las cotizaciones de "Perdida Total",
+        @civilBasico = {}  # Almacenará las cotizaciones de "Responsabilidad Civil".
+        @civilPrem = {}    # Almacenará las cotizaciones de "Responsabillidad Civil 
+                           # Premiun".
+        if @cotizOrientalStatus == "0"
+            @i = 1
+        else
+            @i = 0
+        end
+
+        # Almacenará el JSON que contiene todas las cotizaciones asociada a la 
+        # versione. En caso de que no se haya cotizado. Almacenará las cotizaciones 
+        # de las versiones disponibles. 
+        
+        jsonVersion = JSON.parse(@oriental.versionList) 
+        
+        if jsonVersion["version"] != {}
+            jsonVersion.each do |key,array|
+
+                @temp = {}
+                @tempPerdida ={}
+                @tempCivBasic = {}
+                @tempCIvPrem = {}
+
+                @temp["status"] = 0
+                @temp["aire"] = "NA"
+                @temp["responsabilidad"] = "NA"
+                @temp["num_cotiza"] = "NA"
+                @temp["prima"] = "NA"
+                @temp["cobertura"] = "NA"
+                @temp["eventos"] = "NA"
+                @temp["radio"] = "NA"
+                @temp["muerte"] = "NA"
+                @temp["invalidez"] = "NA"
+                @temp["curacion"] = "NA"
+                @temp["entierro"] = "NA"
+                @temp["cosa_dan"] = "NA"
+                @temp["personas_dan"] = "NA"
+                @temp["exceso_cosa"] = "NA"
+                @temp["exceso_persona"] = "NA"
+                @temp["asistencia"] = "NA"
+
+                @tempPerdida["status"] = 0
+                @tempPerdida["aire"] = "NA"
+                @tempPerdida["responsabilidad"] = "NA"
+                @tempPerdida["num_cotiza"] = array["nrocoti"]
+                @tempPerdida["prima"] = array["primatotal"]
+                @tempPerdida["cobertura"] = "NA"
+                @tempPerdida["eventos"] = "NA"
+                @tempPerdida["radio"] = "NA"
+                @tempPerdida["muerte"] = "NA"
+                @tempPerdida["invalidez"] = "NA"
+                @tempPerdida["curacion"] = "NA"
+                @tempPerdida["entierro"] = "NA"
+                @tempPerdida["cosa_dan"] = "NA"
+                @tempPerdida["personas_dan"] = "NA"
+                @tempPerdida["exceso_cosa"] = "NA"
+                @tempPerdida["exceso_persona"] = "NA"
+                @tempPerdida["asistencia"] = "NA"
+
+                
+                @tempCivBasic["status"] = 0
+                @tempCivBasic["aire"] = "NA"
+                @tempCivBasic["responsabilidad"] = "NA"
+                @tempCivBasic["num_cotiza"] = array["nrocoti"]
+                @tempCivBasic["prima"] = array["primatotal"]
+                @tempCivBasic["cobertura"] = "NA"
+                @tempCivBasic["eventos"] = "NA"
+                @tempCivBasic["radio"] = "NA"
+                @tempCivBasic["muerte"] = "NA"
+                @tempCivBasic["invalidez"] = "NA"
+                @tempCivBasic["curacion"] = "NA"
+                @tempCivBasic["entierro"] = "NA"
+                @tempCivBasic["cosa_dan"] = "NA"
+                @tempCivBasic["personas_dan"] = "NA"
+                @tempCivBasic["exceso_cosa"] = "NA"
+                @tempCivBasic["exceso_persona"] = "NA"
+                @tempCivBasic["asistencia"] = "NA"
+
+                
+                @tempCIvPrem["status"] = 0
+                @tempCIvPrem["aire"] = "NA"
+                @tempCIvPrem["responsabilidad"] = "NA"
+                @tempCIvPrem["num_cotiza"] = array["nrocoti"]
+                @tempCIvPrem["prima"] = array["primatotal"]
+                @tempCIvPrem["cobertura"] = "NA"
+                @tempCIvPrem["eventos"] = "NA"
+                @tempCIvPrem["radio"] = "NA"
+                @tempCIvPrem["muerte"] = "NA"
+                @tempCIvPrem["invalidez"] = "NA"
+                @tempCIvPrem["curacion"] = "NA"
+                @tempCIvPrem["entierro"] = "NA"
+                @tempCIvPrem["cosa_dan"] = "NA"
+                @tempCIvPrem["personas_dan"] = "NA"
+                @tempCIvPrem["exceso_cosa"] = "NA"
+                @tempCIvPrem["exceso_persona"] = "NA"
+                @tempCIvPrem["asistencia"] = "NA"
+
+                if array["plan"] != nil
+
+                    for actCotizacion in array["plan"]
+                        case actCotizacion["tipo"]
+                        when "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)"
+                            @temp["num_cotiza"] = actCotizacion["nrocoti"]
+                            @temp["prima"] = actCotizacion["primatotal"]
+                            for index in actCotizacion["coberturas"]
+                                case index["nombre"]
+                                when "Cobertura Amplia"
+                                    @temp["cobertura"] = index["suma"]
+                                when "(Motin, Dist. Callejeros, Inundacion y Daños Mali)"
+                                    @temp["eventos"] = index["suma"]
+                                when "Muerte de Conductor y/o Pasajeros"
+                                    @temp["muerte"] = index["suma"]
+                                when "Invalidez de Conductor y/o Pasajeros"
+                                    @temp["invalidez"] = index["suma"]
+                                when "Gtos Medic de Cond. y/o Pasj."
+                                    @temp["curacion"] = index["suma"]
+                                when "Daños a Personas"
+                                    @temp["personas_dan"] = index["suma"]
+                                when "Daños a Cosas"
+                                    @temp["cosa_dan"] = index["suma"]
+                                when "Exceso de Limite"
+                                    @temp["exceso_cosa"] = index["suma"]
+                                    @temp["exceso_persona"] = index["suma"]
+                                when "Defensa Penal"
+                                    @temp["asistencia"] = index["suma"]
+
+                                end
+                            end
+                        when "Perdida Total Únicamente (Incluye Responsabilidad Civil)"
+                            @tempPerdida["num_cotiza"] = actCotizacion["nrocoti"]
+                            @tempPerdida["prima"] =actCotizacion["primatotal"]
+                            for index in actCotizacion["coberturas"]
+                                case index["nombre"]
+                                    when "Perdida Total"
+                                        @tempPerdida["cobertura"] = index["suma"]
+                                    when "(Motin, Dist. Callejeros, Inundacion y Daños Mali)"
+                                        @tempPerdida["eventos"] = index["suma"]
+                                    when "Muerte de Conductor y/o Pasajeros"
+                                        @tempPerdida["muerte"] = index["suma"]
+                                    when "Invalidez de Conductor y/o Pasajeros"
+                                        @tempPerdida["invalidez"] = index["suma"]
+                                    when "Gtos Medic  de Cond. y/o Pasj."
+                                        @tempPerdida["curacion"] = index["suma"]
+                                    when "Daños a Personas"
+                                        @tempPerdida["personas_dan"] = index["suma"]
+                                    when "Daños a Cosas"
+                                        @tempPerdida["cosa_dan"] = index["suma"]
+                                    when "Exceso de Limite"
+                                        @tempPerdida["exceso_cosa"] = index["suma"]
+                                        @tempPerdida["exceso_persona"] = index["suma"]
+                                    when "Defensa Penal"
+                                        @tempPerdida["asistencia"] = index["suma"]
+                                end
+                            
+                            end
+                        when "Responsabilidad Civil"
+                            @tempCivBasic["num_cotiza"] = actCotizacion["nrocoti"]
+                            @tempCivBasic["prima"] = actCotizacion["primatotal"]
+                            for index in actCotizacion["coberturas"]
+                                case index["nombre"]
+                                    when "Cobertura Amplia"
+                                        @tempCivBasic["cobertura"] = index["suma"]
+                                    when "(Motin, Dist. Callejeros, Inundacion y Daños Mali)"
+                                        @tempCivBasic["eventos"] = index["suma"]
+                                    when "Muerte de Conductor y/o Pasajeros"
+                                        @tempCivBasic["muerte"] = index["suma"]
+                                    when "Invalidez de Conductor y/o Pasajeros"
+                                        @tempCivBasic["invalidez"] = index["suma"]
+                                    when "Gtos Medic de Cond. y/o Pasj."
+                                        @tempCivBasic["curacion"] = index["suma"]
+                                    when "Daños a Personas"
+                                        @tempCivBasic["personas_dan"] = index["suma"]
+                                    when "Daños a Cosas"
+                                        @tempCivBasic["cosa_dan"] = index["suma"]
+                                    when "Exceso de Limite"
+                                        @tempCivBasic["exceso_cosa"] = index["suma"]
+                                        @tempCivBasic["exceso_persona"] = index["suma"]
+                                    when "Defensa Penal"
+                                        @temp["asistencia"] = index["suma"]
+                           
+                                end
+                            end
+
+                        else
+                            @tempCIvPrem["num_cotiza"] = actCotizacion["nrocoti"]
+                            @tempCIvPrem["prima"] = actCotizacion["primatotal"]
+                            for index in actCotizacion["coberturas"]
+                                case index["nombre"]
+                                    when "Cobertura Amplia"
+                                        @tempCIvPrem["cobertura"] = index["suma"]
+                                    when "(Motin, Dist. Callejeros, Inundacion y Daños Mali)"
+                                        @tempCIvPrem["eventos"] = index["suma"]
+                                    when "Muerte de Conductor y/o Pasajeros"
+                                        @tempCIvPrem["muerte"] = index["suma"]
+                                    when "Invalidez de Conductor y/o Pasajeros"
+                                        @tempCIvPrem["invalidez"] = index["suma"]
+                                    when "Gtos Medic de Cond. y/o Pasj."
+                                        @tempCIvPrem["curacion"] = index["suma"]
+                                    when "Daños a Personas"
+                                        @tempCIvPrem["personas_dan"] = index["suma"]
+                                    when "Daños a Cosas"
+                                        @tempCIvPrem["cosa_dan"] = index["suma"]
+                                    when "Exceso de Limite"
+                                        @tempCIvPrem["exceso_cosa"] = index["suma"]
+                                        @tempCIvPrem["exceso_persona"] = index["suma"]
+                                    when "Defensa Penal"
+                                        @tempCIvPrem["asistencia"] = index["suma"]
+                        
+                                end     
+                            end                       
+                            
+                        end
+
+
+                        @versionList[array["version"]] = @i
+                        @cotizaciones[@i] = @temp
+                        @perdidas[@i] = @tempPerdida
+                        @civilBasico[@i] = @tempCivBasic
+                        @civilPrem[@i] = @tempCIvPrem
+                        @i += 1
+                    end
+                else
+                    (1..4).step(1) do |n|
+                        @planList[planElegido][n] = {}
+                        @planList[planElegido][n]["status"] = 0
+                        @planList[planElegido][n]["aire"] = "NA"
+                        @planList[planElegido][n]["responsabilidad"] = "NA"
+                        @planList[planElegido][n]["num_cotiza"] = "NA"
+                        @planList[planElegido][n]["prima"] = "NA"
+                        @planList[planElegido][n]["cobertura"] = "NA"
+                        @planList[planElegido][n]["eventos"] = "NA"
+                        @planList[planElegido][n]["radio"] = "NA"
+                        @planList[planElegido][n]["muerte"] = "NA"
+                        @planList[planElegido][n]["invalidez"] = "NA"
+                        @planList[planElegido][n]["curacion"] = "NA"
+                        @planList[planElegido][n]["entierro"] = "NA"
+                        @planList[planElegido][n]["cosa_dan"] = "NA"
+                        @planList[planElegido][n]["personas_dan"] = "NA"
+                        @planList[planElegido][n]["exceso_cosa"] = "NA"
+                        @planList[planElegido][n]["exceso_persona"] = "NA"
+                        @planList[planElegido][n]["asistencia"] = "NA" 
+                    end
+                end
+
+
+            end
+        end
+
+            @planList[1] = @cotizaciones
+            @planList[2] = @perdidas
+            @planList[3] = @civilBasico
+            @planList[4] = @civilPrem
+
+
+            if @cotizOrientalStatus == "0" 
+                (1..4).step(1) do |n|
+                    @planList[n][0] = {}
+                    @planList[n][0]["status"] = 0
+                    @planList[n][0]["aire"] = "NA"
+                    @planList[n][0]["responsabilidad"] = "NA"
+                    @planList[n][0]["num_cotiza"] = "NA"
+                    @planList[n][0]["prima"] = "NA"
+                    @planList[n][0]["cobertura"] = "NA"
+                    @planList[n][0]["eventos"] = "NA"
+                    @planList[n][0]["radio"] = "NA"
+                    @planList[n][0]["muerte"] = "NA"
+                    @planList[n][0]["invalidez"] = "NA"
+                    @planList[n][0]["curacion"] = "NA"
+                    @planList[n][0]["entierro"] = "NA"
+                    @planList[n][0]["cosa_dan"] = "NA"
+                    @planList[n][0]["personas_dan"] = "NA"
+                    @planList[n][0]["exceso_cosa"] = "NA"
+                    @planList[n][0]["exceso_persona"] = "NA"
+                    @planList[n][0]["asistencia"] = "NA" 
+                end
+            end
+     %>
+     
+
+<div class = "container">
+    <div>
+        <!--
+        <% if @universitas == nil or @universitas.status == '0' %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>¡Lo sentimos!</strong> No se pudo realizar la cotización solicitada en <strong> Seguros Universitas</strong>.
+            </div>
+        <% end %>
+        <% if @vivir == nil or @vivir.status == '0' %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>¡Lo sentimos!</strong> No se pudo realizar la cotización solicitada en <strong> Vivir Seguros </strong>.
+            </div>
+        <% end %>
+        -->
+      
+        <% if @oriental == nil or @oriental.status == '0' %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>¡Lo sentimos!</strong> No se pudo realizar la cotización solicitada en <strong> Oriental de Seguros </strong>.
+            </div>
+        <% end %>
+
+        <!--
+        <% if @ibero == nil or @ibero.status == '0' %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>¡Lo sentimos!</strong> No se pudo realizar la cotización solicitada en <strong> Oriental de Seguros </strong>.
+            </div>
+        <% end %>
+        <% if @estar == nil or @estar.status == '0' %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>¡Lo sentimos!</strong> No se pudo realizar la cotización solicitada en <strong> Estar Seguros</strong>.
+            </div>
+        <% end %>
+        -->
+    </div>
+    
+        
+
+
+    <div id = "contenedor">
+        <div id = "encabezado">
+            <div id = "informacionDuenio">
+                <img src="<%= image_url 'logojohan.jpg' %>" alt="Johan Leal - Corredor de Seguros" width = "80%">
+
+                <font size="2px;">
+            <br><br>
+            gerencia@corredorleal.com (0212) 716-5154 / (0212) 424-1266
+            <br>
+            presidencia@corredorleal.com (0414) 249-6264 / (0424) 177-3968
+        </font>
+            <br><br>
+            <font color="30559D" style="font-size:20px;"><strong><em>www.corredorleal.com</em></strong></font><br>
+            </div>
+
+
+            <div id = "informacionCliente">
+
+                <div >
+            <font color="30559D" style="font-size:20px; margin-left:38%;"><strong><em>Cotización Seguro de Auto </em></strong></font><br>
+            <table width="65%" style="margin-left:30%;">
+              <tr>
+                <td style="text-align:left;">
+                  <strong>Fecha: <%= fechaActual %> </strong>
+                </td>
+                <td style="text-align:right;">
+                  <font color="30559D" style="font-size:20px;"><strong><em>Válido por 7 Días</em></strong></font>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <br>
+
+                <!-- Tabla con los datos del cliente -->
+                <table width="65%" border="1" style="text-align:center; margin-left:30%;">
+                        <tr>
+              <td><strong> Nombre </strong> </td>
+              <td style="padding-left:2%;"><%= nombreCliente.upcase %></td>
+            </tr>
+            <tr>
+              <td><strong> Cedula</strong> </td>
+              <td style="padding-left:2%;"><%= comma_numbers("#{@corredor.nacion}-#{@corredor.cedula}",".") %></td>
+            </tr>
+            <tr>
+              <td><strong> Sexo </strong> </td>
+              <td style="padding-left:2%;"><%= sexoCliente.upcase %></td>
+            </tr>
+            <tr>
+              <td><strong> Edad </strong></td>
+              <td style="padding-left:2%;"><%= edadCliente %> AÑOS</td>
+            </tr>
+            <tr>
+            <td><strong> Estado Civil </strong> </td>
+                <td style="padding-left:2%;"><%= estadoCivil %></td>
+            </tr>
+            <tr>
+              <td><strong> Circulacion </strong></td>
+              <td style="padding-left:2%;"><%= estados["#{@corredor.zona}".to_i].upcase %></td>
+            </tr>
+                </table>
+            </div>
+
+         </div>
+
+
+           <!-- Tabla con los datos del vehiculo -->
+            <table id = "informacionVehiculo">
+        <tr>
+          <td id = "bordes"><strong> Marca  </strong></td>
+          <td id = "bordes"><strong> Modelo </strong></td>
+          <td id = "bordes"><strong> Año    </strong></td>
+        </tr>
+        <tr>
+          <td id = "bordes" width="31%"> <%= "#{@marca}" %></td>
+          <td id = "bordes" class="dropdown" > 
+            <% if @oriental.status != "0" || (@oriental.status == "0" && @oriental.versionList == "{}")%>
+                <%= "#{@modelo}"+ " " + "#{@version}" %>
+            <% end %>
+            </td>
+          <td id = "bordes" width="31%"> <%= "#{@corredor.year}" %></td>
+        </tr>
+      </table>
+
+
+    <div id = "cuerpo" >
+
+        <!-- Tabla con la informacion de la aseguradora -->
+        <table width="100%" style="border-top:1px solid black;">
+            <!-- Membrete de la tabla -->
+            <tr>
+                <td id = "extra" width="30%" class = "coberturaDrop"> Cobertura </td>
+               
+                <td width="30px">
+                    <table width="100%" >
+                        <tr><td id = "oriental" > La Oriental de Seguros</td></tr>
+                        <tr><td id = "extra" style="border-bottom:1px solid black;"> Suma asegurada </td></tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Informacion -->
+            <tr>
+                <td id ="bordes" style="padding-left:1%;"><strong>  Cobertura Amplia</strong>  </td>
+          
+                <td id ="sumas" style="color: red; font-weight: bold;text-align:center" class = "cobertura"> <%= @oriental.cobertura == nil ? "NA" : comma_numbers(@oriental.cobertura.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Eventos Catastroficos </strong> </td>
+                <td id = "sumasResaltantes" style="text-align:center" class = "eventos"><%= @oriental.eventos == nil ? "NA" : comma_numbers(@oriental.eventos.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Aire Acondicionado </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "aire"><%= @oriental.aire == nil ? "NA" : comma_numbers(@oriental.aire.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Radio, CD, MP3, DVD (Con Pantalla) </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "radio2"><%= @oriental.radio == nil ? "NA" : comma_numbers(@oriental.radio.floor, ".") %></td>
+            </tr>
+            <tr class="grua" style="background-color: #ABB7B7;">
+                <td id = "bordes" style="padding-left:1%;" class="grua"><strong>  Servicio de Grua </strong> </td>
+                <td id = "sumas" colspan="1" style="text-align: center;"><strong> CONTRATADO</strong> </td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Responsabilidad Civil /APOV </strong> </td>
+                <td id = "sumas" colspan="1">  </td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Muerte Conductor/Pasajeros </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "muerte"><%= @oriental.muerte == nil ? "NA" : comma_numbers(@oriental.muerte.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Invalidez Conductor/Pasajeros </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "invalidez"><%= @oriental.invalidez == nil ? "NA" : comma_numbers(@oriental.invalidez.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;" ><strong>  Gastos de Curacion Conductor/Pasajeros </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "curacion"><%= @oriental.curacion == nil ? "NA" : comma_numbers(@oriental.curacion.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Gastos de Entierro Conductor/Pasajeros </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "entierro"><%= @oriental.entierro == nil ? "NA" : comma_numbers(@oriental.entierro.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Daños a cosas </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "cosa_dan"><%= @oriental.cosa_dan == nil ? "NA" : comma_numbers(@oriental.cosa_dan.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Daños a personas </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "personas_dan"><%= @oriental.personas_dan == nil ? "NA" : comma_numbers(@oriental.personas_dan.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a cosas </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "exceso_cosa"><%= @oriental.exceso_cosa == nil ? "NA" : comma_numbers(@oriental.exceso_cosa.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a personas </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "exceso_persona"><%= @oriental.exceso_persona == nil ? "NA" : comma_numbers(@oriental.exceso_persona.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;"><strong>  Asistencia legal y defensa penal </strong> </td>
+                <td id = "sumas" style="text-align:center" class = "asistencia"><%= @oriental.asistencia == nil ? "NA" : comma_numbers(@oriental.asistencia.floor, ".") %></td>
+            </tr>
+            <tr>
+                <td id = "bordes" style="padding-left:1%;text-align:center;background-color: #ABB7B7"><strong>  TOTAL PRIMA</strong>  </td>
+                <td id = "sumas" style="text-align:center" class="oriental prima"><strong> <%= @oriental.prima == nil ? "NA" : comma_numbers(number_with_precision(@oriental.prima, precision: 2).gsub('.', ','), ".") %></strong> </td>
+            </tr>
+            <tr style="text-align:center;">
+                <td id = "bordes" style="padding-left:1%;" ><strong> NÚMERO DE COTIZACIÓN </strong></td>
+                <td id = "sumas" style="text-align:center" class = "num_cotiza"><strong><%= @oriental.num_cotiza == nil ? "NA" : @oriental.num_cotiza  %></strong></td>
+            </tr>
+        </table>
+        <br/>
+
+            <table width="100%" style="table-layout:fixed;margin-top:-20px">
+        <td id = "nota"><strong> Nota: Esta cotizacion no aplica en el caso que el vehiculo ya se encuentre asegurado en alguna de las compañias aseguradora arriba mecionadas.</strong></td>
+      </table>
+
+      <br>
+
+
+        <!-- Sección para descargar PDF -->
+        <button type="button" class="btn btn-default" id = "btnDescarga" data-toggle="modal" data-target="#consulta">Descargar</button>
+        <div id = "cotizacion">
+            <table style="float:right;">
+                <tr>
+                    <td>
+                        <%= link_to "Nueva cotizacion", new_corredor_path, :class => "btn btn-default", id: "btnDescarga2"%>
+                    </td>
+                    <td>
+                        <%= button_to "Consultar Anteriores", corredors_path, :method => "get", :class => "btn btn-default", id: "btnDescarga3"%>            
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="consulta" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Elija las cotizaciones a descargar:</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <% if @universitas != nil and @universitas.status != "0" %>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" checked>Universitas</label>
+                            </div>
+                        <% end %>
+
+                        <% if @vivir != nil and @vivir.status != "0" %>
+                            <div class="checkbox">
+                              <label><input type="checkbox" value="" checked>Vivir Seguros C.A.</label>
+                            </div>
+                        <% end %>
+
+                        <% if @estar != nil and @estar.status != "0" %>
+                            <div class="checkbox">
+                              <label><input type="checkbox" value="" checked>Estar Seguros</label>
+                            </div>
+                        <% end %>
+
+                        <% if @oriental != nil and @oriental.status != "0" %>
+                            <div class="checkbox">
+                              <label><input type="checkbox" value="" checked>Oriental</label>
+                            </div>
+                        <%end%>
+
+                        <% if @ibero != nil and @ibero.status != "0" %>
+                            <div class="checkbox">
+                              <label><input type="checkbox" value="" checked>Iberoseguros</label>
+                            </div>
+                        <% end %>
+                    </div>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Formato a descargar</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        
+                    </div>
+
+                    <%= link_to 'Pdf',  corredor_path(@corredor, :format => "pdf"), :class => "btn btn-default", :target => "_blank", id: "btnPDF"%>
+                    <%= link_to 'Xls',  corredor_path(@corredor, :format => "xlsx"), :class => "btn btn-default", :target => "_blank", id: "btnXlsx" %>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<% def comma_numbers(number, delimiter = ',')
+                    number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
+                end
+            %>
+
+<!-- ......................................................................  -->
+<!-- SCRIPTS  -->
+
+<script type="text/javascript">
+
+    // Dropdown correspondiente a los planes de la cotización.
+    $(".coberturaDrop").append($('<select id="coberturaDropList" name="corredor[planName]"></select>'));
+
+    // Diccionario con los nombres de los planes.
+    var planName = <%= raw @planName.to_json %>
+    for (key in planName){
+        $("#coberturaDropList").append($('<option value=' + planName[key] + '>'+ key + '</option>'));
+    }
+
+    <% if @oriental.status == "0" && @oriental.versionList != "{}" %>
+        $(".dropdown").append($('<select id="dropdownversiones" name="corredor[version]"></select>'));
+
+        var versionVehiculo = "<%= @modelo + ' ' + @version%>"
+       
+        $("#dropdownversiones").append($('<option value=' + 0 + '>' + versionVehiculo + '</option>'));
+
+        var versionList = <%= raw @versionList.to_json %>;
+        for (key in versionList){
+            $("#dropdownversiones").append($('<option value=' + versionList[key] + '>'+ key + '</option>'));
+        }
+
+        $('select[id="dropdownversiones"]').on('change', getValue);
+    <% end %>
+
+    /* 
+        .- Descripcion: 
+            Permite obtener el nombre y el valor del plan elegido.
+        .- Parametros:
+            No requiere parametros.
+        .- Retorno:
+            No se espero algun valor de salida.
+    */
+    function getPlan(){
+        planElegido = $('select[id="coberturaDropList"]').val();
+        planName = $('select[id="dropdownversiones"]').find('option:selected').text();
+        setValues();
+    }
+    
+    /* 
+        .- Descripcion: 
+            Permite establecer los valores en la tabla de la cobertura y llamar 
+            la función que permite actualizar los datos de la base de datos.
+        .- Parametros:
+            No requiere parametros.
+        .- Retorno:
+            No se espero algun valor de salida.
+    */
+    function getValue() {
+      value = $('select[id="dropdownversiones"]').val();
+      valueName = $('select[id="dropdownversiones"]').find('option:selected').text();
+      setValues();
+    }
+
+    function numberWithCommas(x) {
+            x = x.toString();
+            var pattern = /(-?\d+)(\d{3})/;
+            while (pattern.test(x))
+                x = x.replace(pattern, "$1.$2");
+            return x;
+    }
+
+
+    function setValues() {
+
+        // Diccionario que contiene las cotizaciones correspondientes a cada plan.
+        var planList = <%= raw @planList.to_json %>;
+        console.log("value " + value)
+        console.log("planElegido " + planElegido)
+        console.log(planList)
+        $(".aire").html(planList[planElegido][value]["aire"]);
+        $(".responsabilidad").html(planList[planElegido][value]["responsabilidad"]);
+        $(".num_cotiza").html('<strong>'+planList[planElegido][value]["num_cotiza"]+'</strong>');
+
+        if (planList[planElegido][value]["prima"] != "NA"){
+            $(".prima").html('<strong>'+numberWithCommas(planList[planElegido][value]["prima"].toFixed(2).replace(".", ","))+'</strong>');
+        }else{
+            $(".prima").html('<strong>'+planList[planElegido][value]["prima"]+'</strong>');
+        }
+
+        $(".cobertura").html(planList[planElegido][value]["cobertura"]);
+        $(".eventos").html(planList[planElegido][value]["eventos"]);
+        $(".radio2").html(planList[planElegido][value]["radio"]);
+        $(".muerte").html(planList[planElegido][value]["muerte"]);
+        $(".invalidez").html(planList[planElegido][value]["invalidez"]);
+        $(".curacion").html(planList[planElegido][value]["curacion"]);
+        $(".entierro").html(planList[planElegido][value]["entierro"]);
+        $(".cosa_dan").html(planList[planElegido][value]["cosa_dan"]);
+        $(".personas_dan").html(planList[planElegido][value]["personas_dan"]);
+        $(".exceso_cosa").html(planList[planElegido][value]["exceso_cosa"]);
+        $(".exceso_persona").html(planList[planElegido][value]["exceso_persona"]);
+        $(".asistencia").html(planList[planElegido][value]["asistencia"]);
+        planList[planElegido][value]["version"] = valueName
+        planList[planElegido][value]["planName"] = planElegidoName
+
+        var params = {
+            user: JSON.stringify(planList[planElegido][value]),
+            id: <%= @corredor.id %> 
+        }
+        setActualCoti(params);
+    };
+
+
+    /* 
+        .- Descripcion: 
+            Permite almacenar los datos de la cotización actual en la base de datos.
+        .- Parametros:
+            @param params: diccionario que contiene el id de la cotización y los
+                           datos de la solicitud.
+        .- Retorno:
+            No se espero algun valor de salida.
+    */
+    function setActualCoti(params){
+        $.ajax({
+            type: "POST",
+            data: params,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: '/corredors/add_actualCoti',
+            success: function(response){},
+        })        
+    }
+
+    // Se ejecuta cada vez que se elige una de las opciones del dropdown correspon-
+    // dientes a los planes.
+    $('select[id="coberturaDropList"]').on('change', getPlan);
+    if (!addedActualCoti){
+        addedActualCoti = true
+        setValues()
+    }
+</script>

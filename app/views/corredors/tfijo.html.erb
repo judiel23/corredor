@@ -1,0 +1,93 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'fijo.png' %>" alt="tfijo">  Telefono Fijo</h2>
+</div>
+
+<%= form_for @corredor, :url => tfijo_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'tfijo.png' %>" alt="tfijo.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div class="inputs">
+              <select name="corredor[cod1]">
+                        <option >212</option>
+                        <option >234</option>
+                        <option >235</option>
+                        <option >238</option>
+                        <option >239</option>
+                        <option >240</option>
+                        <option >241</option>
+                        <option >242</option>
+                        <option >243</option>
+                        <option >244</option>
+                        <option >245</option>
+                        <option >246</option>
+                        <option >247</option>
+                        <option >248</option>
+                        <option >249</option>
+                        <option >251</option>
+                        <option >252</option>
+                        <option >253</option>
+                        <option >254</option>
+                        <option >255</option>
+                        <option >256</option>
+                        <option >257</option>
+                        <option >258</option>
+                        <option >259</option>
+                        <option >261</option>
+                        <option >262</option>
+                        <option >263</option>
+                        <option >264</option>
+                        <option >265</option>
+                        <option >267</option>
+                        <option >268</option>
+                        <option >269</option>
+                        <option >271</option>
+                        <option >272</option>
+                        <option >274</option>
+                        <option >275</option>
+                        <option >276</option>
+                        <option >277</option>
+                        <option >278</option>
+                        <option >279</option>
+                        <option >282</option>
+                        <option >284</option>
+                        <option >285</option>
+                        <option >286</option>
+                        <option >287</option>
+                        <option >288</option>
+                        <option >291</option>
+                        <option >292</option>
+                        <option >293</option>
+                        <option >294</option>
+                        <option >295</option>
+                        </select>
+
+              <input id="corredor_tfijo" name="corredor[tfijo]" type="text" class="k-textbox" pattern="\d{7}"       placeholder="Ejemplo: 06123456" requiredvalidationMessage="Deben ser 7 dígitos" autofocus/>
+
+            <p><%= f.submit 'Siguiente', class: "btn btn-primary" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

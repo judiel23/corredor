@@ -1,0 +1,28 @@
+<h1>Usted tiene una poliza</h1>
+
+<%= form_for @corredor, :url => poliza_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :poliza %><br>
+    <select name="corredor[poliza]">
+          <option >Si</option>
+          <option >No</option>  
+    </select>
+  </div>
+ 
+  <div class="actions">
+    <%= hidden_field_tag :id, @corredor.id %>
+    <%= f.submit %>
+  </div>
+<% end %>

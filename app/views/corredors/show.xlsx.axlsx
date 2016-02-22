@@ -1,0 +1,394 @@
+""" 
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+  NO TOCAR.
+
+  * Se cambió @fallouniversitas, @fallovivir, @falloestar y @falloibero a true 
+    ya que no se deben mostrar actualemte.
+
+"""
+
+# Variables que se utilizaran.
+@marca   = Make.find_by(:code => @corredor.marca).make
+@modelo  = Vehicle.find_by(:make => @corredor.marca, :code => @corredor.modelo).model
+@version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version
+#@universitas = Report.where(:corredor_id => @corredor.id, :insurance => "universitas").last
+#@vivir = Report.where(:corredor_id => @corredor.id, :insurance => "vivir").last
+@oriental = Report.where(:corredor_id => @corredor.id, :insurance => "oriental").last
+
+if @oriental.actualCoti != nil
+    @orientalActualCoti = JSON.parse(@oriental.actualCoti)
+    @vehicle_information = @orientalActualCoti["version"]
+    @vehicle_cobertura = @orientalActualCoti["plan"]
+else
+    @orientalActualCoti = {}
+    if @oriental.num_cotiza == "NA"
+          @orientalActualCoti["status"] = "NA"
+          puts "curacion"
+          @orientalActualCoti["aire"] = "NA"
+          @orientalActualCoti["responsabilidad"] = "NA"
+          @orientalActualCoti["num_cotiza"] = "NA"
+          @orientalActualCoti["prima"] = "NA"
+          @orientalActualCoti["cobertura"] = "NA"
+          @orientalActualCoti["eventos"] = "NA"
+          @orientalActualCoti["radio"] = "NA"
+          @orientalActualCoti["muerte"] = "NA"
+          @orientalActualCoti["invalidez"] = "NA"
+          @orientalActualCoti["curacion"] = "NA"
+          @orientalActualCoti["entierro"] = "NA"
+          @orientalActualCoti["cosa_dan"] = "NA"
+          @orientalActualCoti["personas_dan"] = "NA"
+          @orientalActualCoti["exceso_cosa"] = "NA"
+          @orientalActualCoti["exceso_persona"] = "NA"
+          @orientalActualCoti["asistencia"] = "NA"
+    else
+            @orientalActualCoti["status"] = @oriental.status
+            @orientalActualCoti["aire"] = @oriental.aire
+            @orientalActualCoti["responsabilidad"] = @oriental.responsabilidad
+            @orientalActualCoti["num_cotiza"] = @oriental.num_cotiza
+            @orientalActualCoti["prima"] = @oriental.prima
+            @orientalActualCoti["cobertura"] = @oriental.cobertura
+            @orientalActualCoti["eventos"] = @oriental.eventos
+            @orientalActualCoti["radio"] = @oriental.radio
+            @orientalActualCoti["muerte"] = @oriental.muerte
+            @orientalActualCoti["invalidez"] = @oriental.invalidez
+            @orientalActualCoti["curacion"] = @oriental.curacion
+            @orientalActualCoti["entierro"] = @oriental.entierro
+            @orientalActualCoti["cosa_dan"] = @oriental.cosa_dan
+            @orientalActualCoti["personas_dan"] = @oriental.personas_dan
+            @orientalActualCoti["exceso_cosa"] = @oriental.exceso_cosa
+            @orientalActualCoti["exceso_persona"] = @oriental.exceso_persona
+            @orientalActualCoti["asistencia"] = @oriental.asistencia
+    end
+
+    @version = Version.find_by(:make => @quotes.marca, :model => @quotes.modelo, :code => @quotes.version).version
+    @vehicle_information = @modelo + " " + @version
+end
+
+@vehicle_information = @vehicle_information
+#@ibero = Report.where(:corredor_id => @corredor.id, :insurance => "ibero").last
+#@estar = Report.where(:corredor_id => @corredor.id, :insurance => "estar").last
+
+@nombre = "#{@corredor.nombre}".capitalize
+@apellido = "#{@corredor.apellido}".capitalize
+
+if @corredor.sexo == "F"
+    @sexo = "Femenino"
+else
+    @sexo = "Masculino"
+end
+
+ @estados = ["","Amazonas","Anzoategui", "Apure", "Aragua","Barinas","Bolivar","Carabobo",
+               "Cojedes","Delta Amacuro", "Distrito Capital", "Falcon", "Guarico", "Lara", 
+               "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", 
+               "Tachira", " Trujillo", "Vargas", "Yaracuy", "Zulia"]
+
+# Se establece el estado marital del cliente.
+case @corredor.estado
+  when "D"
+    if @sexo == "Masculino"
+        @estadoCivil = "DIVORCIADO"
+    else
+        @estadoCivil = "DIVORCIADA"
+    end
+  when "S"
+    if @sexo == "Masculino"
+        @estadoCivil = "SOLTERO"
+    else
+        @estadoCivil = "SOLTERA"
+    end
+  when "C"
+    if @sexo == "Masculino"
+        @estadoCivil = "CASADO"
+    else
+        @estadoCivil = "CASADA"
+    end
+  else
+    if @sexo == "Masculino"
+        @estadoCivil = "VIUDO"
+    else
+        @estadoCivil = "VIUDA"
+    end
+end
+
+# Funciones a utilizar.
+ def prima_numbers(number, delimiter = '.')
+      number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").sub(/\./, ',').reverse
+  end
+
+def comma_numbers(number, delimiter = ',')
+    number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
+end
+
+# Definicion del XLSX.
+wb = xlsx_package.workbook
+
+wrap_text = wb.styles.add_style :fg_color=> "FFFFFF",
+                                :b => true,
+                                :bg_color => "004586",
+                                :sz => 13,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+universitas = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "22A7F0",
+                                :sz => 13,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+vivir = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "E87E04",
+                                :sz => 13,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+estar = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "AEA8D3",
+                                :sz => 13,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+oriental = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "F7CA18",
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+ibero = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "2ECC71",
+                                :sz => 13,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+cobertura = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "999999",
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+grua = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "ADAD85",
+                                :sz => 8,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+negrita = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"},
+                                 :sz => 8
+
+amarillo = wb.styles.add_style :fg_color=> "000000",
+                                :b => true,
+                                :bg_color => "FFFF00",
+                                :sz => 10,
+                                :border => { :style => :thin, :color => "00" },
+                                :alignment => { :horizontal => :center,
+                                                :vertical => :center ,
+                                                :wrap_text => true },
+                                :border=> {:style => :thin, :color => "0000000"}
+
+
+estiloBorde = wb.styles.add_style :border=> {:style => :thin, :color => "0000000"},
+                                  :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                   :sz => 8
+
+estiloBordeBold = wb.styles.add_style :border=> {:style => :thin, :color => "0000000"},
+                                      :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                      :b => true,
+                                      :sz => 8
+
+estiloBordeRed = wb.styles.add_style :border=> {:style => :thin, :color => "0000000"},
+                                      :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                      :b => true,
+                                      :fg_color => "FF0000",
+                                      :sz => 8
+
+estiloBorde2 = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :b => true
+
+estiloBorde3 = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                   :border=> {:style => :thin, :color => "0000000"},
+                                   :sz => 8,
+                                   :b => true
+
+cotizacionS = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :fg_color => "30559D",
+                                  :sz => 15,
+                                  :b => true
+
+telefono = wb.styles.add_style :sz => 10
+
+validacion = wb.styles.add_style :alignment => { :horizontal => :center,
+                                                  :vertical => :center ,
+                                                  :wrap_text => true },
+                                  :fg_color => "30559D",
+                                  :b => true
+
+
+#universitas = wb.styles.add_style :bg_color => ['999999','22A7F0','E87E04','AEA8D3','F7CA18', '2ECC71']
+
+
+
+#universitas = wb.styles.add_style :bg_color => ['999999','22A7F0','E87E04','AEA8D3','F7CA18', '2ECC71']
+
+# Se agregan las filas.
+wb.add_worksheet(name: "Quotes") do |sheet|
+    sheet.page_setup.set :orientation => :landscape
+    sheet.merge_cells "A1:C1"
+    img = "#{Rails.root}/app/assets/images/logojohan.jpg" 
+    sheet.add_image(:image_src => img, :start_at => "A1") do |image|
+        image.width = 300
+        image.height = 130
+    end
+
+
+  
+    sheet.merge_cells "D1:F1"
+    sheet.add_row ["", "", "","Cotización Seguro de Auto "], style: cotizacionS
+    
+    sheet.add_row ["", "", "", "" ,"",""], :height => 8
+    sheet.add_row ["", "", "", "" ,"Fecha: #{Time.now.strftime("%d/%m/%Y")}","Válido por 7 días"], :style => [nil, nil, nil, nil, estiloBorde2, validacion], :height => 25
+
+    sheet.add_row ["", "", "", "", "Nombre:",(@nombre + " " + @apellido).upcase], :style => [nil, nil, nil, nil, estiloBordeBold,estiloBorde], :height => 13
+    sheet.add_row ["", "", "", "","Cédula:",comma_numbers("#{@corredor.nacion}-#{@corredor.cedula}",".")], :style => [nil, nil, nil, nil, estiloBordeBold,estiloBorde], :height => 13
+
+    sheet.add_row ["", "", "","", "Sexo:", @sexo.upcase], :style => [nil, nil, nil, nil, estiloBordeBold,estiloBorde], :height => 13
+    sheet.add_row ["", "", "","", "Estado Civil:", @estadoCivil], :style => [nil, nil, nil, nil, estiloBordeBold,estiloBorde], :height => 13
+    sheet.merge_cells "B8:D8"
+    sheet.add_row ["gerencia@corredorleal.com", "(0212) 716-5154 / (0212) 424-1266", "", "","Edad:","#{Integrator::age(@corredor.fnacimiento.to_date)} AÑOS"], :style => [telefono,telefono, nil, nil, estiloBordeBold,estiloBorde], :height => 13
+    sheet.merge_cells "B9:D9"
+    sheet.add_row ["presidencia@corredorleal.com", "(0414)249-6264 / (0424) 177-3968", "","", "Circulación:",@estados[@corredor.zona.to_i].upcase], :style => [telefono, telefono, nil, nil, estiloBordeBold, estiloBorde], :height => 13
+    sheet.add_row ["", "", "", "" ,"",""], :height => 10
+    sheet.merge_cells "A11:B11"
+    sheet.add_row ["www.corredorleal.com", "", "", "",""], style: cotizacionS, :height => 13
+
+    sheet.add_row ["", "", "","Marca", "Modelo","Año"], :b => true, :style => [nil, nil, nil, estiloBorde, estiloBorde,estiloBorde], :height => 15
+    sheet.add_row ["", "", "", @marca, @vehicle_information, @corredor.year], :style => [nil, nil, nil, estiloBorde, estiloBorde,estiloBorde], :height => 15
+    sheet.add_row ["", "", "", "" ,"",""]
+
+
+    # Se unen las columnas ya que solo se mostrará Orienta
+    sheet.merge_cells "A15:A16"
+    sheet.merge_cells "B15:F15"
+    sheet.merge_cells "B16:F16"
+    sheet.merge_cells "B17:F17"
+    sheet.merge_cells "B18:F18"
+    sheet.merge_cells "B19:F19"
+    sheet.merge_cells "B20:F20"
+    sheet.merge_cells "B21:F21"
+    sheet.merge_cells "B22:F22"
+    sheet.merge_cells "B23:F23"
+    sheet.merge_cells "B24:F24"
+    sheet.merge_cells "B25:F25"
+    sheet.merge_cells "B26:F26"
+    sheet.merge_cells "B27:F27"
+    sheet.merge_cells "B28:F28"
+    sheet.merge_cells "B29:F29"
+    sheet.merge_cells "B30:F30"
+    sheet.merge_cells "B31:F31"
+    sheet.merge_cells "B32:F32"
+    sheet.merge_cells "B33:F33"
+
+    sheet.add_row ["Coberturas", "La Oriental de Seguros", "", "", "", ""], :style => [cobertura,oriental], :height => 13
+    sheet.add_row ["", "Suma Asegurada", "", "", "", ""], :style => [cobertura,cobertura], :height => 13
+    sheet.add_row ["Cobertura Amplia", 
+                    (@orientalActualCoti["cobertura"] == "N/A" or @orientalActualCoti["cobertura"] == nil ? "NA" : @orientalActualCoti["cobertura"])], style: [negrita, estiloBordeRed], :height => 13
+
+    sheet.add_row ["Eventos Catastróficos", 
+                    (@orientalActualCoti["eventos"] == "N/A" or @orientalActualCoti["eventos"] == nil ? "NA" : @orientalActualCoti["eventos"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Aire Acondicionado", 
+                    (@orientalActualCoti["aire"] == "N/A" or @orientalActualCoti["aire"] == nil ? "NA" : @orientalActualCoti["aire"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Radio, CD, MP3, DVD (con Pantalla)", 
+                    (@orientalActualCoti["radio"] == "N/A" or @orientalActualCoti["radio"] == nil ? "NA" : @orientalActualCoti["radio"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Servicio de Grua", "CONTRATADO"], style: grua, :height => 13
+    sheet.add_row ["Responsabilidad Civil/APOV", ""], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Muerte Conductor/Pasajeros", 
+                    (@orientalActualCoti["muerte"] == "N/A" or @orientalActualCoti["muerte"] == nil ? "NA" : @orientalActualCoti["muerte"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Invalidez Conductor/Pasajeros", 
+                    (@orientalActualCoti["invalidez"] == "N/A" or @orientalActualCoti["invalidez"] == nil ? "NA" : @orientalActualCoti["invalidez"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Gastos de Curación", 
+                        (@orientalActualCoti["curacion"] == "N/A" or @orientalActualCoti["curacion"] == nil ? "NA" : @orientalActualCoti["curacion"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Gastos de Entierro", 
+                        (@orientalActualCoti["entierro"] == "N/A" or @orientalActualCoti["entierro"] == nil ? "NA" : @orientalActualCoti["entierro"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Daños a Cosas", 
+                        (@orientalActualCoti["cosa_dan"] == "N/A" or @orientalActualCoti["cosa_dan"] == nil ? "NA" : @orientalActualCoti["cosa_dan"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Daños a Personas", 
+                        (@orientalActualCoti["personas_dan"] == "N/A" or @orientalActualCoti["personas_dan"] == nil ? "NA" : @orientalActualCoti["personas_dan"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Exceso de Límite a Cosas", 
+                        (@orientalActualCoti["exceso_cosa"] == "N/A" or @orientalActualCoti["exceso_cosa"] == nil ? "NA" : @orientalActualCoti["exceso_cosa"])], style: [negrita, estiloBorde], :height => 13
+    
+    sheet.add_row ["Exceso de Límite a Personas",
+                        (@orientalActualCoti["exceso_persona"] == "N/A" or @orientalActualCoti["exceso_persona"] == nil ? "NA" : @orientalActualCoti["exceso_persona"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["Asistencia Lega y Defensa Penal", 
+                        (@orientalActualCoti["asistencia"] == "N/A" or @orientalActualCoti["asistencia"] == nil ? "NA" : @orientalActualCoti["asistencia"])], style: [negrita, estiloBorde], :height => 13
+
+    sheet.add_row ["TOTAL PRIMA", 
+                        (@orientalActualCoti["prima"] == "N/A" or @orientalActualCoti["prima"] == nil or @orientalActualCoti["num_cotiza"] == "NA" ? "NA" : comma_numbers( ('%.2f' % @orientalActualCoti["prima"]).to_s.gsub('.', ','),".") )], :style => [cobertura, oriental], :height => 13
+
+    sheet.add_row ["NÚMERO DE COTIZACIÓN", 
+                    (@orientalActualCoti["num_cotiza"] == "N/A" or @orientalActualCoti["num_cotiza"] == nil ? "NA" : @orientalActualCoti["num_cotiza"])], style: [negrita, estiloBordeBold], :height => 13
+
+
+    sheet.merge_cells "A34:F34"
+    sheet.add_row ["NOTA: Esta cotizacion no aplica en el caso de que el vehiculo ya se encuentre  asegurado en alguna de las compañias aseguradoras" , "", "", "", "", ""],:style => amarillo, :height => 20
+    sheet.column_widths 26, 16,16,12,24,12
+
+end

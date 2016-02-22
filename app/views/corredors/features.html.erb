@@ -1,0 +1,97 @@
+<!-- Definicion de las variables a utilizar. -->
+<script type="text/javascript">
+  var usoV = "";   // Valor actual del dropdown correspondiente a uso vehiculo.
+  var tipoV = "";  // Valor actual del dropdown correspondiente a tipo vehiculo.
+  var ceroKm = ""; // Valor actual del dropdown correspondiente a cero kilometro.
+</script>
+
+<div class="container fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'car.png' %>" alt="carrito">  Características del Vehículo</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => features_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+<div class="container-fluid" id="user_data">
+    <div class="col-sm-12">
+      <div class="thumbnail">
+        <div class="row">
+          <div class="col-sm-6" id="separator">
+            <img src="<%= image_url 'plaque.png' %>" alt="placa.jpg">
+          </div>
+          <div class="col-sm-6" >
+            <div id = "separador">
+              <h4> Tipo del Vehiculo </h4>
+              <select name="corredor[vehicle_type]" id="tipoVehiculo">
+                  <option value="" selected disabled >Seleccione..</option>
+                  <option value="particular">Particular</option>
+                  <option value="rustico">Rustico</option>
+              </select>
+
+
+              <br><br><h4> Uso de Vehiculo </h4>
+               <select name="corredor[vehicle_use]" id="usoVehiculo">
+                  <option value="" selected disabled >Seleccione..</option>
+                  <option value="particular" >Particular</option>
+                  <option value="taxi">Taxi</option>   
+                  <option value="transporte">Transporte</option>
+
+                </select>
+                
+                <br><br><h4> ¿Es cero kilometro? </h4>
+                <select name="corredor[cerokm]" id="cerokm">
+                  <option value = "" selected disabled >Seleccione..</option>
+                  <option value = "S">Si</option>
+                  <option value = "N">No</option>
+                </select>
+
+                <script type="text/javascript">
+
+                  function option(){
+
+                      usoV = $( "#usoVehiculo option:selected" ).val();
+                      tipoV = $( "#tipoVehiculo option:selected" ).val();
+                      cerokm = $("#cerokm option:selected").val();
+              
+                   
+                      console.log("vehiculos: " + usoV + "  tipo: " + tipoV + " cero: " + cerokm);
+
+                      if (usoV != "" && tipoV != "" && cerokm != ""){
+                        $("#btnSiguiente").css("display", "inline")
+                      }
+                  }
+
+                </script>
+                <br>
+                <br>
+                <br>
+                <div id = "btnSiguiente" style="display:none;">
+                  <p><%= f.submit 'Siguiente', class: "btn btn-primary", id: 'btnsep' %></p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<script type="text/javascript">
+    $('select[id=usoVehiculo]').on('change', option);
+    $('select[id=tipoVehiculo]').on('change', option);
+    $('select[id=cerokm]').on('change', option);
+</script>

@@ -1,0 +1,61 @@
+<div class="container-fluid" id="viewtitle">
+  <div class="vistas">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle" id="bandera"><img src="<%= image_url 'flag.png'%>" alt="bandera" >  Residencia del Asegurado</h2>
+  </div>
+</div>
+
+<%= form_for @corredor, :url => zona_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="container" id="user_data">
+  <div class="thumbnail" id="zona">
+      <select name="corredor[zona]" onChange='this.form.submit()' id="estados">
+          <option value="" selected disabled >Seleccione..</option>
+          <option value="001" >Amazonas</option>
+          <option value="002">Anzoategui</option>
+          <option value="003">Apure</option>
+          <option value="004">Aragua</option>
+          <option value="005">Barinas</option>
+          <option value="006">Bolivar</option>
+          <option value="007">Carabobo</option>
+          <option value="008">Cojedes</option>
+          <option value="009">Delta Amacuro</option>
+          <option value="010">Distrito Capital</option>
+          <option value="011">Falcon</option>
+          <option value="012">Guarico</option>
+          <option value="013">Lara</option>
+          <option value="014">Merida</option>
+          <option value="015">Miranda</option>
+          <option value="016">Monagas</option>
+          <option value="017">Nueva Esparta</option>
+          <option value="018">Portuguesa</option>
+          <option value="019">Sucre</option>
+          <option value="020">Tachira</option>
+          <option value="021">Trujillo</option>
+          <option value="022">Vargas</option>
+          <option value="023">Yaracuy</option>
+          <option value="024">Zulia</option>    
+      </select>
+      <hr>
+    <img src="<%= image_url 'mapa_venezuela.png' %>" alt="mapa_venezuela.jpg">
+      <%= hidden_field_tag :id, @corredor.id %>
+  </div>
+</div>
+ 
+<% end %>
+
+<script>
+  $("#estados").select2();
+</script>
+

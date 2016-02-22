@@ -1,0 +1,30 @@
+<%= simple_form_for(@form_uni_seguro, :html=> { class: "form-horizontal" }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :desnombre, input_html: { class: "form-control", value: "Nombre de Prueba" } %>
+    <%= f.input :desapellido, input_html: { class: "form-control", value: "Apellido de Prueba" } %>
+    <%= f.input :rif, input_html: { class: "form-control", value: "18621606" } %>
+    <%= f.input :codarealocal %>
+    <%= f.input :numtelefonolocal %>
+    <%= f.input :codareacel, input_html: { class: "form-control", value: "416" } %>
+    <%= f.input :numtelefcel, input_html: { class: "form-control", value: "5833809" } %>
+    <%= f.input :fecnac, as: :string, input_html: { class: "form-control", value: "26-07-1981" } %>
+    <%= f.input :codedocivil, as: :select, collection: [["Casado(a)","C"],["Soltero(a)","S"]], :prompt => "Seleccione..." %>
+    <%= f.input :codsexo, as: :select, collection: [["Masculino", "M"], ["Femenino", "F"]], :prompt => "Seleccione..." %>
+    <%= f.input :email, input_html: { class: "form-control", value: "javierurbano11@gmail.com" } %>
+    <%= f.input :anoveh, as: :select, collection: ["2013","2014","2015"], :prompt => "Seleccione...", input_html: { class: "form-control" }%>
+    <%= f.input :codmarca,  as: :select, collection: [], :prompt => "Seleccione...", input_html: { class: "form-control" } %>
+    <%= f.input :codmodelo, as: :select, collection: [], :prompt => "Seleccione...", input_html: { class: "form-control" } %>
+    <%= f.input :codversion,as: :select, collection: [], :prompt => "Seleccione...", input_html: { class: "form-control" } %>
+    <%= f.input :codinter, :placeholder => "Ej.: 020661", input_html: { class: "form-control", value: "026206"} %>
+    <%= f.input :codestado, as: :select, collection: ESTADOS, :prompt => "Seleccione...", input_html: { class: "form-control" } %>
+    <%= f.input :codplan, :placeholder => "Ej. 102", input_html: { class: "form-control", value: "102" } %>
+    <%= f.input :revplan, :placeholder => "Ej. 001", input_html: { class: "form-control", value: "001" } %>
+    <%= f.input :porcdcto, :placeholder => "Ej. 15", input_html: { class: "form-control", value: "15" } %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

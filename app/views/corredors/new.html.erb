@@ -1,0 +1,151 @@
+<div class="container fluid" id="viewtitle">
+		<h1>Nueva Cotizacion</h1>
+		<h3 class="subtitle"><img src="<%= image_url 'car.png'%>" alt="carrito">Marca del Vehículo</h3>
+</div>
+
+<%= form_for(@corredor)  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+   <% end %>
+
+
+  <div  class="container" id="busqueda_alterna">
+
+    <div class="col-md-6" class="ba_mensaje">
+      <h4>¿No la encuentras? Buscala dentro de la Lista ...</h4>
+    </div>
+
+    <div class="col-md-6" class="ba_select">
+     
+      <h4 name="corredor[marca]"><%= f.collection_select :marca, ::Make.all, :code,:make, {prompt: "Seleccione..."},html_options= {:class => 'radio',:onchange => "this.form.submit()" }%><h4>
+    </div>
+      <%= hidden_field_tag :id, @corredor.id%>
+<!--  :disabled => x == y  -->
+  </div>
+
+<div class="container" id="vistamarcas">
+  <div class="row">
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="006" id="Audi" onClick = "this.form.submit()">
+          <label for="Audi"><%=image_tag("1.jpg", alt: "Audi") %></label>
+        </div>
+      </fieldset>
+    </div> 
+    
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="013" id="Chevrolet" onClick = "this.form.submit()">
+          <label for="Chevrolet"><%=image_tag("5.jpg", alt: "Chevrolet") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="038" id="Jeep" onClick = "this.form.submit()">
+          <label for="Jeep"><%=image_tag("17.jpg", alt: "Jeep") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="020" id="Dodge" onClick = "this.form.submit()">
+          <label for="Dodge"><%=image_tag("7.jpg", alt: "Dodge") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="025" id="Fiat" onClick = "this.form.submit()">
+          <label for="Fiat"><%=image_tag("41.jpg", alt: "Fiat") %></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-2 col-xs-6">
+      <fieldset class="corredor[marca]">
+        <div class="img_marca">
+          <input type="radio" name="corredor[marca]" class="radio_marca" value="026" id="Ford" onClick = "this.form.submit()">
+          <label for="Ford"><%=image_tag("9.jpg", alt: "Ford") %></label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="014" id="Chrysler" onClick = "this.form.submit()">
+            <label for="Chrysler"><%=image_tag("chrysler.png", alt: "Chrysler") %></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="074" id="Toyota" onClick = "this.form.submit()">
+            <label for="Toyota"><%=image_tag("29.jpg", alt: "Toyota") %></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="078" id="Volkswagen" onClick = "this.form.submit()">
+            <label for="Volkswagen"><%=image_tag("30.jpg", alt: "Volkswagen") %></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="065" id="Renault" onClick = "this.form.submit()">
+            <label for="Renault"><%=image_tag("54.jpg", alt: "Renault") %></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="189" id="Chery" onClick = "this.form.submit()">
+            <label for="Chery"><%=image_tag("4.jpg", alt: "Chery") %></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-sm-2 col-xs-6">
+        <fieldset class="corredor[marca]">
+          <div class="img_marca">
+            <input type="radio" name="corredor[marca]" class="radio_marca" value="055" id="Mitsubishi" onClick = "this.form.submit()">
+            <label for="Mitsubishi"><%=image_tag("24.jpg", alt: "Mitsubishi") %></label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $(".radio").select2();
+</script>

@@ -1,0 +1,31 @@
+.container-fluid{
+    padding: 0px;
+}
+
+.jumbotron{
+	padding-top:0px;
+    margin-top: 0px;
+    margin-bottom: -80px;
+	text-align: center;
+    background: url(asset-path('seguro.jpg'));
+    height: 800px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+}
+
+#cotizaenlinea{
+	text-align: center;
+	margin-top: 180px;
+}
+
+#welcome {
+	width: inherit;
+	text-align: center;
+	background: rgba(185, 179, 186, 0.35) none repeat scroll 0% 0%;
+}
+
+#welcome h3{
+    font-size: 59px;
+    color: #30559D;
+    font-family: Ek Mukta
+}

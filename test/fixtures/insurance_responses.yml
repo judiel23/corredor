@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insurance: MyString
+  cotiz_app_id: 
+  response: MyText
+
+two:
+  insurance: MyString
+  cotiz_app_id: 
+  response: MyText

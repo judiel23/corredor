@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Make:</strong>
+  <%= @version.make %>
+</p>
+
+<p>
+  <strong>Model:</strong>
+  <%= @version.model %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @version.code %>
+</p>
+
+<p>
+  <strong>Version:</strong>
+  <%= @version.version %>
+</p>
+
+<p>
+  <strong>Descmotor:</strong>
+  <%= @version.descmotor %>
+</p>
+
+<p>
+  <strong>Desctransmision:</strong>
+  <%= @version.desctransmision %>
+</p>
+
+<%= link_to 'Edit', edit_version_path(@version) %> |
+<%= link_to 'Back', versions_path %>

@@ -1,0 +1,452 @@
+<form class="form-horizontal">
+  <div class="form-group">
+    <%= label_tag "Nombre",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :name, params[:name], :value => "Javier", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Apellido",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :lastname, params[:lastname], :value => "Urbano", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Nacionalidad",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :dni_type, options_for_select(options_for_nacionalidad, selected: "V"), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "DNI",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :dni_number, params[:dni_number], :value => "18621606", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Código de Área Tlf. Fijo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :local_code_area, params[:local_code_area], :value => "212" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Tlf. Fijo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :local_phone, params[:local_phone], :value => "2513436" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Código de Área Tlf. Móvil",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :movil_code_area, params[:movil_code_area], :value => "416" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Tlf. Móvil",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :movil_phone, params[:movil_phone], :value => "5833809" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Fecha de Nacimiento",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :birthday, params[:birthday], :value => "12-03-1988" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Estado Civil",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :marital_status, options_for_select(options_for_marital_state, selected: params[:marital_status]) , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Sexo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :sex, options_for_select(options_for_sex, selected: params[:sex]) , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Correo Electrónico",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :email, params[:emal], :value => "javierurbano11@gmail.com" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Año Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_year, options_for_select(options_for_vehicle_year, selected: params[:vehicle_year]), prompt: "Seleccione...", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Marca de Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_brand, options_for_select(options_for_vehicles_makes, selected: params[:vehicle_brand]), prompt: "Seleccione...", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Modelo de Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_model, options_for_select([], selected: params[:vehicle_model]), prompt: "Seleccione...", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Versión de Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_version, options_for_select([], selected: params[:vehicle_version]), prompt: "Seleccione...", class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Código de Intermediario",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :intermediate_code, params[:intermediate_code], :value => "020661" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Estado",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :state, options_for_select(ESTADOS, selected: params[:state]), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Placa Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :plaque, params[:plaque], :value => "AC145FV" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Código de Plan",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :plan_code, params[:plan_code], :value => "102" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Revisión",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :plan_review, params[:plan_review], :value => "001" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "% de descuento",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= text_field_tag :discount_rate, params[:discount_rate], :value => "15" , class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Uso de Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_use, options_for_select(USO_VEHICULO, selected: params[:vehicle_use]), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Cero KM",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :kilometer_zero, options_for_select(["S","N"], selected: params[:kilometer_zero]), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Tipo de Vehículo",nil, class: 'control-label col-sm-3' %>
+    <div class="col-md-7">
+      <div class="control-group">
+        <div class="controls">
+          <%= select_tag :vehicle_type, options_for_select(TIPO_VEHICULO, selected: params[:vehicle_type]), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-10">
+      
+      <%= link_to "Cotizar", 'javascript:;',  :onclick=>"cotiza();", :remote => false, :class => "btn btn-success pull-right", :title => "Cotizar" %>
+      <%= link_to 'Back', integrators_path, :class => "btn btn-default pull-right" %>
+    </div>
+  </div>
+</form>
+
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_universitas"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_vivir"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<div class="form-group">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div id="resulset_oriental"></div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    /*
+    $("#vehicle_year").change(function(){
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: selected },
+            url: "/form_uni_seguros/get_marcas_by_anio",
+            success: function(response){
+              $("#vehicle_brand").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codmarca +"'>" + v.descmarca + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+    */
+    $("#vehicle_brand").change(function(){
+        var anio_veh = $("#vehicle_year").val();
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: anio_veh, marca: selected },
+            url: "/form_uni_seguros/get_modelo_vehicle",
+            success: function(response){
+              $("#vehicle_model").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codmodelo +"'>" + v.descmodelo + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+    
+    $("#vehicle_model").change(function(){
+        var anio_veh = $("#vehicle_year").val();
+        var mark_veh = $("#vehicle_brand").val();
+        var selected = $(this).val();
+        $.ajax({
+            type: "GET",
+            data: { anio: anio_veh, marca: mark_veh, modelo: selected },
+            url: "/form_uni_seguros/get_version_automv",
+            success: function(response){
+              $("#vehicle_version").html(function(){
+                var options_str = "<option value=''>Seleccione...</option>";
+
+                $.map(response, function(v){
+                  options_str += "<option value='" + v.codversion +"'>" + v.descversion + "</option>";
+                }).join('');
+                return options_str;
+              });
+            }
+        });
+    });
+  });
+  
+  function cotiza() {
+    
+    parametros = {
+      name: $("#name").val(),
+      lastname: $("#lastname").val(),
+      dni_type: $("#dni_type").val(), 
+      dni_number: $("#dni_number").val(),
+      local_code_area: $("#local_code_area").val(),
+      local_phone: $("#local_phone").val(),
+      movil_code_area: $("#movil_code_area").val(),
+      movil_phone: $("#movil_phone").val(),
+      birthday: $("#birthday").val(),
+      marital_status: $("#marital_status").val(),
+      sex: $("#sex").val(),
+      email: $("#email").val(),
+      vehicle_year: $("#vehicle_year").val(),
+      vehicle_brand: $("#vehicle_brand").val(),
+      vehicle_model: $("#vehicle_model").val(),
+      vehicle_version: $("#vehicle_version").val(),
+      plaque: $("#plaque").val(),
+      intermediate_code: $("#intermediate_code").val(),
+      state: $("#state").val(),
+      plan_code: $("#plan_code").val(),
+      plan_review: $("#plan_review").val(),
+      discount_rate: $("#discount_rate").val(),
+      vehicle_use: $("#vehicle_use").val(),
+      kilometer_zero: $("#kilometer_zero").val(),
+      vehicle_type: $("#vehicle_type").val()
+    };
+    
+    //cotiza_universitas(parametros);
+    //cotiza_vivir(parametros);
+    cotiza_oriental(parametros);
+  };
+  
+  function cotiza_universitas(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "universitas"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              var str_show = "";
+              str_show += "<h2>Seguros Universitas:</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].numcotizacion + "<br>";
+              $.each(response[0].pcursor[0], function(i, item){
+                str_show += "<b>Descripción: </b> " + item.descripcion + "<br>";
+                str_show += "<b>Prima: </b> "       + item.mtoprima    + "<br>";
+                str_show += "<b>Suma Aseg: </b> "   + item.mtosumaaseg + "<br>";
+                str_show += "<b>Tasa: </b> "        + item.mtotasa     + "<br>";
+                str_show += "<br><br>";
+              });
+              $("#resulset_universitas").html(str_show);
+            }
+    });
+  };
+  
+  function cotiza_vivir(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "vivir"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              console.log(response);
+              var str_show = "";
+              str_show += "<h2>Vivir Seguros</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].numero + "<br>";
+              str_show += "<a href='"+response[0].archivo+"'>Descargar</a><br>";
+              $.each(response[0].cotizacion, function(i, item){
+                str_show += "<b>Cobertura: </b> " + item.cobertura + "<br>";
+                str_show += "<b>Prima: </b> "     + item.prima     + "<br>";
+                str_show += "<b>Suma: </b> "      + item.suma      + "<br>";
+                str_show += "<b>Tasa: </b> "      + item.tasa      + "<br>";
+                str_show += "<br><br>";
+              });
+              $("#resulset_vivir").html(str_show);
+            }
+    });
+  };
+  
+  function cotiza_oriental(params){
+    $.ajax({
+            type: "POST",
+            data: $.extend({aseguradora: "oriental"}, params),
+            url: "/integrators/generic_quotation",
+            success: function(response){
+              console.log(response);
+              /*
+              var str_show = "";
+              str_show += "<h2>Seguros Universitas:</h2>";
+              str_show += "<b>Nro. Cotización: </b> " + response[0].numcotizacion + "<br>";
+              $.each(response[0].pcursor[0], function(i, item){
+                str_show += "<b>Descripción: </b> " + item.descripcion + "<br>";
+                str_show += "<b>Prima: </b> "       + item.mtoprima    + "<br>";
+                str_show += "<b>Suma Aseg: </b> "   + item.mtosumaaseg + "<br>";
+                str_show += "<b>Tasa: </b> "        + item.mtotasa     + "<br>";
+                str_show += "<br><br>";
+              });
+              $("#resulset_oriental").html(str_show);
+              */
+            }
+    });
+  };
+  
+</script>

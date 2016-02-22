@@ -1,0 +1,40 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h3 class="subtitle"><img src="<%= image_url 'gender.png' %>" alt="gender">  Genero del Asegurado</h2>
+</div>
+
+<%= form_for @corredor, :url => sexo_corredors_path, :method => :post  do |f| %>
+  <% if @corredor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corredor.errors.count, "error") %> prohibited this corredor from being saved:</h2>
+
+      <ul>
+      <% @corredor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :id, @corredor.id %>
+
+  <div class = "container">
+    <div class="col-sm-6">
+      <fieldset class="corredor[sexo]">
+        <div class="img_genero">
+          <input type="radio" name="corredor[sexo]" class="radiom" value="M" id="Masculino" onClick = "this.form.submit()">
+          <label for="Masculino"><%=image_tag("male.png", alt: "Masculino") %></label>
+        </div>
+      </fieldset>
+    </div> 
+    
+    <div class="col-sm-6">
+      <fieldset class="corredor[sexo]">
+        <div class="img_genero">
+          <input type="radio" name="corredor[sexo]" class="radiof" value="F" id="Femenino" onClick = "this.form.submit()">
+          <label for="Femenino"><%=image_tag("female.png", alt: "Femenino") %></label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+<% end %>

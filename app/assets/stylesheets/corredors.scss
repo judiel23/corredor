@@ -1,0 +1,993 @@
+ @font-face {
+  font-family: "Lato";
+  src:url(asset_path("Lato-Regular.eot"));
+  src:url(asset_path("Lato-Regular.eot?#iefix")) format("embedded-opentype"),
+    url(asset_path("Lato-Regular.ttf")) format("truetype"),
+    url(asset_path("Lato-Regular.svg#inglobal")) format("svg"),
+    url(asset_path("Lato-Regular.woff")) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Busqueda alterna */
+
+#busqueda_alterna{
+  margin-top: 10px;
+  text-align: center;
+  border-bottom: 1px solid lightgrey
+}
+
+
+
+
+/*ID = Vista de Titulos*/
+
+#prueba {
+    font-family: Lato;
+}
+
+#viewtitle{
+    width: 100%;
+    text-align: center;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom:0px;
+}
+
+#viewtitle h1{
+    text-align: center;
+    color: #5D5D5D;
+    font-size: 63px;
+    margin-top: 0px;
+}
+
+#viewtitle h3 img{
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+    margin-top: -12px;
+}
+
+#viewtitle #bandera img{
+    vertical-align: middle;
+    height: 47px;
+    width: 70px;
+    margin-top: -12px
+}
+
+#viewtitle h1 img{
+    margin-top: 5px;
+    height: 105px;
+    width: 250px;
+}
+
+.subtitle{
+    background: rgba(185, 179, 186, 0.35) none repeat scroll 0% 0%;
+    margin-bottom: 0px;
+    font-size: 50px;
+    color: #30559D;
+    font-family: Lato;
+    text-align: center
+}
+
+
+
+
+
+
+
+
+
+
+/* Vista de Marcas */
+
+#vistamarcas{
+    padding-top: 0px;
+}
+
+.img_marca{
+    text-align: center
+}
+
+.img_marca img{
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+}
+
+.img_marca label{
+    width: 105px;
+    height: 105px;
+}
+
+
+
+
+
+
+
+
+/* Vista de Modelos */
+
+
+#lista_modelos{
+    padding-top: 10px;
+}
+
+#lista_modelos ul{
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%
+}
+
+
+
+
+
+
+
+
+
+
+/* Vista Cedula / Nombre / Apellido / Zona / Placa*/
+
+
+#user_data{
+    text-align: center;
+    margin-top: 15px;
+}
+
+#user_data .thumbnail{
+    padding-top: 5px;
+    max-width: 100%
+}
+
+#user_data #zona{
+    padding-top: 15px;
+}
+
+#user_data .thumbnail img{
+    width: 100%;
+    border-radius: 10px
+}
+
+#user_data #zona img{
+    width: 50%;
+    border-radius: 10px
+}
+
+
+#user_data .inputs{
+    margin-top: 35%
+}
+
+#user_data .inputs input, #user_data .inputsemail input{
+    max-width: 100%
+}
+
+#user_data .inputs p, #user_data .inputsemail p{
+    margin-top: 10%
+}
+
+#user_data #separator, #user_data #separatoremail{
+    border-right: 1px solid lightgrey
+}
+
+
+
+
+
+
+
+/* Vista Genero */
+
+
+
+.img_genero{
+    text-align: center
+}
+
+.img_genero img{
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+}
+.img_genero label{
+
+}
+
+
+
+
+
+
+
+/* Vista Email */
+
+#user_data #corredor_email{
+    width: 80%;
+}
+
+#user_data #separatoremail img{
+    max-width: 70%
+}
+
+#user_data .inputsemail{
+    margin-top: 20%
+}
+
+
+
+
+
+
+
+
+
+
+/* Vista Estado Civil */
+
+#estado fieldset{
+    margin-left: 15px;
+    max-width: 100%
+}
+
+.estadocivil {
+    text-align: center;
+    border-bottom: 2px solid #30559D;
+    color: #30559D;
+    border-radius: 10px;
+    font-family: Lato;
+}
+
+
+
+
+
+
+
+/* Vista Fecha de Nacimiento */
+
+#ba_anio{
+    color: white;
+    background-color: transparent;
+}
+
+.actions{
+    text-align: center;
+}
+
+#fnacimiento{
+    margin-top: 50px;
+    text-align: center
+}
+
+
+/* Seccion Dia*/
+
+#calendario{
+    padding-left: 18px;
+}
+
+.day-picker h2, .month-picker h2, .year-picker h2{
+    text-align: center;
+    color: #30559D;
+    border-bottom: 2px solid #30559D;
+    border-radius: 10px;
+}
+
+
+
+
+
+
+
+/* Seccion Mes */
+
+.month-picker #meses{
+    padding-left: 35px;
+}
+
+
+
+
+
+
+
+/* Seccion Anio*/
+
+
+.year-picker {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#vistanio{
+    padding-left: 30px;
+    padding-right: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Radio Buttons */
+
+/* Radio Vista Fnacimiento */
+
+label {
+  width: 100px;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4
+}
+
+/* hide input */
+input.radio:empty {
+    display: none;
+}
+
+/* style label */
+input.radio:empty ~ label {
+    position: relative;
+    float: left;
+    line-height: 2.5em;
+    text-indent: 3.25em;
+    margin-top: 2em;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input.radio:empty ~ label:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    width: 0.0em;
+    background: #D1D3D4;
+    border-radius: 3px 0 0 3px;
+}
+
+/* toggle hover */
+input.radio:hover:not(:checked) ~ label:before {
+    content:'\2714';
+    text-indent: .9em;
+    color: #C2C2C2;
+}
+
+input.radio:hover:not(:checked) ~ label {
+    color: #888;
+}
+
+/* toggle on */
+input.radio:checked ~ label:before {
+    content:'\2714';
+    text-indent: .9em;
+    color: white;
+    background-color: #4DCB6D;
+}
+
+input.radio:checked ~ label {
+    background-color: #446CB3;
+    color: white;
+}
+
+/* radio focus */
+input.radio:focus ~ label:before {
+    box-shadow: 0 0 0 3px #999;
+}
+
+/* Radio Vista Sexo */
+
+/* Para Radio Femenino */
+
+
+/* hide input */
+input.radiof:empty {
+    display: none;
+}
+
+/* style label */
+input.radiof:empty ~ label {
+    line-height: 2.5em;
+    margin-top: 2em;
+    width: 205px;
+    height: 205px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input.radiof:empty ~ label:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    width: 0.0em;
+    background: #D2527F;
+    border-radius: 3px 0 0 3px;
+}
+
+input.radiof:hover:not(:checked) ~ label {
+    color: #D2527F;
+}
+
+/* toggle on */
+input.radiof:checked ~ label:before {
+    content:'\2714';
+    text-indent: 10.9em;
+    color: #D2527F;
+}
+
+/* radiom focus */
+input.radiof:focus ~ label:before {
+    box-shadow: 0 0 0 3px white;
+}
+
+
+
+
+
+
+
+
+/* Para Radio Masculino */
+
+
+/* hide input */
+input.radiom:empty {
+    display: none;
+}
+
+/* style label */
+input.radiom:empty ~ label {
+    line-height: 2.5em;
+    margin-top: 2em;
+    cursor: pointer;
+    width: 205px;
+    height: 205px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input.radiom:empty ~ label:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    width: 0.0em;
+    background: #446CB3;
+    border-radius: 3px 0 0 3px;
+}
+
+input.radiom:hover:not(:checked) ~ label {
+    color: #446CB3;
+}
+
+/* toggle on */
+input.radiom:checked ~ label:before {
+    content:'\2714';
+    text-indent: 10.9em;
+    color: #446CB3;
+}
+
+/* radiom focus */
+input.radiom:focus ~ label:before {
+    box-shadow: 0 0 0 3px white;
+}
+
+
+
+
+
+
+/* Para Radio_Marcas */
+
+
+/* hide input */
+input.radio_marca:empty {
+    display: none;
+}
+
+/* style label */
+input.radio_marca:empty ~ label {
+    line-height: 2.5em;
+    margin-top: 2em;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input.radio_marca:empty ~ label:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    width: 0.0em;
+    background: #446CB3;
+    border-radius: 3px 0 0 3px;
+}
+
+
+/* toggle hover */
+input.radio_marca:hover:not(:checked) ~ label:before {
+    content:'\2714';
+    text-indent: .9em;
+    color: #446CB3;
+}
+
+input.radio_marca:hover:not(:checked) ~ label {
+    color: #446CB3;
+}
+
+/* toggle on */
+input.radio_marca:checked ~ label:before {
+    content:'\2714';
+    text-indent: .9em;
+    color: #446CB3;
+}
+
+/* radiom focus */
+input.radio_marca:focus ~ label:before {
+    box-shadow: 0 0 0 3px white;
+}
+
+
+/* Vista Ibero_Sum */
+#ibero_sum{
+    width: 80%;
+    border-style: none;
+    display:inline;
+}
+
+#preloaderSum {
+    width: 2%;
+}
+
+
+
+
+
+
+/* Vista Consulta */
+  #contenedor{ width:100%;}
+
+
+  #encabezado{
+    width: 100%;
+    height: 30%
+  }
+
+  #informacionDuenio{
+    margin-left: 5%;
+    float: left;
+    width: 40%;
+    padding: 2%;
+  }
+
+  #informacionCliente{
+    width: 50%;
+    float: left;
+    padding: 2%;
+    margin-left: 5%;
+  }
+
+  #informacionVehiculo{ 
+    width: 50%;
+    float: left;
+    text-align: center;
+    border: 1px solid black;
+    border-bottom: 1px solid black;
+    margin-bottom: 2%;
+    clean: both;
+    margin-right: 4%;
+   
+  }
+
+  #cuerpo{
+    clean: both;
+    width: 100%;
+    padding: 50px;
+  }
+
+
+  #universitas, #vivirSeguro, #estarSeguro, #oriental, #iberoseguro{
+    font-weight: bold;
+    text-align: center;
+  }
+
+
+  #universitas{ background-color: #3498DB;}
+
+  #vivirSeguro{ background-color: #F9BF3B;}
+
+  #estarSeguro{ background-color: #87D37C;}
+
+  #oriental{ background-color: #F7CA18;}
+
+  #iberoseguro{ background-color: #2ECC71;}
+  
+  
+  .universitas{ background-color: #3498DB;}
+
+  .vivirSeguro{ background-color: #F9BF3B;}
+
+  .estarSeguro{ background-color: #87D37C;}
+
+  .oriental{ background-color: #F7CA18;}
+
+  .iberoseguro{ background-color: #2ECC71;}
+
+  .grua{
+    background-color : #ADAD85;
+  }
+
+  .extra{
+    background-color: #ABB7B7;
+    font-weight: bold;
+    text-align: center;
+
+  }
+
+  #extra{
+    background-color: #ABB7B7;
+    font-weight: bold;
+    text-align: center;
+
+  }
+
+  #sumas, #sumasResaltantes{
+    text-align: right;
+    padding: 0 10px;
+  }
+
+ /* #sumasResaltantes{
+    font-weight: bold;
+  }*/
+
+  #bordes, #universitas, #vivirSeguro, #estarSeguro, #sumas, #iberoseguro, #oriental, #sumasResaltantes, extra{
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+  }
+
+  #extra{
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+ }
+
+   #bordes{
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+ }
+
+ .checkbox label {
+    border: 0px;
+    width: 100%;
+ }
+
+
+ #universitas, #vivirSeguro, #estarSeguro, #oriental, #iberoseguro{
+    width: 100%;
+    height:50%;
+ }
+ 
+  .checkbox label {
+    border: 0px;
+    width: 100%;
+ }
+
+
+  #nota{
+    text-align: center;
+    background-color: yellow;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    width:100%;
+    clean: both;
+ }
+
+  .modal-header{
+      background-color: #31579e;
+      color:white;
+      text-align: center;
+      font-size: 30px;
+  }
+
+
+   #PDF, #btnDescarga, #btnDescarga2, #btnDescarga3{
+    background-color: #3A539B;
+    border-color: #31579e;
+    color:white;
+  }
+
+  #btnDescarga2{
+    color: white;
+    margin-right: 5%;
+  }
+
+  #cotizacion{
+    float:right;
+  }
+
+  #btnXlsx{
+    margin-left: 80%;
+  }
+
+  #btnPDF{
+    margin-left: 2%;
+    color: black;
+  }
+
+  #btnDescarga3{
+    color: white;
+    left: 50%;
+  }
+
+  #PDF{ margin-left:2%;}
+
+  #btnClose{
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
+  #modalImag{
+    width: 40%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+
+  }
+
+  .content{
+  margin-top: 20%;
+  }
+
+  .rangebar{
+    padding-top: 20%;
+    margin-bottom: 20%
+    }
+  
+
+ /* Imagenes Show*/
+
+#check {
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:1%;
+}
+
+#check1 {
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:1%;
+}
+
+#check2 {
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:2%;
+}
+
+#check3 {
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:1%;
+}
+
+#check4 {
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:1%;
+}
+
+
+
+#resulset_universitas {
+    margin-left:-5%;
+}
+
+ #resulset_vivir  {
+    padding-left:5%;
+}
+
+ #resulset_oriental{
+    padding-left:5%;
+}
+
+#resulset_ibero  {
+    padding-left:5%;
+}
+
+ #resulset_estar {
+    padding-left:5%;
+}
+
+#preloader {
+    display:inline;
+    position:absolute;
+    z-index:2;
+    margin-top:1%;
+}
+
+#preloader1 {
+    display:inline;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+#preloader2 {
+    display:inline;
+    position:absolute;
+    z-index:2;
+    margin-top:2%;
+}
+
+#preloader3 {
+    display:inline;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+#preloader4 {
+    display:inline;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+h2{
+    padding-left:5%;
+}
+
+#barra{
+     display:none;
+}
+
+#x {
+    display:none;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+#x1 {
+    display:none;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+#x2{
+    display:none;
+    position:absolute;
+    z-index:2;
+    margin-top:2%;
+}
+
+#x3 {
+    display:none;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+#x4{
+    display:none;
+    position:absolute;
+    z-index:2;
+     margin-top:1%;
+}
+
+.grua{
+    background-color : #ADAD85;
+  }
+
+
+
+
+/* Queries para pantallas pequenas */
+
+ @media only screen and (max-width: 990px) {
+
+/* Vista Cedula / Nombre / Apellido / Zona / Placa*/
+
+#user_data .inputs{
+    margin-top: 5%
+}
+
+
+#user_data #separator, #user_data #separatoremail{
+    border: none
+}
+
+
+#user_data .thumbnail img{
+    width: 60%;
+    border-radius: 10px
+}
+
+x
+.rangebar{
+    padding-top: 0px;
+    margin-bottom:0px
+}
+
+
+
+/* Viewtitle */
+
+#viewtitle h1{
+    font-size: 35px;
+    margin-top: 0px;
+}
+
+#viewtitle h3 img{
+    vertical-align: middle;
+    height: 30px;
+    width: 30px;
+    margin-top: -12px;
+}
+
+#viewtitle #bandera img{
+    vertical-align: middle;
+    height: 47px;
+    width: 70px;
+    margin-top: -12px
+}
+
+#viewtitle h1 img{
+    margin-top: 5px;
+    height: 105px;
+    width: 250px;
+}
+
+.subtitle{
+padding-top: 3px;
+    font-size: 28px;
+}
+
+
+}

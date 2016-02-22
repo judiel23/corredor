@@ -1,0 +1,13 @@
+<div class="container-fluid" id="viewtitle">
+    <h1><img src="<%= image_url 'logojohan.jpg' %>" alt="bienvenido"></h1>
+    <h2><img src="<%= image_url 'chart.png' %>" alt="estadisiticas">  Cotizacion Final</h2>
+</div>
+
+<%= link_to 'New Corredor', new_corredor_path, :class => "btn btn-primary" %>
+
+<% @quotes = quotes %>
+<% @universitas = JSON.parse(InsuranceResponse.where(:cotiz_app_id => @quotes.id, :insurance => "universitas").last.response) %>
+<% @oriental    = JSON.parse(InsuranceResponse.where(:cotiz_app_id => @quotes.id, :insurance => "oriental").last.response) %>
+
+
+ <% @universitas["numcotizacion"] %>

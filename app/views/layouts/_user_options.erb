@@ -1,0 +1,14 @@
+<% if user_signed_in? %>
+	<nav id="useroptions">
+	  <ul class="nav nav-justified">
+  			<li><p>Bienvenido <strong><%= current_user.email %></strong></p></li>
+                        <!--
+  			<li><%# link_to 'Formulario de Prueba',  form_uni_seguros_path, :class => 'btn btn-xs btn-link' %></li>
+  			<li><%# link_to 'Formulario de Prueba II',  integrators_path, :class => 'btn btn-xs btn-link' %></li>
+  			<li><%# link_to 'Formulario de Prueba III', cotiz_apps_path, :class => 'btn btn-xs btn-link' %></li>
+                        -->
+  			<li><%= link_to 'Perfil', edit_user_registration_path, :class => 'btn btn-xs btn-link' %></li>
+  			<li><%= link_to "Salir", destroy_user_session_path, method: :delete, :class => 'btn btn-xs btn-link'  %></li>
+      </ul>
+    </nav>  
+<% end %>
