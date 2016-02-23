@@ -34,8 +34,8 @@
 <div class="form-group">
   <div class="col-md-1"></div>
   <div class="col-md-10">
-    <img src="<%= image_url 'preloader.gif' %>" id="preloader2" width="3%">
-    <img src="<%= image_url 'check.png' %>" id="check2" >
+    <img src="<%= image_url 'preloader.gif' %>" id="preloader3" width="3%">
+    <img src="<%= image_url 'check.png' %>" id="check3" >
     <img src="<%= image_url 'x.png' %>" id="x2" >
      <h2>Vivir Seguros</h2>
     <div id="resulset_vivir"></div>
@@ -156,8 +156,8 @@
                       str_show += "<b>Nro. Cotización: </b> " + response[0]["numero"]+ "<br>";
                       $("#resulset_vivir").html(str_show);
                       $(document).ready(function(){
-                           $("#preloader2").css("display", "none");
-                          $("#check2").css("display", "inline");
+                           $("#preloader3").css("display", "none");
+                          $("#check3").css("display", "inline");
                           <% version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
                           var version = "<%= @version %>"
                       versionList[0] = $.extend({version: version},response[0]);
