@@ -1,5 +1,5 @@
-<!-- 
-  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+<!--
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón.
   NO TOCAR.
 -->
 <%= stylesheet_link_tag    'progressbar', media: 'all', 'data-turbolinks-track' => true %>
@@ -8,10 +8,10 @@
                                  // la nueva cotización.
   var contador = 0;
   var versionList = {} ;         // Diccionario que almacenará las versiones co-
-                                 // tizables con sus códigos correspondientes.      
+                                 // tizables con sus códigos correspondientes.
   bool = false;
   var i = 1;
- 
+
 </script>
 
 
@@ -38,7 +38,7 @@
     <img src="<%= image_url 'check.png' %>" id="check2" >
     <img src="<%= image_url 'x.png' %>" id="x2" >
      <h2>Vivir Seguros</h2>
-    <div id="resulset_universitas"></div>
+    <div id="resulset_vivir"></div>
     <div class="progress" id="barra"> <span class="blue" style="width:0%;"><span>0%</span></span> </div>
   </div>
   <div class="col-md-1"></div>
@@ -97,7 +97,7 @@
       sumaAsegurada: "<%= @corredor.sumaAsegurada %>"
     };
 
-    //cotiza_oriental(parametros);
+    cotiza_oriental(parametros);
 
     //cotiza_universitas(parametros);
     cotiza_vivir(parametros);
@@ -114,15 +114,15 @@
             data: $.extend({aseguradora: "vivir"}, params),
             url: "/integrators/generic_quotation",
             success: function(response){
-                  
-                  
+
+
                   if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
                       cotizoO = true;
-                      
+
                       var str_show = "";
                       str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "&nbsp" +" <b>Version</b> "+ version + "<br>";
                       //$("#resulset_oriental").append(str_show);
-                     
+
 
                       versionList[numCotis] = $.extend({version: version},response[0]);
                       numCotis += 1;
@@ -138,8 +138,8 @@
                     loading(percent);
                   }
             },
-            
-           
+
+
     })
   };
 
@@ -154,25 +154,25 @@
                       var str_show = "";
                       cotizaOriental = true;
                       str_show += "<b>Nro. Cotización: </b> " + response[0]["numero"]+ "<br>";
-                      $("#resulset_oriental").html(str_show);
+                      $("#resulset_vivir").html(str_show);
                       $(document).ready(function(){
                            $("#preloader2").css("display", "none");
                           $("#check2").css("display", "inline");
                           <% version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
                           var version = "<%= @version %>"
-                      versionList[0] = $.extend({version: version},response[0]);    
+                      versionList[0] = $.extend({version: version},response[0]);
                       });
 
                   }else{
                     var str_show = "";
                     str_show += "<b>Lo sentimos. El vehículo no es asegurable. <br> Consultando otras versiones. Espere un momento</b><br><br> ";
-                    $("#resulset_oriental").html(str_show);
+                    $("#resulset_vivir").html(str_show);
                     $("#preloader2").css("display", "none");
                     $("#barra").css("display", "inline");
-                    
+
                     $("#x2").css("display", "inline");
                     var tam;
-                    
+
                       <% lista = Version.where(make: @corredor.marca, model: @corredor.modelo ) %>
                       tam= "<%= lista.length %>"
                       <% lista.each do |version| %>
@@ -180,7 +180,7 @@
                                       object_id: <%= @corredor.id %>,
                                       name: "<%= @corredor.nombre %>",
                                       lastname: "<%= @corredor.apellido %>",
-                                      dni_type: "<%= @corredor.ced[0] %>", 
+                                      dni_type: "<%= @corredor.ced[0] %>",
                                       dni_number: "<%= @corredor.ced[1..20] %>",
                                       local_code_area: "<%= @corredor.cod1 %>",
                                       local_phone: "<%= @corredor.tfijo %>",
@@ -203,13 +203,13 @@
                                       vehicle_use: "<%= @corredor.vehicle_use %>",
                                       kilometer_zero: "<%= @corredor.cerokm %>",
                                       vehicle_type: "<%= @corredor.vehicle_type %>"
-                                      
+
                           };
                           version = '<%="#{version.version}"%>'
                           //console.log("version "+version)
                           //console.log(parametros2);
                           cotiza_vivir2(parametros2,version,tam);
-                         <% end %>              
+                         <% end %>
 
                   }
             },
@@ -223,7 +223,7 @@
                 var erroraux = "<b>Error en la solicitud </b>" + "<br>";
                 $("#resulset_oriental").html(erroraux);
                 console.log("error 2");
-               
+
             }
       });
   };
@@ -234,15 +234,15 @@
             data: $.extend({aseguradora: "oriental"}, params),
             url: "/integrators/generic_quotation",
             success: function(response){
-                  
-                  
+
+
                   if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
                       cotizoO = true;
-                      
+
                       var str_show = "";
                       str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "&nbsp" +" <b>Version</b> "+ version + "<br>";
                       //$("#resulset_oriental").append(str_show);
-                     
+
 
                       versionList[numCotis] = $.extend({version: version},response[0]);
                       numCotis += 1;
@@ -258,8 +258,8 @@
                     loading(percent);
                   }
             },
-            
-           
+
+
     })
   };
 
@@ -280,7 +280,7 @@
                           $("#check2").css("display", "inline");
                           <% version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
                           var version = "<%= @version %>"
-                      versionList[0] = $.extend({version: version},response[0]);    
+                      versionList[0] = $.extend({version: version},response[0]);
                       });
 
                   }else{
@@ -289,10 +289,10 @@
                     $("#resulset_oriental").html(str_show);
                     $("#preloader2").css("display", "none");
                     $("#barra").css("display", "inline");
-                    
+
                     $("#x2").css("display", "inline");
                     var tam;
-                    
+
                       <% lista = Version.where(make: @corredor.marca, model: @corredor.modelo ) %>
                       tam= "<%= lista.length %>"
                       <% lista.each do |version| %>
@@ -300,7 +300,7 @@
                                       object_id: <%= @corredor.id %>,
                                       name: "<%= @corredor.nombre %>",
                                       lastname: "<%= @corredor.apellido %>",
-                                      dni_type: "<%= @corredor.ced[0] %>", 
+                                      dni_type: "<%= @corredor.ced[0] %>",
                                       dni_number: "<%= @corredor.ced[1..20] %>",
                                       local_code_area: "<%= @corredor.cod1 %>",
                                       local_phone: "<%= @corredor.tfijo %>",
@@ -323,13 +323,13 @@
                                       vehicle_use: "<%= @corredor.vehicle_use %>",
                                       kilometer_zero: "<%= @corredor.cerokm %>",
                                       vehicle_type: "<%= @corredor.vehicle_type %>"
-                                      
+
                           };
                           version = '<%="#{version.version}"%>'
                           //console.log("version "+version)
                           //console.log(parametros2);
                           cotiza_oriental2(parametros2,version,tam);
-                         <% end %>              
+                         <% end %>
 
                   }
             },
@@ -343,7 +343,7 @@
                 var erroraux = "<b>Error en la solicitud </b>" + "<br>";
                 $("#resulset_oriental").html(erroraux);
                 console.log("error 2");
-               
+
             }
       });
   };
@@ -354,7 +354,7 @@
     // Create a variable in JSON format
     var user = {
         user: JSON.stringify(versionList),
-        id: <%= @corredor.id %> 
+        id: <%= @corredor.id %>
     }
 
     // Post data via ajax to a rails controller
@@ -362,11 +362,11 @@
 
     if (cotizaOriental){
       window.setTimeout( nextPage, 15000 );
-        
+
     }else{
       window.setTimeout( nextPage, 25000 );
     }
-      
+
 
   }
 
@@ -401,15 +401,15 @@
          bool = true;
           // Create a variable in JSON format
         prueba();
-        
-        
+
+
       }
 
-     
-      
-      
+
+
+
   });
-  
+
 
   // Inicia las Cotizaciones Automaticamente
   cotiza();

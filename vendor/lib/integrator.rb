@@ -128,7 +128,7 @@ class Integrator
     def prepare_params_for_sumaAsegurada_ibero(params)
       reset_params
       @integrate_params.merge!({
-        ano:            params[:vehicle_year],            
+        ano:            params[:vehicle_year],
         civi:           "#{params[:vehicle_brand]}#{params[:vehicle_model]}#{params[:vehicle_version]}",
         aliado:         "20544",
         })
@@ -182,7 +182,7 @@ def prepare_params_for_estar(params)
 
     def call_sumaAsegurada_ibero(params)
       prepare_params_for_sumaAsegurada_ibero(params)
-      IberoSegurosSuma::sumaAsegurada_automovil(@integrate_params) rescue nil 
+      IberoSegurosSuma::sumaAsegurada_automovil(@integrate_params) rescue nil
     end
 
     def call_cotizar_estar_auto(params)

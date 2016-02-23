@@ -1,13 +1,13 @@
-<!-- 
-  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+<!--
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón.
   NO TOCAR.
-    
+
   En responsabilidad civil y grua se cambió el colspan de 5 a 1.
 -->
 
 <head>
         <meta charset="utf-8">
-        <%= csrf_meta_tag %> 
+        <%= csrf_meta_tag %>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -20,8 +20,8 @@
     <% @modelo  = Vehicle.find_by(:make => @corredor.marca, :code => @corredor.modelo).model %>
     <% @version = Version.find_by(:make => @corredor.marca, :model => @corredor.modelo, :code => @corredor.version).version %>
     <!-- Estatus de la primera cotización realizada con oriental. -->
-    <% @cotizOrientalStatus = Report.where(:corredor_id => @corredor.id, :insurance => "oriental").first.status%>
-    
+    <% #@cotizOrientalStatus = Report.where(:corredor_id => @corredor.id, :insurance => "oriental").first.status%>
+    <% @cotizVivirStatus = Report.where(:corredor_id => @corredor.id, :insurance => "vivir").first.status%>
 
 
     <script>
@@ -31,9 +31,9 @@
         var valueName = "<%= @modelo + " " + @version %>"
         var addedActualCoti = false
     </script>
-   
+
     <!-- Se establece el estado civil del cliente -->
-   <% 
+   <%
     case @corredor.estado
       when "D"
         if "#{@corredor.sexo}" == "M"
@@ -105,22 +105,22 @@
     <!-- Se filtrarán la solicitud según los planes disponibles y las versiones del vehículo que se puedan elegir. -->
     <%
         @param = {}
-        
-        @planList = {} # Variable donde se almacenarán las diversas cotizaciones 
+
+        @planList = {} # Variable donde se almacenarán las diversas cotizaciones
                        # según los planes disponibles.
-        
+
         # Nombres de los planes disponibles
-        @planName = { 
+        @planName = {
                      "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)" => 1,
                      "Perdida Total Únicamente (Incluye Responsabilidad Civil)"=> 2,
-                     "Responsabilidad Civil" => 3 , 
+                     "Responsabilidad Civil" => 3 ,
                      "Responsabilidad Civil Premium"=> 4
                     }
 
-         @planNameAux = { 
+         @planNameAux = {
                             1 => "Cobertura Amplia (Incluye Perdida total y Responsabilidad Civil)",
                             2 => "Perdida Total Únicamente (Incluye Responsabilidad Civil)",
-                            3 => "Responsabilidad Civil" , 
+                            3 => "Responsabilidad Civil" ,
                             4 => "Responsabilidad Civil Premium"
                         }
 
@@ -128,7 +128,7 @@
         @cotizaciones = {} # Almacenará las cotizaciones de "Cobertura Amplia".
         @perdidas = {}     # Almacenará las cotizaciones de "Perdida Total",
         @civilBasico = {}  # Almacenará las cotizaciones de "Responsabilidad Civil".
-        @civilPrem = {}    # Almacenará las cotizaciones de "Responsabillidad Civil 
+        @civilPrem = {}    # Almacenará las cotizaciones de "Responsabillidad Civil
                            # Premiun".
         if @cotizOrientalStatus == "0"
             @i = 1
@@ -136,12 +136,14 @@
             @i = 0
         end
 
-        # Almacenará el JSON que contiene todas las cotizaciones asociada a la 
-        # versione. En caso de que no se haya cotizado. Almacenará las cotizaciones 
-        # de las versiones disponibles. 
-        
-        jsonVersion = JSON.parse(@oriental.versionList) 
-        
+        # Almacenará el JSON que contiene todas las cotizaciones asociada a la
+        # versione. En caso de que no se haya cotizado. Almacenará las cotizaciones
+        # de las versiones disponibles.
+
+
+=begin jsonVersion = JSON.parse(@oriental.versionList)
+
+
         if jsonVersion["version"] != {}
             jsonVersion.each do |key,array|
 
@@ -186,7 +188,7 @@
                 @tempPerdida["exceso_persona"] = "NA"
                 @tempPerdida["asistencia"] = "NA"
 
-                
+
                 @tempCivBasic["status"] = 0
                 @tempCivBasic["aire"] = "NA"
                 @tempCivBasic["responsabilidad"] = "NA"
@@ -205,7 +207,7 @@
                 @tempCivBasic["exceso_persona"] = "NA"
                 @tempCivBasic["asistencia"] = "NA"
 
-                
+
                 @tempCIvPrem["status"] = 0
                 @tempCIvPrem["aire"] = "NA"
                 @tempCIvPrem["responsabilidad"] = "NA"
@@ -280,7 +282,7 @@
                                     when "Defensa Penal"
                                         @tempPerdida["asistencia"] = index["suma"]
                                 end
-                            
+
                             end
                         when "Responsabilidad Civil"
                             @tempCivBasic["num_cotiza"] = actCotizacion["nrocoti"]
@@ -306,7 +308,7 @@
                                         @tempCivBasic["exceso_persona"] = index["suma"]
                                     when "Defensa Penal"
                                         @temp["asistencia"] = index["suma"]
-                           
+
                                 end
                             end
 
@@ -334,10 +336,10 @@
                                         @tempCIvPrem["exceso_persona"] = index["suma"]
                                     when "Defensa Penal"
                                         @tempCIvPrem["asistencia"] = index["suma"]
-                        
-                                end     
-                            end                       
-                            
+
+                                end
+                            end
+
                         end
 
 
@@ -367,7 +369,7 @@
                         @planList[planElegido][n]["personas_dan"] = "NA"
                         @planList[planElegido][n]["exceso_cosa"] = "NA"
                         @planList[planElegido][n]["exceso_persona"] = "NA"
-                        @planList[planElegido][n]["asistencia"] = "NA" 
+                        @planList[planElegido][n]["asistencia"] = "NA"
                     end
                 end
 
@@ -381,7 +383,7 @@
             @planList[4] = @civilPrem
 
 
-            if @cotizOrientalStatus == "0" 
+            if @cotizOrientalStatus == "0"
                 (1..4).step(1) do |n|
                     @planList[n][0] = {}
                     @planList[n][0]["status"] = 0
@@ -400,11 +402,12 @@
                     @planList[n][0]["personas_dan"] = "NA"
                     @planList[n][0]["exceso_cosa"] = "NA"
                     @planList[n][0]["exceso_persona"] = "NA"
-                    @planList[n][0]["asistencia"] = "NA" 
+                    @planList[n][0]["asistencia"] = "NA"
                 end
             end
+=end
      %>
-     
+
 
 <div class = "container">
     <div>
@@ -422,7 +425,7 @@
             </div>
         <% end %>
         -->
-      
+
         <% if @oriental == nil or @oriental.status == '0' %>
             <div class="alert alert-danger">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -445,8 +448,8 @@
         <% end %>
         -->
     </div>
-    
-        
+
+
 
 
     <div id = "contenedor">
@@ -524,7 +527,7 @@
         </tr>
         <tr>
           <td id = "bordes" width="31%"> <%= "#{@marca}" %></td>
-          <td id = "bordes" class="dropdown" > 
+          <td id = "bordes" class="dropdown" >
             <% if @oriental.status != "0" || (@oriental.status == "0" && @oriental.versionList == "{}")%>
                 <%= "#{@modelo}"+ " " + "#{@version}" %>
             <% end %>
@@ -541,84 +544,111 @@
             <!-- Membrete de la tabla -->
             <tr>
                 <td id = "extra" width="30%" class = "coberturaDrop"> Cobertura </td>
-               
+
                 <td width="30px">
                     <table width="100%" >
                         <tr><td id = "oriental" > La Oriental de Seguros</td></tr>
                         <tr><td id = "extra" style="border-bottom:1px solid black;"> Suma asegurada </td></tr>
                     </table>
+
                 </td>
+
+                <td width="px">
+                <table width="100%" >
+                  <tr><td id = "oriental" > Vivir Seguros</td></tr>
+                  <tr><td id = "extra" style="border-bottom:1px solid black;"> Suma asegurada </td></tr>
+                </table>
+                </td>
+
             </tr>
 
             <!-- Informacion -->
             <tr>
                 <td id ="bordes" style="padding-left:1%;"><strong>  Cobertura Amplia</strong>  </td>
-          
+
                 <td id ="sumas" style="color: red; font-weight: bold;text-align:center" class = "cobertura"> <%= @oriental.cobertura == nil ? "NA" : comma_numbers(@oriental.cobertura.floor, ".") %></td>
+                  <td id ="sumas" style="color: red; font-weight: bold;text-align:center" class = "cobertura"> <%= @vivir.cobertura == nil ? "NA" : comma_numbers(@vivir.cobertura.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Eventos Catastroficos </strong> </td>
                 <td id = "sumasResaltantes" style="text-align:center" class = "eventos"><%= @oriental.eventos == nil ? "NA" : comma_numbers(@oriental.eventos.floor, ".") %></td>
+                  <td id = "sumasResaltantes" style="text-align:center" class = "eventos"><%= @vivir.eventos == nil ? "NA" : comma_numbers(@vivir.eventos.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Aire Acondicionado </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "aire"><%= @oriental.aire == nil ? "NA" : comma_numbers(@oriental.aire.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "aire"><%= @vivir.aire == nil ? "NA" : comma_numbers(@vivir.aire.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Radio, CD, MP3, DVD (Con Pantalla) </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "radio2"><%= @oriental.radio == nil ? "NA" : comma_numbers(@oriental.radio.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "radio2"><%= @vivir.radio == nil ? "NA" : comma_numbers(@vivir.radio.floor, ".") %></td>
             </tr>
             <tr class="grua" style="background-color: #ABB7B7;">
                 <td id = "bordes" style="padding-left:1%;" class="grua"><strong>  Servicio de Grua </strong> </td>
+                <td id = "sumas" colspan="1" style="text-align: center;"><strong> CONTRATADO</strong> </td>
                 <td id = "sumas" colspan="1" style="text-align: center;"><strong> CONTRATADO</strong> </td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Responsabilidad Civil /APOV </strong> </td>
                 <td id = "sumas" colspan="1">  </td>
+                <td id = "sumas" colspan="1">  </td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Muerte Conductor/Pasajeros </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "muerte"><%= @oriental.muerte == nil ? "NA" : comma_numbers(@oriental.muerte.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "muerte"><%= @vivir.muerte == nil ? "NA" : comma_numbers(@vivir.muerte.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Invalidez Conductor/Pasajeros </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "invalidez"><%= @oriental.invalidez == nil ? "NA" : comma_numbers(@oriental.invalidez.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "invalidez"><%= @vivir.invalidez == nil ? "NA" : comma_numbers(@vivir.invalidez.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;" ><strong>  Gastos de Curacion Conductor/Pasajeros </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "curacion"><%= @oriental.curacion == nil ? "NA" : comma_numbers(@oriental.curacion.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "curacion"><%= @vivir.curacion == nil ? "NA" : comma_numbers(@vivir.curacion.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Gastos de Entierro Conductor/Pasajeros </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "entierro"><%= @oriental.entierro == nil ? "NA" : comma_numbers(@oriental.entierro.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "entierro"><%= @vivir.entierro == nil ? "NA" : comma_numbers(@vivir.entierro.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Daños a cosas </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "cosa_dan"><%= @oriental.cosa_dan == nil ? "NA" : comma_numbers(@oriental.cosa_dan.floor, ".") %></td>
+                  <td id = "sumas" style="text-align:center" class = "cosa_dan"><%= @vivir.cosa_dan == nil ? "NA" : comma_numbers(@vivir.cosa_dan.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Daños a personas </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "personas_dan"><%= @oriental.personas_dan == nil ? "NA" : comma_numbers(@oriental.personas_dan.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "personas_dan"><%= @vivir.personas_dan == nil ? "NA" : comma_numbers(@vivir.personas_dan.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a cosas </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "exceso_cosa"><%= @oriental.exceso_cosa == nil ? "NA" : comma_numbers(@oriental.exceso_cosa.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "exceso_cosa"><%= @vivir.exceso_cosa == nil ? "NA" : comma_numbers(@vivir.exceso_cosa.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a personas </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "exceso_persona"><%= @oriental.exceso_persona == nil ? "NA" : comma_numbers(@oriental.exceso_persona.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "exceso_persona"><%= @vivir.exceso_persona == nil ? "NA" : comma_numbers(@vivir.exceso_persona.floor, ".") %></td>
+            </tr>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;"><strong>  Asistencia legal y defensa penal </strong> </td>
                 <td id = "sumas" style="text-align:center" class = "asistencia"><%= @oriental.asistencia == nil ? "NA" : comma_numbers(@oriental.asistencia.floor, ".") %></td>
+                <td id = "sumas" style="text-align:center" class = "asistencia"><%= @vivir.asistencia == nil ? "NA" : comma_numbers(@vivir.asistencia.floor, ".") %></td>
             </tr>
             <tr>
                 <td id = "bordes" style="padding-left:1%;text-align:center;background-color: #ABB7B7"><strong>  TOTAL PRIMA</strong>  </td>
                 <td id = "sumas" style="text-align:center" class="oriental prima"><strong> <%= @oriental.prima == nil ? "NA" : comma_numbers(number_with_precision(@oriental.prima, precision: 2).gsub('.', ','), ".") %></strong> </td>
+                <td id = "sumas" style="text-align:center" class="oriental prima"><strong> <%= @vivir.prima == nil ? "NA" : comma_numbers(number_with_precision(@vivir.prima, precision: 2).gsub('.', ','), ".") %></strong> </td>
             </tr>
             <tr style="text-align:center;">
                 <td id = "bordes" style="padding-left:1%;" ><strong> NÚMERO DE COTIZACIÓN </strong></td>
                 <td id = "sumas" style="text-align:center" class = "num_cotiza"><strong><%= @oriental.num_cotiza == nil ? "NA" : @oriental.num_cotiza  %></strong></td>
+                <td id = "sumas" style="text-align:center" class = "num_cotiza"><strong><%= @vivir.num_cotiza == nil ? "NA" : @vivir.num_cotiza  %></strong></td>
             </tr>
         </table>
         <br/>
@@ -639,7 +669,7 @@
                         <%= link_to "Nueva cotizacion", new_corredor_path, :class => "btn btn-default", id: "btnDescarga2"%>
                     </td>
                     <td>
-                        <%= button_to "Consultar Anteriores", corredors_path, :method => "get", :class => "btn btn-default", id: "btnDescarga3"%>            
+                        <%= button_to "Consultar Anteriores", corredors_path, :method => "get", :class => "btn btn-default", id: "btnDescarga3"%>
                     </td>
                 </tr>
             </table>
@@ -691,7 +721,7 @@
                     </div>
 
                     <div class="modal-body">
-                        
+
                     </div>
 
                     <%= link_to 'Pdf',  corredor_path(@corredor, :format => "pdf"), :class => "btn btn-default", :target => "_blank", id: "btnPDF"%>
@@ -728,7 +758,7 @@
         $(".dropdown").append($('<select id="dropdownversiones" name="corredor[version]"></select>'));
 
         var versionVehiculo = "<%= @modelo + ' ' + @version%>"
-       
+
         $("#dropdownversiones").append($('<option value=' + 0 + '>' + versionVehiculo + '</option>'));
 
         var versionList = <%= raw @versionList.to_json %>;
@@ -739,8 +769,8 @@
         $('select[id="dropdownversiones"]').on('change', getValue);
     <% end %>
 
-    /* 
-        .- Descripcion: 
+    /*
+        .- Descripcion:
             Permite obtener el nombre y el valor del plan elegido.
         .- Parametros:
             No requiere parametros.
@@ -752,10 +782,10 @@
         planName = $('select[id="dropdownversiones"]').find('option:selected').text();
         setValues();
     }
-    
-    /* 
-        .- Descripcion: 
-            Permite establecer los valores en la tabla de la cobertura y llamar 
+
+    /*
+        .- Descripcion:
+            Permite establecer los valores en la tabla de la cobertura y llamar
             la función que permite actualizar los datos de la base de datos.
         .- Parametros:
             No requiere parametros.
@@ -811,14 +841,14 @@
 
         var params = {
             user: JSON.stringify(planList[planElegido][value]),
-            id: <%= @corredor.id %> 
+            id: <%= @corredor.id %>
         }
         setActualCoti(params);
     };
 
 
-    /* 
-        .- Descripcion: 
+    /*
+        .- Descripcion:
             Permite almacenar los datos de la cotización actual en la base de datos.
         .- Parametros:
             @param params: diccionario que contiene el id de la cotización y los
@@ -833,7 +863,7 @@
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             url: '/corredors/add_actualCoti',
             success: function(response){},
-        })        
+        })
     }
 
     // Se ejecuta cada vez que se elige una de las opciones del dropdown correspon-
