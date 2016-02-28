@@ -116,11 +116,11 @@
             success: function(response){
 
 
-                  if (response[0]["estatus"] == undefined && response[0].plan[0]!= null){
+                  if (response[0]["idError"] == null && response[0]["numero"]!= null){
                       cotizoO = true;
 
                       var str_show = "";
-                      str_show += "<b>Nro. Cotización: </b> " + response[0].plan[0].nrocoti + "&nbsp" +" <b>Version</b> "+ version + "<br>";
+                      str_show += "<b>Nro. Cotización: </b> " + response[0]["numero"] + "&nbsp" +" <b>Version</b> "+ version + "<br>";
                       //$("#resulset_oriental").append(str_show);
 
 
@@ -144,11 +144,14 @@
   };
 
   function cotiza_vivir(params){
+
+    console.log(params);
     $.ajax({
             type: "POST",
             data: $.extend({aseguradora: "vivir"}, params),
             url: "/integrators/generic_quotation",
             success: function(response){
+
                   console.log(response[0]);
                   if (response[0]["idError"] == null && response[0]["numero"]!= null){
                       var str_show = "";
@@ -207,7 +210,7 @@
                           };
                           version = '<%="#{version.version}"%>'
                           //console.log("version "+version)
-                          //console.log(parametros2);
+                          console.log(parametros2);
                           cotiza_vivir2(parametros2,version,tam);
                          <% end %>
 

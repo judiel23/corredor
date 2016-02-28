@@ -449,221 +449,285 @@
         -->
     </div>
 
+<!-- ------------------------------------------------------------------------------------------------------------ -->
 
-
-
-    <div id = "contenedor">
-        <div id = "encabezado">
-            <div id = "informacionDuenio">
-                <img src="<%= image_url 'logojohan.jpg' %>" alt="Johan Leal - Corredor de Seguros" width = "80%">
-
-                <font size="2px;">
-            <br><br>
-            gerencia@corredorleal.com (0212) 716-5154 / (0212) 424-1266
-            <br>
-            presidencia@corredorleal.com (0414) 249-6264 / (0424) 177-3968
-        </font>
-            <br><br>
-            <font color="30559D" style="font-size:20px;"><strong><em>www.corredorleal.com</em></strong></font><br>
-            </div>
-
-
-            <div id = "informacionCliente">
-
-                <div >
-            <font color="30559D" style="font-size:20px; margin-left:38%;"><strong><em>Cotización Seguro de Auto </em></strong></font><br>
-            <table width="65%" style="margin-left:30%;">
-              <tr>
-                <td style="text-align:left;">
-                  <strong>Fecha: <%= fechaActual %> </strong>
-                </td>
-                <td style="text-align:right;">
-                  <font color="30559D" style="font-size:20px;"><strong><em>Válido por 7 Días</em></strong></font>
-                </td>
-              </tr>
-            </table>
-          </div>
-
-          <br>
-
-                <!-- Tabla con los datos del cliente -->
-                <table width="65%" border="1" style="text-align:center; margin-left:30%;">
+<!--Inicia el contenido de la pagina(vista de usuario)-->
+<div class="container">
+<div class="row" >
+<div class="col-md-12" >
+            <!--Inicia el encabezado, logo, correos, direccion web, fecha y datos del cliente  -->
+            <div class="row" >
+                <div class="col-md-8">
+                    <br>
+                    <img src="<%= image_url 'logojohan.jpg' %>" alt="Johan Leal - Corredor de Seguros" width = "30%">
+                    <br><br>
+                    <p class="text-info">
+                        gerencia@corredorleal.com (0212) 716-5154 / (0212) 424-1266
+                    <br>
+                        presidencia@corredorleal.com (0414) 249-6264 / (0424) 177-3968
+                    </p>
+                    <p class="lead text-primary">
+                        <em>www.corredorleal.com</em>
+                    </p>
+                    <br>
+                        <!-- Inicio datos del vehiculo -->
+                <div class="table-responsive">
+                <table  class="table table-bordered">
+                    <thead>
                         <tr>
-              <td><strong> Nombre </strong> </td>
-              <td style="padding-left:2%;"><%= nombreCliente.upcase %></td>
-            </tr>
-            <tr>
-              <td><strong> Cedula</strong> </td>
-              <td style="padding-left:2%;"><%= comma_numbers("#{@corredor.nacion}-#{@corredor.cedula}",".") %></td>
-            </tr>
-            <tr>
-              <td><strong> Sexo </strong> </td>
-              <td style="padding-left:2%;"><%= sexoCliente.upcase %></td>
-            </tr>
-            <tr>
-              <td><strong> Edad </strong></td>
-              <td style="padding-left:2%;"><%= edadCliente %> AÑOS</td>
-            </tr>
-            <tr>
-            <td><strong> Estado Civil </strong> </td>
-                <td style="padding-left:2%;"><%= estadoCivil %></td>
-            </tr>
-            <tr>
-              <td><strong> Circulacion </strong></td>
-              <td style="padding-left:2%;"><%= estados["#{@corredor.zona}".to_i].upcase %></td>
-            </tr>
-                </table>
-            </div>
 
-         </div>
+                            <th class="active">Marca</th>
+                            <th class="active">Modelo</th>
+                            <th class="active">Año</th>
+
+                        </tr>
+                    </thead>
+
+                     <tbody>
+                        <tr >
+
+                            <td ><%= "#{@marca}" %></td>
+                            <td ><% if @oriental.status != "0" || (@oriental.status == "0" && @oriental.versionList == "{}")%>
+                             <%= "#{@modelo}"+ " " + "#{@version}" %>
+                            <% end %>
+                            </td>
+                            <td ><%= "#{@corredor.year}" %></td>
+
+                        </tr>
+                    </tbody>
+                </table><!--end de la tabla vehiculo-->
+                </div><!--end class responsive-->
+                <!--End datos del vehiculo-->
 
 
-           <!-- Tabla con los datos del vehiculo -->
-            <table id = "informacionVehiculo">
-        <tr>
-          <td id = "bordes"><strong> Marca  </strong></td>
-          <td id = "bordes"><strong> Modelo </strong></td>
-          <td id = "bordes"><strong> Año    </strong></td>
-        </tr>
-        <tr>
-          <td id = "bordes" width="31%"> <%= "#{@marca}" %></td>
-          <td id = "bordes" class="dropdown" >
-            <% if @oriental.status != "0" || (@oriental.status == "0" && @oriental.versionList == "{}")%>
-                <%= "#{@modelo}"+ " " + "#{@version}" %>
-            <% end %>
-            </td>
-          <td id = "bordes" width="31%"> <%= "#{@corredor.year}" %></td>
-        </tr>
-      </table>
 
 
-    <div id = "cuerpo" >
+                </div>
 
-        <!-- Tabla con la informacion de la aseguradora -->
-        <table width="100%" style="border-top:1px solid black;">
-            <!-- Membrete de la tabla -->
-            <tr>
-                <td id = "extra" width="30%" class = "coberturaDrop"> Cobertura </td>
+                <!--Inicio de la tabla con los datos del cliente-->
+                <div class="col-md-4">
 
-                <td width="30px">
-                    <table width="100%" >
-                        <tr><td id = "oriental" > La Oriental de Seguros</td></tr>
-                        <tr><td id = "extra" style="border-bottom:1px solid black;"> Suma asegurada </td></tr>
-                    </table>
+                    <p class="lead text-info" align="center"><em>Cotización Seguro de Auto <br> Válido por 7 Días </em></strong>
+                    </p>
 
-                </td>
+                <div class="table-responsive">
+                <table class="table table-striped">
 
-                <td width="px">
-                <table width="100%" >
-                  <tr><td id = "oriental" > Vivir Seguros</td></tr>
-                  <tr><td id = "extra" style="border-bottom:1px solid black;"> Suma asegurada </td></tr>
-                </table>
-                </td>
+                    <tr>
+                        <td><strong>Fecha</strong></td>
+                        <td style="padding-left:2%;"> <%= fechaActual %> </td>
+                    </tr>
 
-            </tr>
+                    <tr>
+                        <td><strong> Nombre </strong> </td>
+                        <td style="padding-left:2%;"><%= nombreCliente.upcase %></td>
+                    </tr>
 
-            <!-- Informacion -->
-            <tr>
-                <td id ="bordes" style="padding-left:1%;"><strong>  Cobertura Amplia</strong>  </td>
+                    <tr>
+                        <td><strong> Cédula</strong> </td>
+                        <td style="padding-left:2%;"><%= comma_numbers("#{@corredor.nacion}-#{@corredor.cedula}",".") %></td>
+                    </tr>
 
-                <td id ="sumas" style="color: red; font-weight: bold;text-align:center" class = "cobertura"> <%= @oriental.cobertura == nil ? "NA" : comma_numbers(@oriental.cobertura.floor, ".") %></td>
-                  <td id ="sumas" style="color: red; font-weight: bold;text-align:center" class = "cobertura"> <%= @vivir.cobertura == nil ? "NA" : comma_numbers(@vivir.cobertura.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Eventos Catastroficos </strong> </td>
-                <td id = "sumasResaltantes" style="text-align:center" class = "eventos"><%= @oriental.eventos == nil ? "NA" : comma_numbers(@oriental.eventos.floor, ".") %></td>
-                  <td id = "sumasResaltantes" style="text-align:center" class = "eventos"><%= @vivir.eventos == nil ? "NA" : comma_numbers(@vivir.eventos.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Aire Acondicionado </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "aire"><%= @oriental.aire == nil ? "NA" : comma_numbers(@oriental.aire.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "aire"><%= @vivir.aire == nil ? "NA" : comma_numbers(@vivir.aire.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Radio, CD, MP3, DVD (Con Pantalla) </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "radio2"><%= @oriental.radio == nil ? "NA" : comma_numbers(@oriental.radio.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "radio2"><%= @vivir.radio == nil ? "NA" : comma_numbers(@vivir.radio.floor, ".") %></td>
-            </tr>
-            <tr class="grua" style="background-color: #ABB7B7;">
-                <td id = "bordes" style="padding-left:1%;" class="grua"><strong>  Servicio de Grua </strong> </td>
-                <td id = "sumas" colspan="1" style="text-align: center;"><strong> CONTRATADO</strong> </td>
-                <td id = "sumas" colspan="1" style="text-align: center;"><strong> CONTRATADO</strong> </td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Responsabilidad Civil /APOV </strong> </td>
-                <td id = "sumas" colspan="1">  </td>
-                <td id = "sumas" colspan="1">  </td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Muerte Conductor/Pasajeros </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "muerte"><%= @oriental.muerte == nil ? "NA" : comma_numbers(@oriental.muerte.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "muerte"><%= @vivir.muerte == nil ? "NA" : comma_numbers(@vivir.muerte.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Invalidez Conductor/Pasajeros </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "invalidez"><%= @oriental.invalidez == nil ? "NA" : comma_numbers(@oriental.invalidez.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "invalidez"><%= @vivir.invalidez == nil ? "NA" : comma_numbers(@vivir.invalidez.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;" ><strong>  Gastos de Curacion Conductor/Pasajeros </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "curacion"><%= @oriental.curacion == nil ? "NA" : comma_numbers(@oriental.curacion.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "curacion"><%= @vivir.curacion == nil ? "NA" : comma_numbers(@vivir.curacion.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Gastos de Entierro Conductor/Pasajeros </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "entierro"><%= @oriental.entierro == nil ? "NA" : comma_numbers(@oriental.entierro.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "entierro"><%= @vivir.entierro == nil ? "NA" : comma_numbers(@vivir.entierro.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Daños a cosas </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "cosa_dan"><%= @oriental.cosa_dan == nil ? "NA" : comma_numbers(@oriental.cosa_dan.floor, ".") %></td>
-                  <td id = "sumas" style="text-align:center" class = "cosa_dan"><%= @vivir.cosa_dan == nil ? "NA" : comma_numbers(@vivir.cosa_dan.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Daños a personas </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "personas_dan"><%= @oriental.personas_dan == nil ? "NA" : comma_numbers(@oriental.personas_dan.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "personas_dan"><%= @vivir.personas_dan == nil ? "NA" : comma_numbers(@vivir.personas_dan.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a cosas </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "exceso_cosa"><%= @oriental.exceso_cosa == nil ? "NA" : comma_numbers(@oriental.exceso_cosa.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "exceso_cosa"><%= @vivir.exceso_cosa == nil ? "NA" : comma_numbers(@vivir.exceso_cosa.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Exceso de limite a personas </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "exceso_persona"><%= @oriental.exceso_persona == nil ? "NA" : comma_numbers(@oriental.exceso_persona.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "exceso_persona"><%= @vivir.exceso_persona == nil ? "NA" : comma_numbers(@vivir.exceso_persona.floor, ".") %></td>
-            </tr>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;"><strong>  Asistencia legal y defensa penal </strong> </td>
-                <td id = "sumas" style="text-align:center" class = "asistencia"><%= @oriental.asistencia == nil ? "NA" : comma_numbers(@oriental.asistencia.floor, ".") %></td>
-                <td id = "sumas" style="text-align:center" class = "asistencia"><%= @vivir.asistencia == nil ? "NA" : comma_numbers(@vivir.asistencia.floor, ".") %></td>
-            </tr>
-            <tr>
-                <td id = "bordes" style="padding-left:1%;text-align:center;background-color: #ABB7B7"><strong>  TOTAL PRIMA</strong>  </td>
-                <td id = "sumas" style="text-align:center" class="oriental prima"><strong> <%= @oriental.prima == nil ? "NA" : comma_numbers(number_with_precision(@oriental.prima, precision: 2).gsub('.', ','), ".") %></strong> </td>
-                <td id = "sumas" style="text-align:center" class="oriental prima"><strong> <%= @vivir.prima == nil ? "NA" : comma_numbers(number_with_precision(@vivir.prima, precision: 2).gsub('.', ','), ".") %></strong> </td>
-            </tr>
-            <tr style="text-align:center;">
-                <td id = "bordes" style="padding-left:1%;" ><strong> NÚMERO DE COTIZACIÓN </strong></td>
-                <td id = "sumas" style="text-align:center" class = "num_cotiza"><strong><%= @oriental.num_cotiza == nil ? "NA" : @oriental.num_cotiza  %></strong></td>
-                <td id = "sumas" style="text-align:center" class = "num_cotiza"><strong><%= @vivir.num_cotiza == nil ? "NA" : @vivir.num_cotiza  %></strong></td>
-            </tr>
-        </table>
-        <br/>
+                    <tr>
+                        <td><strong> Sexo </strong> </td>
+                        <td style="padding-left:2%;"><%= sexoCliente.upcase %></td>
+                    </tr>
 
-            <table width="100%" style="table-layout:fixed;margin-top:-20px">
-        <td id = "nota"><strong> Nota: Esta cotizacion no aplica en el caso que el vehiculo ya se encuentre asegurado en alguna de las compañias aseguradora arriba mecionadas.</strong></td>
-      </table>
+                    <tr>
+                        <td><strong> Edad </strong></td>
+                        <td style="padding-left:2%;"><%= edadCliente %> AÑOS</td>
+                    </tr>
 
-      <br>
+                    <tr>
+                        <td><strong> Estado Civil </strong> </td>
+                        <td style="padding-left:2%;"><%= estadoCivil %></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong> Circulación </strong></td>
+                        <td style="padding-left:2%;"><%= estados["#{@corredor.zona}".to_i].upcase %></td>
+                    </tr>
+
+                </table><!--fin de la tabla datos del cliente-->
+                </div>
+                <!-- End de la tabla datos cliente -->
+                </div>
+                </div>
+                <!-- End encabezado -->
 
 
-        <!-- Sección para descargar PDF -->
-        <button type="button" class="btn btn-default" id = "btnDescarga" data-toggle="modal" data-target="#consulta">Descargar</button>
-        <div id = "cotizacion">
-            <table style="float:right;">
+
+                 <!-- Inicio datos del seguro e informacion de la cotizacion -->
+                <div class="table-responsive">
+                <table  class="table table-bordered"><!--Inicio de la tabla seguro e informacion de la cotizacion-->
+                    <thead>
+                        <tr>
+
+                            <th class="active">Cobertura</th>
+                            <th class="active">La Oriental Seguros</th>
+                            <th class="active">Vivir Seguros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr >
+                            <td >Cobertura Amplia</td>
+                            <td align="center"><%= @oriental.cobertura == nil ? "NA" : comma_numbers(@oriental.cobertura.floor, ".")%>
+                            </td>
+                            <td align="center"><%= @vivir.cobertura == nil ? "NA" : comma_numbers(@vivir.cobertura.floor, ".") %>
+                            </td>
+                        </tr>
+
+                        <tr >
+                            <td >Eventos Catastróficos</td>
+                            <td align="center"><%= @oriental.eventos == nil ? "NA" : comma_numbers(@oriental.eventos.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.eventos == nil ? "NA" : comma_numbers(@vivir.eventos.floor, ".") %>
+                            </td>
+                        </tr>
+
+                        <tr >
+                            <td >Aire Acondicionado</td>
+                            <td align="center"><%= @oriental.aire == nil ? "NA" : comma_numbers(@oriental.aire.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.aire == nil ? "NA" : comma_numbers(@vivir.aire.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr >
+                            <td >Radio, CD, MP3, DVD (Con Pantalla)</td>
+                            <td align="center"><%= @oriental.radio == nil ? "NA" : comma_numbers(@oriental.radio.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.radio == nil ? "NA" : comma_numbers(@vivir.radio.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr >
+                            <td >Servicio de Grúa</td>
+                            <td align="center">CONTRATADO</td>
+                            <td align="center">CONTRATADO</td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Responsabilidad Civil /APOV</td>
+                            <td ></td>
+                            <td ></td>
+
+                        </tr>
+                        <tr>
+                            <td >Muerte Conductor/Pasajeros</td>
+                            <td align="center"><%= @oriental.muerte == nil ? "NA" : comma_numbers(@oriental.muerte.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.muerte == nil ? "NA" : comma_numbers(@vivir.muerte.floor, ".") %>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td >Invalidez Conductor/Pasajeros</td>
+                            <td align="center"><%= @oriental.invalidez == nil ? "NA" : comma_numbers(@oriental.invalidez.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.invalidez == nil ? "NA" : comma_numbers(@vivir.invalidez.floor, ".") %>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td >Gastos de Curación Conductor/Pasajeros</td>
+                            <td align="center"><%= @oriental.curacion == nil ? "NA" : comma_numbers(@oriental.curacion.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.curacion == nil ? "NA" : comma_numbers(@vivir.curacion.floor, ".") %>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td >Gastos de Entierro Conductor/Pasajeros</td>
+                            <td align="center"><%= @oriental.entierro == nil ? "NA" : comma_numbers(@oriental.entierro.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.entierro == nil ? "NA" : comma_numbers(@vivir.entierro.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Daños a cosas</td>
+                            <td align="center"><%= @oriental.cosa_dan == nil ? "NA" : comma_numbers(@oriental.cosa_dan.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.cosa_dan == nil ? "NA" : comma_numbers(@vivir.cosa_dan.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Daños a personas</td>
+                            <td align="center"><%= @oriental.personas_dan == nil ? "NA" : comma_numbers(@oriental.personas_dan.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.personas_dan == nil ? "NA" : comma_numbers(@vivir.personas_dan.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Exceso de limite a cosas</td>
+                            <td align="center"><%= @oriental.exceso_cosa == nil ? "NA" : comma_numbers(@oriental.exceso_cosa.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.exceso_cosa == nil ? "NA" : comma_numbers(@vivir.exceso_cosa.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Exceso de limite a personas</td>
+                            <td align="center"><%= @oriental.exceso_persona == nil ? "NA" : comma_numbers(@oriental.exceso_persona.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.exceso_persona == nil ? "NA" : comma_numbers(@vivir.exceso_persona.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td >Asistencia legal y defensa penal</td>
+                            <td align="center"><%= @oriental.asistencia == nil ? "NA" : comma_numbers(@oriental.asistencia.floor, ".") %>
+                            </td>
+                            <td align="center"><%= @vivir.asistencia == nil ? "NA" : comma_numbers(@vivir.asistencia.floor, ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="danger" align="center"><b>Total Prima</b></td>
+                            <td class="danger" align="center"><%= @oriental.prima == nil ? "NA" : comma_numbers(number_with_precision(@oriental.prima, precision: 2).gsub('.', ','), ".") %>
+                            </td>
+                            <td class="danger" align="center"><%= @vivir.prima == nil ? "NA" : comma_numbers(number_with_precision(@vivir.prima, precision: 2).gsub('.', ','), ".") %>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="success" align="center"><b>Número de Cotización</b></td>
+                            <td class="success" align="center"><%= @oriental.num_cotiza == nil ? "NA" : @oriental.num_cotiza  %>
+                            </td>
+                            <td class="success" align="center"><%= @vivir.num_cotiza == nil ? "NA" : @vivir.num_cotiza  %>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="danger" align="center" colspan="3">Nota: Esta cotizacion no aplica en el caso que el vehiculo ya se encuentre asegurado en alguna de las compañias aseguradora arriba mecionadas.</td>
+
+                        </tr>
+
+                    </tbody>
+                </table><!--end tabla del seguro e informacion de la cotizacion  -->
+                </div><!--end class responsive-->
+                <!--End datos del seguro e informacion de la cotizacion -->
+    <div class="row" >
+        <div class="col-md-8">
+        <button type="button" class="btn btn-default" id = "btnDescarga" data-toggle="modal" data-target="#consulta">Descargar
+        </button>
+    </div>
+    <div class="col-md-4">
+        <table style="float:right;">
                 <tr>
                     <td>
                         <%= link_to "Nueva cotizacion", new_corredor_path, :class => "btn btn-default", id: "btnDescarga2"%>
@@ -673,7 +737,14 @@
                     </td>
                 </tr>
             </table>
-        </div>
+    </div>
+
+    </div><!-- End container-->
+    </div><!-- End row-->
+    </div><!-- End col-md-12-->
+    <!-- End del container donde esta el contenido de la cotizacion-->
+
+<!-- ------------------------------------------------------------------------------------------------------------ -->
 
         <div id="consulta" class="modal fade" role="dialog">
             <div class="modal-dialog">

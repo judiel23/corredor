@@ -52,7 +52,7 @@ class Integrator
           edocivil:         params[:marital_status],
           fnacimiento:      params[:birthday].gsub("-", "/"), #"dd/mm/yyyy"
           estado:           (params[:state].to_i + 100).to_s,
-          plan:             "10000001", # params[:plan_code],
+          plan:             "10000006", # params[:plan_code],
           nacionalidad:     params[:dni_type],
           cedularif:        params[:dni_number],
           nombre:           params[:name],

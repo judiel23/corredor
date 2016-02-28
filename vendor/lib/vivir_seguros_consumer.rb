@@ -75,8 +75,7 @@ class VivirSegurosConsumer
             result[:status] = 1
             result[:num_cotiza] = result_parse["numero"]
             for item in result_parse["cotizacion"]
-                if item["cobertura"] == "COBERTURA AMPLIA / MOTIN Y/O DISTURBIOS
-CALLEJEROS"
+                if item["cobertura"] == "COBERTURA AMPLIA / MOTIN Y/O DISTURBIOS CALLEJEROS" or item["cobertura"] == "CASCO (BUEN CONDUCTOR)"
                     result[:cobertura] = item["suma"].to_f
                 end
                 if item["cobertura"] == "EVENTOS CATASTROFICOS"
