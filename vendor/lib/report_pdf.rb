@@ -1,8 +1,8 @@
-""" 
-  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón. 
+"""
+  Se comentaron las otras aseguradoras ya que Oriental estará en Produccíón.
   NO TOCAR.
 
-  * Se cambió @fallouniversitas, @fallovivir, @falloestar y @falloibero a true 
+  * Se cambió @fallouniversitas, @fallovivir, @falloestar y @falloibero a true
     ya que no se deben mostrar actualemte.
 
 """
@@ -17,12 +17,12 @@ class ReportPdf < Prawn::Document
     super( :page_layout => :landscape)
     @quotes = quotes
     @dic = @dic
-    
+
     @marca   = Make.find_by(:code => @quotes.marca).make
     @modelo  = Vehicle.find_by(:make => @quotes.marca, :code => @quotes.modelo).model
- 
+
     #@universitas = Report.where(:corredor_id => @quotes.id, :insurance => "universitas").last
-    #@vivir = Report.where(:corredor_id => @quotes.id, :insurance => "vivir").last
+    @vivir = Report.where(:corredor_id => @quotes.id, :insurance => "vivir").last
     @oriental = Report.where(:corredor_id => @quotes.id, :insurance => "oriental").last
 
     if @quotes.sexo == "F"
@@ -30,7 +30,7 @@ class ReportPdf < Prawn::Document
     else
       @sexo = "Masculino"
     end
-   
+
     case @quotes.estado
       when "D"
         if @sexo == "Masculino"
@@ -58,13 +58,13 @@ class ReportPdf < Prawn::Document
         end
     end
 
-    puts @oriental.actualCoti.to_json 
+    puts @oriental.actualCoti.to_json
     if @oriental.actualCoti != nil
       @orientalActualCoti = JSON.parse(@oriental.actualCoti)
       @vehicle_information = @orientalActualCoti["version"]
       @plan_information = @orientalActualCoti["plan"]
     else
-     
+
         @orientalActualCoti = {}
 
         if @oriental.num_cotiza == "NA"
@@ -121,11 +121,11 @@ class ReportPdf < Prawn::Document
     puts @oriental
 
     @estados = ["","Amazonas","Anzoategui", "Apure", "Aragua","Barinas","Bolivar","Carabobo",
-               "Cojedes","Delta Amacuro", "Distrito Capital", "Falcon", "Guarico", "Lara", 
-               "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", 
+               "Cojedes","Delta Amacuro", "Distrito Capital", "Falcon", "Guarico", "Lara",
+               "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre",
                "Tachira", " Trujillo", "Vargas", "Yaracuy", "Zulia"]
 
-  
+
 
     @nombre = @quotes.nombre.capitalize
     @apellido = @quotes.apellido.capitalize
@@ -140,11 +140,11 @@ class ReportPdf < Prawn::Document
     #  @fallouniversitas = true
     #end
 
-    #if @vivir == nil or @vivir.status == '0'
-    #  @fallovivir = true
-    #end
+    if @vivir == nil
+     @fallovivir = true
+    end
 
-    if @oriental == nil 
+    if @oriental == nil
       @fallooriental = true
     end
 
@@ -157,8 +157,8 @@ class ReportPdf < Prawn::Document
     #end
 
     header
-    table_content   
-    
+    table_content
+
     page_layout = :landscape
 
   end
@@ -166,11 +166,11 @@ class ReportPdf < Prawn::Document
   def comma_numbers(number, delimiter = ',')
               number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
           end
-  
+
   def header
     #This inserts an image in the pdf file and sets the size of the image
     #image "#{Rails.root}/app/assets/images/header.jpg", width: 530, height: 150
-  
+
         move_down 40
 
         bounding_box([420, 550], :width => 400, :height => 50) do
@@ -183,10 +183,10 @@ class ReportPdf < Prawn::Document
         end
 
           move_down 40
-              
-          logo = "#{Rails.root}/app/assets/images/logojohan.jpg" 
-          image logo, :at => [9,550], :width => 250                                   
-         
+
+          logo = "#{Rails.root}/app/assets/images/logojohan.jpg"
+          image logo, :at => [9,550], :width => 250
+
           draw_text "Fecha: #{Time.now.strftime("%d/%m/%Y")}",  :size => 11, :style => :bold, :at => [480, 500]
 
 
@@ -214,18 +214,18 @@ class ReportPdf < Prawn::Document
           draw_text "(0212) 716-5154 / (0212) 424-1266", :size => 9, :at => [125, 430]
           draw_text "presidencia@corredorleal.com",      :size => 9, :at => [01,   410]
           draw_text "(0414) 249-6264 / (0424) 177-3968", :size => 9, :at => [125, 410]
-                  
+
          move_down 90
 
          if @fallouniversitas && @fallovivir && @fallooriental && @falloibero && @falloestar
 
-            draw_text "No se pudo realizar ninguna cotización",             :style => :bold, :size => 30, :at => [150, 200], :color => "30559D"            
+            draw_text "No se pudo realizar ninguna cotización",             :style => :bold, :size => 30, :at => [150, 200], :color => "30559D"
          end
 
 
   end
 
-  
+
 
     def prima_numbers(number, delimiter = '.')
       number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").sub(/\./, ',').reverse
@@ -307,7 +307,7 @@ class ReportPdf < Prawn::Document
     end
 
 
-  bounding_box([0, 345], :width => 730) do 
+  bounding_box([0, 345], :width => 730) do
     table headers do
       row(0).font_style = :bold
       self.column_widths = column
@@ -315,10 +315,10 @@ class ReportPdf < Prawn::Document
       for i in 0 ... color.size
           column(i).style :background_color => color[i]
       end
-     end 
+     end
     end
 
-    
+
     table quote_rows do
       self.row_colors = ['DDDDDD', 'FFFFFF']
       self.column_widths = column
@@ -331,8 +331,8 @@ class ReportPdf < Prawn::Document
           row(16).column(i).style(:background_color => color[i], :font_style => :bold)
       end
     end
-    
-    
+
+
     table footer do
       self.column_widths = [720]
       column(0).style :background_color => 'FFFF00'
@@ -350,7 +350,7 @@ class ReportPdf < Prawn::Document
       [@marca,  @vehicle_information , @quotes.year],
     ]
   end
- 
+
   def client_info
     [
       ['Nombre', (@nombre + " " + @apellido).upcase],
@@ -365,7 +365,7 @@ class ReportPdf < Prawn::Document
   def headers
 
     @header = ['Coberturas']
-    
+
      if !@fallouniversitas
         @header.push('Seguros Universitas')
     end
@@ -379,7 +379,7 @@ class ReportPdf < Prawn::Document
     end
 
     if !@fallooriental
-       @header.push('La Oriental de Seguros') 
+       @header.push('La Oriental de Seguros')
     end
 
     if !@falloibero
@@ -415,29 +415,29 @@ class ReportPdf < Prawn::Document
 
     if !@fallooriental
         @cotizacion.push(@orientalActualCoti["num_cotiza"])
-        @cobertura.push(@orientalActualCoti["cobertura"])   
+        @cobertura.push(@orientalActualCoti["cobertura"])
         @eventos.push(@orientalActualCoti["eventos"])
-        @aire.push(@orientalActualCoti["aire"])   
+        @aire.push(@orientalActualCoti["aire"])
         @radio.push(@orientalActualCoti["radio"])
         @grua.push("CONTRATADO")
         @responsabilidad.push("")
-        @muerte.push(@orientalActualCoti["muerte"])   
+        @muerte.push(@orientalActualCoti["muerte"])
         @invalidez.push(@orientalActualCoti["invalidez"])
-        @curacion.push(@orientalActualCoti["curacion"])   
+        @curacion.push(@orientalActualCoti["curacion"])
         @entierro.push(@orientalActualCoti["entierro"])
-        @cosa.push(@orientalActualCoti["cosa_dan"])   
+        @cosa.push(@orientalActualCoti["cosa_dan"])
         @persona.push(@orientalActualCoti["personas_dan"])
-        @lcosa.push(@orientalActualCoti["exceso_cosa"])   
+        @lcosa.push(@orientalActualCoti["exceso_cosa"])
         @lpersona.push(@orientalActualCoti["exceso_persona"])
         @asistencia.push(@orientalActualCoti["asistencia"])
-        if (@orientalActualCoti['prima']== "NA")   
+        if (@orientalActualCoti['prima']== "NA")
           @prima.push(@orientalActualCoti["prima"])
         else
-          @prima.push( comma_numbers(('%.2f' % @orientalActualCoti["prima"]).to_s.gsub('.', ','),".")) 
-        end                   
+          @prima.push( comma_numbers(('%.2f' % @orientalActualCoti["prima"]).to_s.gsub('.', ','),"."))
+        end
     end
 
-    [ 
+    [
         @cobertura,
         @eventos,
         @aire,
@@ -453,10 +453,10 @@ class ReportPdf < Prawn::Document
         @lcosa,
         @lpersona,
         @asistencia,
-        @prima,      
+        @prima,
         @cotizacion,
 
-    ] 
+    ]
   end
 
     def footer
